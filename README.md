@@ -61,12 +61,16 @@ Open the `server` and `client` in separate VSCode workspaces or open the combine
 
 ### Purpose
 
-2-5 sentences describing what the system does
+The main purpose is to enhance the learning experience of the website's users by offering a learning tracker service that enables users to create or chose a deck collection of a certain learning topic. Therefore the user will be able to revise (using the scientifically proven spaced-reptition method) and repeat what the user has learned by answering flashcard questions, hence getting an estimation when they need to revisit the topic based on how they did on the last revision. For further information on Spaced repetition refer to https://en.wikipedia.org/wiki/Spaced_repetition.
 
 ### Pages
 
-* Home: 1-3 sentences describing what the page displays and what a user can do
-* Shopping cart: ...
+* Home: where users can read about the detailes about the website, can sign up and sign in.
+* login: Where the user type it's username and password to get accesise to the website.
+* signUp: 
+* dashBorad:
+* Revision page: Where the users can find the topic it needs to revise.
+
 
 ### Entity-Relationship (ER) Diagram
 
