@@ -66,10 +66,10 @@ The main purpose is to enhance the learning experience of the website's users by
 ### Pages
 
 * Home: where users can read about the detailes about the website, can sign up and sign in.
-* login: Where the user type it's username and password to get accesise to the website.
-* signUp: 
-* dashBorad:
-* Revision page: Where the users can find the topic it needs to revise.
+* Login: Where the user type their username and password to get accesise to their dashboard.
+* Signup: The user can enter their details and sign up for an account
+* Dashboard: This is the logged in area where the user can see/manage their collections, decks, flashcards, favourites etc.
+* Revision page: This is the page where the user performs their revisions based on the aforementioned algorithm.
 
 
 ### Entity-Relationship (ER) Diagram
