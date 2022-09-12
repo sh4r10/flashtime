@@ -4,11 +4,12 @@ const morgan = require('morgan')
 const path = require('path')
 const cors = require('cors')
 const history = require('connect-history-api-fallback')
+require('dotenv').config()
 
 const userRoutes = require('./controller/userController')
+const authController = require('./controller/authentication')
 const deckRoutes = require('./controller/deckController')
 const deckCollectionRoutes = require('./controller/deckCollectionController')
-const deckSchema = require('./models/deck.schema')
 
 // Variables
 const mongoURI =
@@ -31,9 +32,11 @@ mongoose.connect(
 
 // Create Express app
 const app = express()
+const cookieParser = require('cookie-parser')
 // Parse requests of content-type 'application/json'
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
+app.use(cookieParser())
 // HTTP request logger
 app.use(morgan('dev'))
 // Enable cross-origin resource sharing for frontend must be registered before api
@@ -41,9 +44,10 @@ app.options('*', cors())
 app.use(cors())
 
 // Import routes
-app.use('/api', userRoutes)
-app.use('/api', deckRoutes)
-app.use('/api', deckCollectionRoutes)
+app.use('/api/users', userRoutes)
+app.use('/api/auth', authController)
+app.use('/api/decks', deckRoutes)
+app.use('/api/collections', deckCollectionRoutes)
 
 app.get('/api', function (req, res) {
   res.json({ message: 'Welcome to your DIT342 backend ExpressJS project!' })
