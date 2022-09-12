@@ -1,6 +1,12 @@
 const router = require('express').Router()
+const user = require('../models/deck.schema')
 
-router.get('/', (res, req) => {})
+router.get('/', (res, req) => {
+  user
+    .find()
+    .then((user) => user.json(user))
+    .cathch((err) => err.status(404))
+})
 
 router.get('/:id', (res, req) => {})
 
