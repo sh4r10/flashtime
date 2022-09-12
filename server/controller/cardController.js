@@ -1,15 +1,15 @@
 const router = require('express').Router()
 
-router.get('/', (res, req) => {})
+router.get('/', (req, res) => {})
 
-router.get('/:id', (res, req) => {})
+router.get('/:id', (req, res) => {})
 
-router.get('/:id', (res, req) => {})
+router.get('/:id', (req, res) => {})
 
-router.post('/', (res, req) => {})
+router.post('/', (req, res) => {})
 
-router.put('/:id', (res, req) => {})
+router.put('/:id', (req, res) => {})
 
-router.delete('/:id', (res, req) => {})
+router.delete('/:id', (req, res) => {})
 
 module.exports = router
