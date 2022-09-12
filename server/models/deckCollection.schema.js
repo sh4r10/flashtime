@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const { Schema } = mongoose
+
 const deckCollectionSchema = new Schema(
   {
     deck: [{ type: Schema.Type.ObjectId, ref: 'Deck', required: true }],

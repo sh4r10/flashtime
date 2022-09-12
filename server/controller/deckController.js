@@ -9,3 +9,5 @@ router.post('/', (res, req) => {})
 router.put('/:id', (res, req) => {})
 
 router.delete('/:id', (res, req) => {})
+
+module.exports = router
