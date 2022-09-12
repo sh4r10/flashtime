@@ -1,15 +1,18 @@
-const mongoose = require('mongoose');
-const {Schema} = mongoose;
+const mongoose = require('mongoose')
+const { Schema } = mongoose
 
-const flashCards = new Schema({
-    deckID: {type: Schema.Types.ObjectId, ref:'User'},
-    front: {type: String , required: true },
-    back: {type: String , required: true },
-    lastRevision:  { type: Date },
-    nextRevision: { type: Date } 
-},
-{
-    timestamps : true,
-});
+const cardSchema = new Schema(
+  {
+    deckID: { type: Schema.Types.ObjectId, ref: 'User' },
+    front: { type: String, required: true },
+    back: { type: String, required: true },
+    lastRevision: { type: Date },
+    nextRevision: { type: Date },
+  },
+  {
+    timestamps: true,
+  }
+)
 
-const flashCardsSchema = mongoose.models('FlashCards', flashCards);
+const Card = mongoose.models('Card', cardSchema)
+module.exports = Card
