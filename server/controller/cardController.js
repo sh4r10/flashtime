@@ -4,7 +4,7 @@ router.get('/', (res, req) => {})
 
 router.get('/:id', (res, req) => {})
 
-router.get('/:id', (res,req) => {})
+router.get('/:id', (res, req) => {})
 
 router.post('/', (res, req) => {})
 
