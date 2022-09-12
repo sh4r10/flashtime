@@ -8,7 +8,7 @@ const userSchema = new Schema(
     email: { type: String, required: true },
     password: { type: String, required: true },
     decks: { type: [Schema.Types.ObjectId], ref: 'Deck' },
-    deckCollections: { type: [Schema.Types.ObjectId], ref: 'DeckCollection' },
+    deckCollections: { type: [Schema.Types.ObjectId], ref: 'deckCollection' },
   },
   {
     timestamps: true,
