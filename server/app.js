@@ -1,14 +1,19 @@
-var express = require('express')
-var mongoose = require('mongoose')
-var morgan = require('morgan')
-var path = require('path')
-var cors = require('cors')
-var history = require('connect-history-api-fallback')
+const express = require('express')
+const mongoose = require('mongoose')
+const morgan = require('morgan')
+const path = require('path')
+const cors = require('cors')
+const history = require('connect-history-api-fallback')
+
+const userRoutes = require('./controller/userController')
+const deckRoutes = require('./controller/deckController')
+const deckCollectionRoutes = require('./controller/deckCollectionController')
+const deckSchema = require('./models/deck.schema')
 
 // Variables
-var mongoURI =
+const mongoURI =
   process.env.MONGODB_URI || 'mongodb://localhost:27017/flashCardAppDB'
-var port = process.env.PORT || 3000
+const port = process.env.PORT || 3000
 
 // Connect to MongoDB
 mongoose.connect(
@@ -25,7 +30,7 @@ mongoose.connect(
 )
 
 // Create Express app
-var app = express()
+const app = express()
 // Parse requests of content-type 'application/json'
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
@@ -36,6 +41,10 @@ app.options('*', cors())
 app.use(cors())
 
 // Import routes
+app.use('/api', userRoutes)
+app.use('/api', deckRoutes)
+app.use('/api', deckCollectionRoutes)
+
 app.get('/api', function (req, res) {
   res.json({ message: 'Welcome to your DIT342 backend ExpressJS project!' })
 })
@@ -49,16 +58,16 @@ app.use('/api/*', function (req, res) {
 // Support Vuejs HTML 5 history mode
 app.use(history())
 // Serve static assets
-var root = path.normalize(__dirname + '/..')
-var client = path.join(root, 'client', 'dist')
+const root = path.normalize(__dirname + '/..')
+const client = path.join(root, 'client', 'dist')
 app.use(express.static(client))
 
 // Error handler (i.e., when exception is thrown) must be registered last
-var env = app.get('env')
+const env = app.get('env')
 // eslint-disable-next-line no-unused-vars
 app.use(function (err, req, res, next) {
   console.error(err.stack)
-  var err_res = {
+  const err_res = {
     message: err.message,
     error: {},
   }
