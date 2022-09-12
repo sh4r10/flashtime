@@ -3,7 +3,7 @@ const { Schema } = mongoose
 
 const cardSchema = new Schema(
   {
-    deckID: { type: Schema.Types.ObjectId, ref: 'User' },
+    deckID: { type: Schema.Types.ObjectId, ref: 'Deck' },
     front: { type: String, required: true },
     back: { type: String, required: true },
     lastRevision: { type: Date },
