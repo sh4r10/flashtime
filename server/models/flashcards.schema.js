@@ -3,8 +3,8 @@ const {Schema} = mongoose;
 
 const flashCards = new Schema({
     decks_ID: {type: Schema.Types.ObjectId, ref:'User'},
-    frontSide: {type: String , req: true },
-    backSide: {type: String , req: true },
+    front: {type: String , req: true },
+    back: {type: String , req: true },
     lastRevise:  { type: Date },
     nextRevision: { type: Date } 
 
