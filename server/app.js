@@ -6,8 +6,8 @@ const cors = require('cors')
 const history = require('connect-history-api-fallback')
 
 const userRoutes = require('./controller/user')
-const deckRoutes = require('./controller/deck')
-const deckCollectionRoutes = require('./controller/deckCollection')
+const deckRoutes = require('./controller/decks')
+const deckCollectionRoutes = require('./controller/collections')
 //const deckSchema = require('./models/deck.schema')
 
 // Variables
