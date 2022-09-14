@@ -50,7 +50,7 @@ router.post('/', async (req, res) => {
     })
 })
 
-router.put('/:id', async (req, res) => {
+router.put('/:id/add', async (req, res) => {
   //const collectionNameUpdate = req.body.name
   const deckId = req.body.deckId
   const d = await Deck.findById(deckId)
