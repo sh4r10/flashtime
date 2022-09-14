@@ -3,7 +3,10 @@ const Deck = require('../models/deck.schema')
 
 router.get('/', (req, res) => {
   Deck.find()
-    .then((decks) => res.json(decks))
+    .then((decks) => {
+      if (decks.length === 0) res.json('No desks here')
+      if (decks) res.json(decks)
+    })
     .catch((err) => {
       console.log(err)
       console.log('No decks here')
@@ -62,7 +65,7 @@ router.put('/:id', (req, res) => {
 router.delete('/:id', (req, res) => {
   const deckID = req.params.id
   Deck.findByIdAndDelete(deckID).then(() =>
-    res.josn(`Deck  has been deleted`).catch((err) => res.sendStatus(400))
+    res.josn(`Deck  has been deleted`).catch((err) => res.sendStatus(404))
   )
 })
 
