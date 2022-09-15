@@ -6,10 +6,10 @@ const cors = require('cors')
 const history = require('connect-history-api-fallback')
 require('dotenv').config()
 
-const userRoutes = require('./controller/userController')
+const userRoutes = require('./controller/users')
 const authController = require('./controller/authentication')
-const deckRoutes = require('./controller/deckController')
-const deckCollectionRoutes = require('./controller/deckCollectionController')
+const deckRoutes = require('./controller/decks')
+const deckCollectionRoutes = require('./controller/collections')
 
 // Variables
 const mongoURI =
@@ -44,10 +44,10 @@ app.options('*', cors())
 app.use(cors())
 
 // Import routes
-app.use('/api/userController', userRoutes)
+app.use('/api/users', userRoutes)
 app.use('/api/auth', authController)
-app.use('/api/deckController', deckRoutes)
-app.use('/api/deckCollectionController', deckCollectionRoutes)
+app.use('/api/decks', deckRoutes)
+app.use('/api/collections', deckCollectionRoutes)
 
 app.get('/api', function (req, res) {
   res.json({ message: 'Welcome to your DIT342 backend ExpressJS project!' })

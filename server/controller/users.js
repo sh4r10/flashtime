@@ -9,8 +9,12 @@ const SALT_ROUNDS = 10
 
 router.get('/', verifyToken, (req, res) => {
   const { firstName, lastName, decks, deckCollections } = req.user
-  const userId = req.params.id
-  res.json(req.user)
+  res.json({
+    firstName: firstName,
+    lastName: lastName,
+    decks: decks,
+    deckCollections: deckCollections,
+  })
 })
 
 router.post('/', async (req, res) => {
@@ -35,14 +39,6 @@ router.put('/:id', verifyToken, async (req, res) => {
   const firstNameUpdate = req.body.firstName
   const lastNameUpdate = req.body.lastName
   const emailUpdate = req.body.email
-  // const Decks = await user
-  //   .find()
-  //   .populate('deck')
-  //   .then((result) => res.json(result))
-  //   .catch((err) => {
-  //     console.log(err)
-  //     res.sendStatus(404)
-  //   })
   const passwordUpdate = req.body.password
   User.findById(userId)
     .then((userInfo) => {
@@ -50,15 +46,13 @@ router.put('/:id', verifyToken, async (req, res) => {
       userInfo.lastName = lastNameUpdate
       userInfo.email = emailUpdate
       userInfo.decks.push()
-      //userInfo.password = passwordUpdate
       return userInfo.save()
     })
     .then((result) => {
-      console.log(result)
-      res.json('User information has been updated')
+      res.json(result)
     })
     .catch((err) => {
-      res.json({ error: err })
+      res.json({ message: err })
     })
 })
 
@@ -75,16 +69,14 @@ router.patch('/password', verifyToken, async (req, res) => {
 
   User.findById(userId)
     .then((userInfo) => {
-      //if (password !== req.user.password) res.json('Typed the wrong password')
       userInfo.password = passwordUpdate
       return userInfo.save()
     })
     .then((result) => {
-      console.log(result)
-      res.json('User information has been updated')
+      res.json(result)
     })
     .catch((err) => {
-      res.json({ error: err })
+      res.json({ message: err })
     })
 })
 

@@ -10,11 +10,17 @@ router.get('/', verifyToken, (req, res) => {
 router.get('/:id', verifyToken, (req, res) => {
   const deckID = req.params.id
   Deck.findById(deckID)
-    .then((deck) => res.json(deck))
+    .then((deck) => {
+      if (req.user.decks.some((d) => d._id == deckID)) {
+        res.json(deck)
+      } else {
+        res.sendStatus(403)
+      }
+    })
     .catch((err) => {
-      console.log('no deck here')
-      console.log(err)
-      res.sendStatus(404)
+      res.json({ message: err })
+
+      res.sendStatus(403)
     })
 })
 
@@ -28,15 +34,13 @@ router.post('/', verifyToken, (req, res) => {
         if (err) res.sendStatus(403)
         user.decks.push(deck._id)
         user.save().then(() => {
-          console.log('Created new deck')
+          res.json({ message: 'New deck has been created' })
           res.status(201).json(deck)
         })
       })
     })
     .catch((err) => {
-      console.log(err)
-      console.log('big mistake hahah')
-      err.status(404)
+      res.json({ message: err })
     })
 })
 
@@ -45,26 +49,36 @@ router.put('/:id', verifyToken, (req, res) => {
   const updateDeckName = req.body.deck_name
   Deck.findById(deckID)
     .then((deck) => {
-      deck.deck_name = updateDeckName
-      return deck.save()
+      if (req.user.decks.some((d) => d._id == deckID)) {
+        deck.deck_name = updateDeckName
+        return deck.save()
+      } else {
+        res.sendStatus(403)
+      }
     })
     .then((result) => {
-      console.log(result)
-      console.log('deck updated')
-      res.json('Decks name has been updated')
-      //res.redirect('')
+      res.json(result)
     })
     .catch((err) => {
-      console.log(err)
-      //err.sendStatus(401)
+      res.json({ message: err })
     })
 })
 
 router.delete('/:id', verifyToken, (req, res) => {
   const deckID = req.params.id
-  Deck.findByIdAndDelete(deckID).then(() =>
-    res.josn(`Deck  has been deleted`).catch((err) => res.sendStatus(404))
-  )
+  Deck.findById(deckID)
+    .then((deck) => {
+      if (req.user.decks.some((d) => d._id == deckID)) {
+        deck.delete().then(() => {
+          res.status(204).json(`Deck  has been deleted`)
+        })
+      } else {
+        res.json('you are not allowd to delete this deck')
+      }
+    })
+    .catch((err) => {
+      res.json({ message: err })
+    })
 })
 
 module.exports = router
