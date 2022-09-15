@@ -1,4 +1,5 @@
 const Users = require('../models/user.schema')
+
 const jwt = require('jsonwebtoken')
 
 const verifyToken = (req, res, next) => {
@@ -11,7 +12,7 @@ const verifyToken = (req, res, next) => {
     process.env.ACCESS_TOKEN_SECRET,
     async (err, accessTokenData) => {
       if (err) return res.sendStatus(403)
-      req.user = await Users.findById(accessTokenData.id)
+      req.user = await Users.findById(accessTokenData.id).populate('decks')
       next()
     }
   )

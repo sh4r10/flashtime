@@ -49,7 +49,7 @@ app.use('/api/users', userRoutes)
 app.use('/api/auth', authController)
 app.use('/api/decks', deckRoutes)
 app.use('/api/collections', deckCollectionRoutes)
-app.use('/api/cardController', cardController)
+app.use('/api/cards', cardController)
 
 app.get('/api', function (req, res) {
   res.json({ message: 'Welcome to your DIT342 backend ExpressJS project!' })

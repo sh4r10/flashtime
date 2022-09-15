@@ -3,11 +3,10 @@ const bcrypt = require('bcrypt')
 const User = require('../models/user.schema')
 const verifyToken = require('../middlewares/verifyToken')
 
-// consts
 const SALT_ROUNDS = 10
 
 router.get('/', verifyToken, (req, res) => {
-  res.send(`User id ${req.param.id}`)
+  res.send(`User id ${req.user}`)
 })
 
 router.post('/', async (req, res) => {
