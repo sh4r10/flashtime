@@ -10,6 +10,7 @@ const userRoutes = require('./controller/userController')
 const authController = require('./controller/authentication')
 const deckRoutes = require('./controller/deckController')
 const deckCollectionRoutes = require('./controller/deckCollectionController')
+const cardController = require('./controller/cardController')
 
 // Variables
 const mongoURI =
@@ -48,6 +49,7 @@ app.use('/api/users', userRoutes)
 app.use('/api/auth', authController)
 app.use('/api/decks', deckRoutes)
 app.use('/api/collections', deckCollectionRoutes)
+app.use('/api/cardController', cardController)
 
 app.get('/api', function (req, res) {
   res.json({ message: 'Welcome to your DIT342 backend ExpressJS project!' })
