@@ -44,10 +44,10 @@ app.options('*', cors())
 app.use(cors())
 
 // Import routes
-app.use('/api/users', userRoutes)
+app.use('/api/userController', userRoutes)
 app.use('/api/auth', authController)
-app.use('/api/decks', deckRoutes)
-app.use('/api/collections', deckCollectionRoutes)
+app.use('/api/deckController', deckRoutes)
+app.use('/api/deckCollectionController', deckCollectionRoutes)
 
 app.get('/api', function (req, res) {
   res.json({ message: 'Welcome to your DIT342 backend ExpressJS project!' })

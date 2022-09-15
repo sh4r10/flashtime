@@ -1,20 +1,13 @@
 const router = require('express').Router()
 const Deck = require('../models/deck.schema')
+const User = require('../models/user.schema')
+const verifyToken = require('../middlewares/verifyToken')
 
-router.get('/', (req, res) => {
-  Deck.find()
-    .then((decks) => {
-      if (decks.length === 0) res.json('No desks here')
-      if (decks) res.json(decks)
-    })
-    .catch((err) => {
-      console.log(err)
-      console.log('No decks here')
-      res.sendStatus(404)
-    })
+router.get('/', verifyToken, (req, res) => {
+  res.json(req.user.decks)
 })
 
-router.get('/:id', (req, res) => {
+router.get('/:id', verifyToken, (req, res) => {
   const deckID = req.params.id
   Deck.findById(deckID)
     .then((deck) => res.json(deck))
@@ -25,15 +18,20 @@ router.get('/:id', (req, res) => {
     })
 })
 
-router.post('/', (req, res) => {
+router.post('/', verifyToken, (req, res) => {
   const deckName = req.body.deck_name
   const newDeck = new Deck({ deck_name: deckName })
   newDeck
     .save()
-    .then(() => {
-      console.log('Created new deck')
-      res.json('Created new deck')
-      //redirect ?
+    .then((deck) => {
+      User.findById(req.user._id, (err, user) => {
+        if (err) res.sendStatus(403)
+        user.decks.push(deck._id)
+        user.save().then(() => {
+          console.log('Created new deck')
+          res.status(201).json(deck)
+        })
+      })
     })
     .catch((err) => {
       console.log(err)
@@ -42,7 +40,7 @@ router.post('/', (req, res) => {
     })
 })
 
-router.put('/:id', (req, res) => {
+router.put('/:id', verifyToken, (req, res) => {
   const deckID = req.params.id
   const updateDeckName = req.body.deck_name
   Deck.findById(deckID)
@@ -62,7 +60,7 @@ router.put('/:id', (req, res) => {
     })
 })
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', verifyToken, (req, res) => {
   const deckID = req.params.id
   Deck.findByIdAndDelete(deckID).then(() =>
     res.josn(`Deck  has been deleted`).catch((err) => res.sendStatus(404))

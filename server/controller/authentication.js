@@ -5,7 +5,7 @@ const User = require('../models/user.schema')
 const Token = require('../models/token.schema')
 
 // consts
-const SALT_ROUNDS = 10
+const SALT_ROUNDS = 1
 
 router.post('/login', async (req, res) => {
   try {
@@ -20,7 +20,7 @@ router.post('/login', async (req, res) => {
       { id: user._id },
       process.env.ACCESS_TOKEN_SECRET,
       {
-        expiresIn: '30s',
+        expiresIn: '2m',
       }
     )
     const refreshToken = jwt.sign(
@@ -56,7 +56,7 @@ router.post('/refresh', (req, res) => {
           { id: user.id },
           process.env.ACCESS_TOKEN_SECRET,
           {
-            expiresIn: '30s',
+            expiresIn: '2m',
           }
         )
         // create and replace new refreshToken
