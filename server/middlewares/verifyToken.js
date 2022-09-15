@@ -12,6 +12,8 @@ const verifyToken = (req, res, next) => {
     async (err, accessTokenData) => {
       if (err) return res.sendStatus(403)
       req.user = await Users.findById(accessTokenData.id)
+        .populate('decks')
+        .populate('deckCollections')
       next()
     }
   )

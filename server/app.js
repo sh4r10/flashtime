@@ -6,10 +6,10 @@ const cors = require('cors')
 const history = require('connect-history-api-fallback')
 require('dotenv').config()
 
-const userRoutes = require('./controller/userController')
+const userRoutes = require('./controller/users')
 const authController = require('./controller/authentication')
-const deckRoutes = require('./controller/deckController')
-const deckCollectionRoutes = require('./controller/deckCollectionController')
+const deckRoutes = require('./controller/decks')
+const deckCollectionRoutes = require('./controller/collections')
 
 // Variables
 const mongoURI =
