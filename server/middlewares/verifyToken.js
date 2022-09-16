@@ -1,4 +1,5 @@
 const Users = require('../models/user.schema')
+
 const jwt = require('jsonwebtoken')
 
 const verifyToken = (req, res, next) => {

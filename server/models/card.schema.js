@@ -3,7 +3,8 @@ const { Schema } = mongoose
 
 const cardSchema = new Schema(
   {
-    deckID: { type: Schema.Types.ObjectId, ref: 'User' },
+    user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    deck: { type: Schema.Types.ObjectId, ref: 'Deck', required: true },
     front: { type: String, required: true },
     back: { type: String, required: true },
     lastRevision: { type: Date },
@@ -14,5 +15,5 @@ const cardSchema = new Schema(
   }
 )
 
-const Card = mongoose.models('Card', cardSchema)
+const Card = mongoose.model('Card', cardSchema)
 module.exports = Card
