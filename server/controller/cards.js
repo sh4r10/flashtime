@@ -1,6 +1,8 @@
 const router = require('express').Router()
 const Card = require('../models/card.schema')
 const Deck = require('../models/deck.schema')
+const { supermemo } = require('supermemo')
+const dayjs = require('dayjs')
 const verifyToken = require('../middlewares/verifyToken')
 
 router.get('/', verifyToken, (req, res) => {
@@ -16,7 +18,7 @@ router.get('/', verifyToken, (req, res) => {
 
 router.get('/:id', verifyToken, async (req, res) => {
   try {
-    const card = await Card.find({ card: req.params.id, user: req.user._id })
+    const card = await Card.findOne({ _id: req.params.id, user: req.user._id })
     res.json(card)
   } catch (err) {
     res.status(400).json({ message: 'Wrong ID' })
@@ -63,6 +65,29 @@ router.delete('/:id', verifyToken, async (req, res) => {
         .catch((err) => res.status(500))
     })
     .catch((err) => res.sendStatus(500))
+})
+
+router.patch('/:id/revise', verifyToken, async (req, res) => {
+  try {
+    const card = await Card.findOne({ _id: req.params.id, user: req.user._id })
+    const { interval, repetition, efactor } = supermemo(card, req.body.grade)
+    const nextRevision = dayjs().add(interval, 'day').toISOString()
+    const lastRevision = dayjs().toISOString()
+    const updated = await Card.findByIdAndUpdate(
+      req.params.id,
+      {
+        interval,
+        repetition,
+        efactor,
+        nextRevision,
+        lastRevision,
+      },
+      { new: true }
+    )
+    res.json(updated)
+  } catch (err) {
+    res.sendStatus(500)
+  }
 })
 
 module.exports = router

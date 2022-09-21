@@ -1,6 +1,7 @@
 const router = require('express').Router()
 const Deck = require('../models/deck.schema')
 const User = require('../models/user.schema')
+const Card = require('../models/card.schema')
 const verifyToken = require('../middlewares/verifyToken')
 
 router.get('/', verifyToken, (req, res) => {
@@ -24,9 +25,38 @@ router.get('/:id', verifyToken, (req, res) => {
     })
 })
 
+router.get('/:id/cards', verifyToken, async (req, res) => {
+  try {
+    const deckId = req.params.id
+    await Deck.findById(deckId)
+    if (req.user.decks.some((currentDeck) => currentDeck._id == deckId)) {
+      const cards = await Card.find({ deck: deckId })
+      res.json(cards)
+    }
+  } catch (err) {
+    res.sendStatus(403)
+  }
+})
+
+router.get('/:id/cards/due', verifyToken, async (req, res) => {
+  try {
+    const deckId = req.params.id
+    await Deck.findById(deckId)
+    if (req.user.decks.some((currentDeck) => currentDeck._id == deckId)) {
+      const cards = await Card.find({
+        deck: deckId,
+        nextRevision: { $lte: Date.now() },
+      })
+      res.json(cards)
+    }
+  } catch (err) {
+    res.sendStatus(403)
+  }
+})
+
 router.post('/', verifyToken, (req, res) => {
-  const deckName = req.body.deck_name
-  const newDeck = new Deck({ deck_name: deckName })
+  const deckName = req.body.name
+  const newDeck = new Deck({ name: deckName })
   newDeck
     .save()
     .then((deck) => {
@@ -34,7 +64,6 @@ router.post('/', verifyToken, (req, res) => {
         if (err) res.sendStatus(403)
         user.decks.push(deck._id)
         user.save().then(() => {
-          res.json({ message: 'New deck has been created' })
           res.status(201).json(deck)
         })
       })
@@ -52,17 +81,18 @@ router.post('/:id/cards', verifyToken, async (req, res) => {
       req.user.decks.some((currentDeck) => currentDeck._id == req.params.id)
     ) {
       const newCard = new Card({
-        deckID: req.params._id,
+        user: req.user._id,
+        deck: req.params.id,
         front: front,
         back: back,
       })
       await newCard.save()
       res.json(newCard)
     } else {
-      res.json('ID is not valid')
+      res.status(403).json('ID is not valid')
     }
   } catch (err) {
-    res.sendStatus(400)
+    res.status(500).json({ message: err })
   }
 })
 

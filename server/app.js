@@ -8,9 +8,9 @@ require('dotenv').config()
 
 const userRoutes = require('./controller/users')
 const authController = require('./controller/authentication')
-const deckRoutes = require('./controller/deckController')
-const deckCollectionRoutes = require('./controller/deckCollectionController')
-const cardController = require('./controller/cardController')
+const deckRoutes = require('./controller/decks')
+const deckCollectionRoutes = require('./controller/collections')
+const cardController = require('./controller/cards')
 
 // Variables
 const mongoURI =
