@@ -16,25 +16,27 @@ router.get('/', verifyToken, (req, res) => {
     })
 })
 
-router.get('/:id', verifyToken, async (req, res) => {
+router.get('/due', verifyToken, async (req, res) => {
   try {
-    const card = await Card.findOne({ _id: req.params.id, user: req.user._id })
+    const card = await Card.find({
+      user: req.user._id,
+      nextRevision: { $lte: Date.now() },
+    })
     res.json(card)
   } catch (err) {
-    res.status(400).json({ message: 'Wrong ID' })
+    res.sendStatus(500)
   }
 })
 
-router.get('/:id/cards', verifyToken, async (req, res) => {
+router.get('/:id', verifyToken, async (req, res) => {
   try {
-    const deckId = req.params.id
-    await Deck.findById(deckId)
-    if (req.user.decks.some((currentDeck) => currentDeck._id == deckId)) {
-      const cards = await Card.find({ deckID: deckId })
-      res.json(cards)
-    }
+    const card = await Card.findOne({
+      _id: req.params.id,
+      user: req.user._id,
+    }).populate('deck')
+    res.json(card)
   } catch (err) {
-    res.sendStatus(403)
+    res.status(400).json({ message: 'Wrong ID' })
   }
 })
 
