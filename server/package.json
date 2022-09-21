@@ -28,11 +28,13 @@
     "connect-history-api-fallback": "^1.6.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
+    "dayjs": "^1.11.5",
     "dotenv": "^16.0.2",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.13.8",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "supermemo": "^2.0.17"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",

@@ -3,7 +3,7 @@ const { Schema } = mongoose
 
 const deckSchema = new Schema(
   {
-    deck_name: { type: String, required: true },
+    name: { type: String, required: true },
   },
   { timestamps: true }
 )
