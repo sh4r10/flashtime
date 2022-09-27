@@ -41,8 +41,10 @@ app.use(cookieParser())
 // HTTP request logger
 app.use(morgan('dev'))
 // Enable cross-origin resource sharing for frontend must be registered before api
-app.options('*', cors())
-app.use(cors())
+// Note: in order for the refresh token cookie to be set properly, the domain must not be a wildcard (*)
+// hence the origin has been set to the default vue port
+app.options('http://localhost:8080', cors())
+app.use(cors({ credentials: true, origin: 'http://localhost:8080' }))
 
 // Import routes
 app.use('/api/users', userRoutes)
