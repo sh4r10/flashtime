@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt')
 const User = require('../models/user.schema')
 const Deck = require('../models/deck.schema')
 const verifyToken = require('../middlewares/verifyToken')
+const validator = require('validator')
 
 // consts
 const SALT_ROUNDS = 10
@@ -19,7 +20,22 @@ router.get('/', verifyToken, (req, res) => {
 
 router.post('/', async (req, res) => {
   try {
-    const { firstName, lastName, email } = req.body
+    const {
+      firstName,
+      lastName,
+      email,
+      password: pass,
+      confirmPassword,
+    } = req.body
+    console.log(firstName, lastName, email, pass, confirmPassword)
+    // input validation
+    const errors = []
+    if (!validator.isEmail(email)) errors.push('Email is not valid')
+    if (!validator.isLength(pass, { min: 8 }))
+      errors.push('Passoword must be at least 8 characters')
+    if (pass !== confirmPassword) errors.push('Passwords do not match')
+    if (errors.length > 0) return res.status(400).json({ errors: errors })
+
     const password = await bcrypt.hash(req.body.password, SALT_ROUNDS)
     const user = await User.create({
       firstName,
@@ -30,7 +46,7 @@ router.post('/', async (req, res) => {
     await user.save()
     res.status(201).json(user)
   } catch (err) {
-    res.status(400).json({ message: err.message })
+    res.status(400).json({ errors: [err.message] })
   }
 })
 

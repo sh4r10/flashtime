@@ -34,7 +34,8 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.13.8",
     "morgan": "^1.10.0",
-    "supermemo": "^2.0.17"
+    "supermemo": "^2.0.17",
+    "validator": "^13.7.0"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
