@@ -86,7 +86,7 @@ router.put('/:id', verifyToken, async (req, res) => {
 
 router.delete('/:id', verifyToken, async (req, res) => {
   const collectionID = req.params.id
-  Deck.findById(collectionID)
+  DeckCollection.findById(collectionID)
     .then((collection) => {
       if (req.user.deckCollection.some((c) => c._id == collectionID)) {
         collection.delete().then(() => {
