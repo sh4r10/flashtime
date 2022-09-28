@@ -11,13 +11,8 @@
 import Searchbar from '../components/Searchbar.vue'
 import Deckbox from '../components/Deckbox.vue'
 export default {
-  name: 'User',
-  data() {
-    return {
-    }
-  },
+  name: 'Dashboard',
   methods: {},
-  created: {},
   components: {
     Searchbar,
     Deckbox

@@ -47,7 +47,7 @@ export default {
       try {
         const response = await Api.post('/auth/login', this.form, { withCredentials: true })
         localStorage.setItem('accessToken', response.data.accessToken)
-        this.$router.push('/user')
+        this.$router.push('/')
       } catch (error) {
         const serverErrror = error.response.data.error
         if (serverErrror) {
