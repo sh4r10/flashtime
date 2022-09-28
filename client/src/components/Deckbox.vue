@@ -9,7 +9,6 @@ export default {
 </script>
 <style scoped>
 .box{
-  margin-top: 5%;
   margin-left: 11%;
   width:200px ;
   height:100px ;
