@@ -1,9 +1,16 @@
 <template>
   <div>
-    <b-jumbotron header="DIT342 Frontend" lead="Welcome to your DIT342 Frontend Vue.js App">
-      <b-button class="btn_message" variant="primary" v-on:click="getMessage()" >Get Message from Server</b-button>
-      <p>Message from the server:<br/>
-      {{ message }}</p>
+    <b-jumbotron
+      header="DIT342 Frontend"
+      lead="Welcome to your DIT342 Frontend Vue.js App"
+    >
+      <b-button class="btn_message" variant="primary" v-on:click="getMessage()"
+        >Get Message from Server</b-button
+      >
+      <p>
+        Message from the server:<br />
+        {{ message }}
+      </p>
     </b-jumbotron>
   </div>
 </template>
@@ -16,16 +23,16 @@ export default {
   name: 'home',
   data() {
     return {
-      message: 'none'
+      message: 'Node is amazing'
     }
   },
   methods: {
     getMessage() {
       Api.get('/')
-        .then(response => {
-          this.message = response.data.message
+        .then((response) => {
+          this.message = response.data
         })
-        .catch(error => {
+        .catch((error) => {
           this.message = error
         })
     }

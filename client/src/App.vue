@@ -1,10 +1,10 @@
 <template>
   <div id="app">
     <!-- <div id="nav">
-      <router-link to="/landing">Landing</router-link>
+      <router-link to="/landinÖg">Landing</router-link>
     </div> -->
     <!-- Render the content of the current page view -->
-    <router-view/>
+    <router-view />
   </div>
 </template>
 
