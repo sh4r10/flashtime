@@ -34,6 +34,7 @@ mongoose.connect(
 // Create Express app
 const app = express()
 const cookieParser = require('cookie-parser')
+const trim = require('./middlewares/trim')
 // Parse requests of content-type 'application/json'
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
@@ -45,6 +46,9 @@ app.use(morgan('dev'))
 // hence the origin has been set to the default vue port
 app.options('http://localhost:8080', cors())
 app.use(cors({ credentials: true, origin: 'http://localhost:8080' }))
+
+// Trim all strings in request body
+app.use(trim)
 
 // Import routes
 app.use('/api/users', userRoutes)

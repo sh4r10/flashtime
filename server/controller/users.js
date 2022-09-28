@@ -27,7 +27,6 @@ router.post('/', async (req, res) => {
       password: pass,
       confirmPassword,
     } = req.body
-    console.log(firstName, lastName, email, pass, confirmPassword)
     // input validation
     const errors = []
     if (!validator.isEmail(email)) errors.push('Email is not valid')
