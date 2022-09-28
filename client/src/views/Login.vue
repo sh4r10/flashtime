@@ -46,7 +46,6 @@ export default {
       e.preventDefault()
       try {
         const response = await Api.post('/auth/login', this.form, { withCredentials: true })
-        console.log(response)
         localStorage.setItem('accessToken', response.data.accessToken)
         this.$router.push('/')
       } catch (error) {

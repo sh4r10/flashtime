@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from './views/Home.vue'
-import Landing from './views/Landing.vue'
+import Root from './views/Root.vue'
 import Signup from './views/Signup.vue'
 import Login from './views/Login.vue'
 import revision from './views/Revision.vue'
@@ -14,13 +13,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: Home
-    },
-    {
-      path: '/landing',
-      name: 'landing',
-      component: Landing
+      name: 'Root',
+      component: Root
     },
     {
       path: '/signup',

@@ -18,7 +18,11 @@ Api.interceptors.response.use(undefined, async (error) => {
     error.response.data.message === 'Invalid token'
   ) {
     try {
-      const refresh = await Api.post('/auth/refresh')
+      const refresh = await Api.post(
+        '/auth/refresh',
+        {},
+        { withCredentials: true }
+      )
       localStorage.setItem('accessToken', refresh.data.accessToken)
       const originalRequest = error.config
       originalRequest.headers.Authorization = `Bearer ${refresh.data.accessToken}`

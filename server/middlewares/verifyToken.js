@@ -11,7 +11,7 @@ const verifyToken = (req, res, next) => {
     token,
     process.env.ACCESS_TOKEN_SECRET,
     async (err, accessTokenData) => {
-      if (err) return res.sendStatus(403)
+      if (err) return res.status(403).json({ message: 'Invalid token' })
       req.user = await Users.findById(accessTokenData.id)
         .populate('decks')
         .populate('deckCollections')
