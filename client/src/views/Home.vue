@@ -1,40 +1,23 @@
 <template>
-  <div>
-    <b-jumbotron header="DIT342 Frontend" lead="Welcome to your DIT342 Frontend Vue.js App">
-      <b-button class="btn_message" variant="primary" v-on:click="getMessage()" >Get Message from Server</b-button>
-      <p>Message from the server:<br/>
-      {{ message }}</p>
-    </b-jumbotron>
-  </div>
+    <b-container fluid>
+        <Navbar />
+        <b-container fluid>
+            <h1>The <span>Modern</span> Solution to Flashcards</h1>
+            <p>Based on the scientifically proven spaced repitition method.</p>
+            <router-link to="/signup"><b-button variant="primary">Sign up</b-button></router-link>
+            <router-link to="/login"><b-button variant="secondary">Log in</b-button></router-link>
+        </b-container>
+    </b-container>
 </template>
 
 <script>
-// @ is an alias to /src
-import { Api } from '@/Api'
-
+import Navbar from '../components/Navbar.vue'
 export default {
   name: 'home',
-  data() {
-    return {
-      message: 'none'
-    }
-  },
-  methods: {
-    getMessage() {
-      Api.get('/')
-        .then(response => {
-          this.message = response.data.message
-        })
-        .catch(error => {
-          this.message = error
-        })
-    }
-  }
+  components: { Navbar }
 }
 </script>
 
 <style>
-.btn_message {
-  margin-bottom: 1em;
-}
+
 </style>
