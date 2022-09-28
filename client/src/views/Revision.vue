@@ -14,28 +14,13 @@
 <script>
 import Navbar from '../components/Navbar.vue'
 import Card from '../components/Card.vue'
+import { Api } from '../Api'
 export default {
   name: 'revision',
   data() {
     return {
       currentCard: 0,
-      cards: [
-        {
-          id: 1,
-          front: 'Hello first',
-          back: 'Hi first card'
-        },
-        {
-          id: 2,
-          front: 'Hello second',
-          back: 'Hi second card'
-        },
-        {
-          id: 3,
-          front: 'Hello third',
-          back: 'Hi third card'
-        }
-      ],
+      cards: [],
       deckName: 'Math',
       progress: this.currentCard,
       value: '',
@@ -53,7 +38,22 @@ export default {
     }
   },
   // eslint-disable-next-line vue/no-unused-components
-  components: { Navbar, Card }
+  components: { Navbar, Card },
+  mounted: function () {
+    Api.get('/decks/632365d448fcf9ad5966d735/cards/due')
+      .then((res) => {
+        if (res.data.length === 0) {
+          this.$vToastify.success('You have no cards to revise.')
+          this.$router.push('/')
+        }
+        this.cards = res.data
+      })
+      .catch((err) => {
+        this.$vToastify.error('An error occurred.')
+        console.log(err)
+        this.$router.push('/')
+      })
+  }
 }
 </script>
 
