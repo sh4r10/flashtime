@@ -1,10 +1,10 @@
 <template>
-    <div class="box">
-  </div>
+    <div class="box">{{collection.name}}</div>
 </template>
 <script>
 export default {
-  name: 'Deckbox'
+  name: 'Deckbox',
+  props: ['collection']
 }
 </script>
 <style scoped>
