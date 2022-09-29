@@ -30,6 +30,8 @@
 </template>
 
 <script>
+import { Api } from '../Api'
+
 export default {
   data() {
     return {
@@ -48,12 +50,18 @@ export default {
       this.name = ''
       this.nameState = null
     },
-    handleOk(bvModalEvent) {
+    async handleOk(bvModalEvent) {
+      try {
+        bvModalEvent.preventDefault()
+        // Trigger submit handler
+        this.handleSubmit()
+        const response = await Api.post('/collections/', { name: this.name })
+        this.$router.push(`/collection/${response.data._id}`)
+      } catch (err) {
+        this.$vToastify.error('Something went wrong')
+        this.$router.push('/')
+      }
       // Prevent modal from closing
-      bvModalEvent.preventDefault()
-      // Trigger submit handler
-      this.handleSubmit()
-      this.$router.push('/')
     },
     handleSubmit() {
       // Exit when the form isn't valid
