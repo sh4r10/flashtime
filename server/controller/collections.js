@@ -43,7 +43,17 @@ router.post('/', verifyToken, async (req, res) => {
     .catch((err) => res.status(404).json('error, ID not found'))
 })
 
-router.put('/:id/decks/', verifyToken, async (req, res) => {
+router.get('/:id/decks', verifyToken, async (req, res) => {
+  try {
+    const collectionId = req.params.id
+    const decks = await DeckCollection.findById(collectionId).populate('deck')
+    res.json(decks.deck)
+  } catch (err) {
+    res.sendStatus(500)
+  }
+})
+
+router.put('/:id/add/', verifyToken, async (req, res) => {
   const deckId = req.body.deckId
   DeckCollection.findById(req.params.id).then((collection) => {
     if (req.user.decks.some((d) => d._id == deckId)) {

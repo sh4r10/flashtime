@@ -2,7 +2,6 @@ const router = require('express').Router()
 const Deck = require('../models/deck.schema')
 const User = require('../models/user.schema')
 const Card = require('../models/card.schema')
-const DeckCollection = require('../models/deckCollection.schema')
 const verifyToken = require('../middlewares/verifyToken')
 
 router.get('/', verifyToken, async (req, res) => {
