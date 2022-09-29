@@ -1,10 +1,15 @@
 <template>
-<div>
-  <Searchbar/>
-  <NeedRevisionDecks/>
-  <h2>Your Collections </h2>
-  <Deckbox v-for="collection in deckCollections.slice(0,3)" :key="collection._id" :collection="collection" />
-</div>
+  <div>
+    <Searchbar />
+    <NeedRevisionDecks />
+    <h2>Your Collections</h2>
+
+    <Deckbox
+      v-for="collection in deckCollections.slice(0, 3)"
+      :key="collection._id"
+      :collection="collection"
+    />
+  </div>
 </template>
 
 <script>
@@ -19,7 +24,6 @@ export default {
     }
   },
   name: 'Dashboard',
-  methods: {},
   components: {
     Searchbar,
     NeedRevisionDecks,
@@ -34,15 +38,15 @@ export default {
 </script>
 
 <style scoped>
-h1{
+h1 {
   margin-top: 8%;
-  margin-left:-47%;
+  margin-left: -47%;
   font-size: 30px;
   color: #627281;
 }
-h2{
+h2 {
   margin-top: 30%;
-  margin-left:-47%;
+  margin-left: -47%;
   font-size: 30px;
   color: #627281;
 }

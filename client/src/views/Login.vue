@@ -2,9 +2,9 @@
   <b-container fluid>
     <Navbar />
     <b-container fluid="md">
-        <b-form @submit="submitHandler">
-            <b-form-group>
-            <b-form-input
+      <b-form @submit="submitHandler">
+        <b-form-group>
+          <b-form-input
             id="email"
             v-model="form.email"
             type="email"
@@ -22,7 +22,7 @@
           </b-form-input>
           <b-button type="submit" variant="primary">Login</b-button>
         </b-form-group>
-        </b-form>
+      </b-form>
     </b-container>
   </b-container>
 </template>
@@ -45,7 +45,9 @@ export default {
     submitHandler: async function (e) {
       e.preventDefault()
       try {
-        const response = await Api.post('/auth/login', this.form, { withCredentials: true })
+        const response = await Api.post('/auth/login', this.form, {
+          withCredentials: true
+        })
         localStorage.setItem('accessToken', response.data.accessToken)
         this.$router.push('/')
       } catch (error) {
