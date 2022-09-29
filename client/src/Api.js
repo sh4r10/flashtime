@@ -28,9 +28,9 @@ Api.interceptors.response.use(undefined, async (error) => {
       originalRequest.headers.Authorization = `Bearer ${refresh.data.accessToken}`
       return Api(originalRequest)
     } catch (err) {
-      // await Api.delete('/auth/logout')
-      // localStorage.removeItem('accessToken')
-      // this.$router.push('/')
+      await Api.delete('/auth/logout')
+      localStorage.removeItem('accessToken')
+      this.$router.push('/')
       return Promise.reject(err)
     }
   } else {
