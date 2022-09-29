@@ -1,7 +1,7 @@
 <template>
 <div>
   <Searchbar/>
-  <h1>Need Revision</h1>
+  <NeedRevisionDecks/>
   <h2>Your Collections </h2>
   <Deckbox/>
 </div>
@@ -10,12 +10,14 @@
 <script>
 import Searchbar from '../components/Searchbar.vue'
 import Deckbox from '../components/Deckbox.vue'
+import NeedRevisionDecks from '../components/NeedRevisionDecks.vue'
 export default {
   name: 'Dashboard',
   methods: {},
   components: {
     Searchbar,
-    Deckbox
+    Deckbox,
+    NeedRevisionDecks
   }
 }
 </script>
