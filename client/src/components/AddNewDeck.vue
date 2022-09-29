@@ -29,15 +29,21 @@ export default {
   },
   mounted: async function () {
     try {
-      const decks = await Api.get('/decks')
-      this.decks = decks.filter((d) => !d.collection)
+      const res = await Api.get('/decks')
+      this.decks = res.data.filter((d) => !d.collection)
     } catch (err) {
       this.$vToastify.error('Something went wrong')
     }
   },
   methods: {
-    addDeck: function (id) {
-      Api.post('')
+    addDeck: async function (deckId) {
+      try {
+        await Api.put(`/collections/${this.$route.params.id}/decks`, {
+          deckId
+        })
+      } catch (err) {
+        this.$vToastify.error('Something went wrong')
+      }
     }
   }
 }
