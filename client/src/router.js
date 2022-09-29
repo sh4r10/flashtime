@@ -4,6 +4,7 @@ import Root from './views/Root.vue'
 import Signup from './views/Signup.vue'
 import Login from './views/Login.vue'
 import revision from './views/Revision.vue'
+import Decks from './views/Decks.vue'
 
 Vue.use(Router)
 
@@ -29,8 +30,12 @@ export default new Router({
     {
       path: '/revision',
       name: 'revision',
-      // eslint-disable-next-line no-undef
       component: revision
+    },
+    {
+      path: '/collection/:id',
+      name: 'collection',
+      component: Decks
     }
   ]
 })
