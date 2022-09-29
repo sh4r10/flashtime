@@ -1,5 +1,5 @@
 <template>
-    <div class="box">{{ deck.name }}</div>
+    <router-link :to="{name: 'deck', params:{id:deck._id}}" class="box">{{ deck.name }}</router-link>
 </template>
 <script>
 export default {
