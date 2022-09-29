@@ -1,7 +1,7 @@
 <template>
   <div>
     <Searchbar />
-    <h1>Need Revision</h1>
+    <NeedRevisionDecks />
     <h2>Your Collections</h2>
 
     <Deckbox
