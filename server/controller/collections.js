@@ -53,21 +53,27 @@ router.get('/:id/decks', verifyToken, async (req, res) => {
   }
 })
 
-router.put('/:id/add/', verifyToken, async (req, res) => {
+router.put('/:id/decks/', verifyToken, async (req, res) => {
   const deckId = req.body.deckId
-  DeckCollection.findById(req.params.id).then((collection) => {
-    if (req.user.decks.some((d) => d._id == deckId)) {
+  try {
+    const collection = await DeckCollection.findById(req.params.id)
+    const deck = await Deck.findById(deckId)
+    if (
+      req.user.decks.some((d) => d._id == deckId) &&
+      deck.collection !== collection._id &&
+      !collection.deck.some((d) => d._id == deckId)
+    ) {
       collection.deck.push(deckId)
-      return collection
-        .save()
-        .then((result) => {
-          res.json({ message: result })
-        })
-        .catch((err) => res.json({ message: err }))
+      deck.deckCollection = collection._id
+      await deck.save()
+      await collection.save()
+      res.json(collection)
     } else {
-      res.sendStatus(403)
+      res.status(400).json('error, deck already in collection')
     }
-  })
+  } catch (err) {
+    res.status(500).json({ message: err })
+  }
 })
 
 router.put('/:id', verifyToken, async (req, res) => {

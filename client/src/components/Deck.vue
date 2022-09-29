@@ -33,7 +33,7 @@ export default {
         justify-content: space-between;
         align-items: center;
         margin: 10px auto;
-        padding: 5px 20px;
+        padding: 10px 20px;
         text-decoration: none;
         border-radius: 5px;
         box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.05);
@@ -42,6 +42,19 @@ export default {
 
     a:hover{
         box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    p{
+        margin: 0;
+    }
+
+    p:first{
+        display: flex;
+        align-items: center;
+    }
+
+    p span{
+        margin-left: 5px;
     }
 
     a .deck-info{
@@ -53,7 +66,6 @@ export default {
     }
 
     a .deck-info p{
-        margin: 0;
         color: #808080;
     }
 
