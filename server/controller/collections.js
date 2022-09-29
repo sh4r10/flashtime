@@ -26,28 +26,21 @@ router.get('/:id', verifyToken, (req, res) => {
 
 router.post('/', verifyToken, async (req, res) => {
   const deckCollectionName = req.body.name
-  const deck = req.body.deck
-  if (req.user.decks.some((d) => d._id == deck)) {
-    const newdeckCollection = new DeckCollection({
-      name: deckCollectionName,
-      deck: [req.body.deck],
-    })
-    newdeckCollection
-      .save()
-      .then((deckCollection) => {
-        User.findById(req.user._id, (err, user) => {
-          if (err) res.sendStatus(403)
-          user.deckCollections.push(deckCollection)
-          user.save().then(() => {
-            res.json({ message: 'New deckCollection has been created' })
-            res.status(201).json(deckCollection)
-          })
+  const newdeckCollection = new DeckCollection({
+    name: deckCollectionName,
+  })
+  newdeckCollection
+    .save()
+    .then((deckCollection) => {
+      User.findById(req.user._id, (err, user) => {
+        if (err) res.sendStatus(403)
+        user.deckCollections.push(deckCollection)
+        user.save().then(() => {
+          res.status(201).json(deckCollection)
         })
       })
-      .catch((err) => res.status(404).json('error, ID not found'))
-  } else {
-    res.json('your deckID is not valid, hence you cannot create deckCollection')
-  }
+    })
+    .catch((err) => res.status(404).json('error, ID not found'))
 })
 
 router.get('/:id/decks', verifyToken, async (req, res) => {
@@ -60,21 +53,27 @@ router.get('/:id/decks', verifyToken, async (req, res) => {
   }
 })
 
-router.put('/:id/add/', verifyToken, async (req, res) => {
+router.put('/:id/decks/', verifyToken, async (req, res) => {
   const deckId = req.body.deckId
-  DeckCollection.findById(req.params.id).then((collection) => {
-    if (req.user.decks.some((d) => d._id == deckId)) {
+  try {
+    const collection = await DeckCollection.findById(req.params.id)
+    const deck = await Deck.findById(deckId)
+    if (
+      req.user.decks.some((d) => d._id == deckId) &&
+      deck.collection !== collection._id &&
+      !collection.deck.some((d) => d._id == deckId)
+    ) {
       collection.deck.push(deckId)
-      return collection
-        .save()
-        .then((result) => {
-          res.json({ message: result })
-        })
-        .catch((err) => res.json({ message: err }))
+      deck.deckCollection = collection._id
+      await deck.save()
+      await collection.save()
+      res.json(collection)
     } else {
-      res.sendStatus(403)
+      res.status(400).json('error, deck already in collection')
     }
-  })
+  } catch (err) {
+    res.status(500).json({ message: err })
+  }
 })
 
 router.put('/:id', verifyToken, async (req, res) => {

@@ -1,15 +1,13 @@
 <template>
   <div>
     <Searchbar />
-    <h1>Need Revision</h1>
+    <NeedRevisionDecks />
     <h2>Your Collections</h2>
-
     <Deckbox
       v-for="collection in deckCollections.slice(0, 3)"
       :key="collection._id"
       :collection="collection"
     />
-    <createCollection />
   </div>
 </template>
 
@@ -18,6 +16,7 @@ import { Api } from '../Api'
 import Searchbar from '../components/Searchbar.vue'
 import Deckbox from '../components/Deckbox.vue'
 import createCollection from '../components/createCollection.vue'
+import NeedRevisionDecks from '../components/NeedRevisionDecks.vue'
 export default {
   data() {
     return {
@@ -31,6 +30,7 @@ export default {
   components: {
     createCollection,
     Searchbar,
+    NeedRevisionDecks,
     Deckbox
   },
   mounted: function () {
@@ -38,7 +38,7 @@ export default {
       .then((res) => {
         this.deckCollections = res.data
       })
-      .catch((err) => console.log(err))
+      .catch((err) => console.error(err))
   }
 }
 </script>

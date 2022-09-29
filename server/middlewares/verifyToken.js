@@ -12,9 +12,9 @@ const verifyToken = (req, res, next) => {
     process.env.ACCESS_TOKEN_SECRET,
     async (err, accessTokenData) => {
       if (err) return res.status(403).json({ message: 'Invalid token' })
-      req.user = await Users.findById(accessTokenData.id)
-        .populate('decks')
-        .populate('deckCollections')
+      req.user = await Users.findById(accessTokenData.id).populate(
+        'deckCollections'
+      )
       next()
     }
   )
