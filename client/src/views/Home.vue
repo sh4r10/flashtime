@@ -17,7 +17,7 @@
 <script>
 import Navbar from '../components/Navbar.vue'
 export default {
-  name: 'userPage',
+  name: 'Home',
   components: { Navbar }
 }
 </script>
