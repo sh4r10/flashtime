@@ -9,7 +9,6 @@
       :key="collection._id"
       :collection="collection"
     />
-    <createCollection />
   </div>
 </template>
 
@@ -17,7 +16,6 @@
 import { Api } from '../Api'
 import Searchbar from '../components/Searchbar.vue'
 import Deckbox from '../components/Deckbox.vue'
-import createCollection from '../components/createCollection.vue'
 export default {
   data() {
     return {
@@ -25,11 +23,7 @@ export default {
     }
   },
   name: 'Dashboard',
-  methods: {
-    showModel() {}
-  },
   components: {
-    createCollection,
     Searchbar,
     Deckbox
   },
