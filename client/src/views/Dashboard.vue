@@ -16,6 +16,7 @@
 import { Api } from '../Api'
 import Searchbar from '../components/Searchbar.vue'
 import Deckbox from '../components/Deckbox.vue'
+import NeedRevisionDecks from '../components/NeedRevisionDecks.vue'
 export default {
   data() {
     return {
@@ -25,14 +26,13 @@ export default {
   name: 'Dashboard',
   components: {
     Searchbar,
+    NeedRevisionDecks,
     Deckbox
   },
   mounted: function () {
     Api.get('/collections')
-      .then((res) => {
-        this.deckCollections = res.data
-      })
-      .catch((err) => console.log(err))
+      .then(res => { this.deckCollections = res.data })
+      .catch(err => console.error(err))
   }
 }
 </script>
