@@ -4,7 +4,7 @@
     <NeedRevisionDecks />
     <h2>Your Collections</h2>
     <Deckbox
-      v-for="collection in deckCollections.slice(0, 3)"
+      v-for="collection in deckCollections.slice(0, 9)"
       :key="collection._id"
       :collection="collection"
     />
