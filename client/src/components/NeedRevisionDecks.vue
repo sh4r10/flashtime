@@ -27,7 +27,6 @@ export default {
         return a.cardsDue < b.cardsDue
       })
       this.topDecks = response.data.slice(0, 5)
-      console.log(response)
     } catch (err) {
       console.error(err)
     }

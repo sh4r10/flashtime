@@ -29,7 +29,6 @@ export default {
   },
   methods: {
     nextCard() {
-      console.log('hello')
       if (this.currentCard + 1 < this.cards.length) {
         this.currentCard++
       } else {
