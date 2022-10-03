@@ -72,6 +72,7 @@ export default {
         // Trigger submit handler
         this.handleSubmit()
         await Api.post(`/decks/${this.$route.params.id}/cards/`, { front: this.front, back: this.back })
+        this.$emit('fetchCard')
       } catch (err) {
         this.$vToastify.error('Something went wrong')
         this.$router.push('/')

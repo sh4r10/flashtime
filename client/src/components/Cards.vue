@@ -6,14 +6,30 @@
         header-bg-variant="primary"
         header-text-variant="white"
       >
+      <button class="delete" @click="deleteCard(card._id)">Delete</button>
         <b-card-text>{{card.back}}</b-card-text>
       </b-card>
     </div>
 </template>
 <script>
+import { Api } from '../Api'
 export default {
-  props: ['card']
+  props: ['card'],
+  methods: {
+    deleteCard(id) {
+      Api.delete(`/cards/${id}`)
+      // eslint-disable-next-line no-return-assign, vue/no-mutating-props
+        .then(() => this.$emit('deleteCard', id))
+        .catch(err => console.log(err))
+    }
+  }
 }
 </script>
 <style scoped>
+  .delete {
+    position:   absolute;
+    top:        5px;
+    left:       5px;
+    text-align: left;
+  }
 </style>
