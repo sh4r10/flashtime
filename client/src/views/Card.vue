@@ -1,8 +1,9 @@
 <template>
     <div>
         <Navbar/>
-        <CreateCard @fetchCard="fetchCards"/>
-        <Cards v-for ="card in cards" :key="card._id" :card="card" @deleteCard="deleteCard"/>
+        <CardModal :card="currentCard" @createCard="createCard" />
+        <CreateCard @fetchCard="fetchCards" @setCurrentCard="setCurrentCard"/>
+        <Cards v-for ="card in cards" :key="card._id" :card="card" @deleteCard="deleteCard" @setCurrentCard="setCurrentCard"/>
 </div>
 </template>
 <script>
@@ -14,7 +15,8 @@ export default {
   name: 'home',
   data() {
     return {
-      cards: []
+      cards: [],
+      currentCard: undefined
     }
   },
   methods: {
@@ -25,6 +27,9 @@ export default {
     },
     deleteCard: function (id) {
       this.cards = this.cards.filter((card) => card._id !== id)
+    },
+    setCurrentCard: function (card) {
+      this.currentCard = card
     }
   },
   components: { Navbar, Cards, CreateCard },

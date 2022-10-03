@@ -6,7 +6,8 @@
         header-bg-variant="primary"
         header-text-variant="white"
       >
-      <button class="delete" @click="deleteCard(card._id)">Delete</button>
+      <button class="update" v-b-modal.cardModal @click="$emit('setCurrentCard', card)">UPDATE</button>
+      <button class="delete" @click="deleteCard(card._id)">DELETE</button>
         <b-card-text>{{card.back}}</b-card-text>
       </b-card>
     </div>
@@ -31,5 +32,11 @@ export default {
     top:        5px;
     left:       5px;
     text-align: left;
+  }
+  .update{
+    position:   absolute;
+    top:        5px;
+    right:       5px;
+    text-align: right;
   }
 </style>
