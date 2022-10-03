@@ -2,18 +2,46 @@ const router = require('express').Router()
 const Deck = require('../models/deck.schema')
 const User = require('../models/user.schema')
 const Card = require('../models/card.schema')
-
 const verifyToken = require('../middlewares/verifyToken')
 
-router.get('/', verifyToken, (req, res) => {
-  res.json(req.user.decks)
+router.get('/', verifyToken, async (req, res) => {
+  let decks = await Deck.find({ _id: { $in: req.user.decks } })
+    .populate('cards')
+    .populate('deckCollection')
+  decks = decks.map((deck) => {
+    const totalCards = deck.cards.length
+    const cardsDue = deck.cards.filter(
+      (card) => card.nextRevision < new Date()
+    ).length
+    const collection = deck.deckCollection ? deck.deckCollection.name : null
+    const res = { ...deck._doc, totalCards, cardsDue, collection }
+    delete res.cards
+    delete res.deckCollection
+    return res
+  })
+  res.json(decks)
 })
 
 router.get('/:id', verifyToken, (req, res) => {
   const deckID = req.params.id
   Deck.findById(deckID)
-    .then((deck) => {
+    .populate('cards')
+    .populate('deckCollection')
+    .then(async (deck) => {
       if (req.user.decks.some((d) => d._id == deckID)) {
+        const cardsDue = await Card.count({
+          deck: deckID,
+          nextRevision: { $lte: Date.now() },
+        })
+        const totalCards = await Card.count({ deck: deckID })
+        const collection = await DeckCollection.findOne({
+          deck: deck._id,
+          user: req.user._id,
+        })
+        deck = await deck.toJSON()
+        deck.totalCards = totalCards
+        deck.cardsDue = cardsDue
+        deck.collection = collection
         res.json(deck)
       } else {
         res.sendStatus(403)
@@ -87,6 +115,9 @@ router.post('/:id/cards', verifyToken, async (req, res) => {
         front: front,
         back: back,
       })
+      const deck = await Deck.findById(req.params.id)
+      deck.cards.push(newCard._id)
+      await deck.save()
       await newCard.save()
       res.json(newCard)
     } else {

@@ -6,6 +6,7 @@ import VueToastify from 'vue-toastify'
 
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import './assets/globals.css'
 
 Vue.use(BootstrapVue)
 Vue.use(VueToastify, {

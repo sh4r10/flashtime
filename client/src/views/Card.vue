@@ -1,6 +1,7 @@
 <template>
     <div>
-        <Navbar/>,
+        <Navbar/>
+        <CreateCard/>
         <Cards v-for ="card in cards" :key="card._id" :card="card" />
 </div>
 </template>
@@ -8,6 +9,7 @@
 import Navbar from '../components/Navbar.vue'
 import Cards from '../components/Cards.vue'
 import { Api } from '../Api'
+import CreateCard from '../components/CreateCard.vue'
 export default {
   data() {
     return {
@@ -15,7 +17,7 @@ export default {
     }
   },
   name: 'home',
-  components: { Navbar, Cards },
+  components: { Navbar, Cards, CreateCard },
   mounted: function () {
     console.log(this.$route.params.id)
     Api.get(`/decks/${this.$route.params.id}/cards`)

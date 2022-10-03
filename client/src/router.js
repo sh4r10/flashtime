@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Root from './views/Root.vue'
 import Signup from './views/Signup.vue'
 import Login from './views/Login.vue'
+import revision from './views/Revision.vue'
 import Decks from './views/Decks.vue'
 import Card from './views/Card.vue'
 
@@ -26,6 +27,11 @@ export default new Router({
       path: '/login',
       name: 'login',
       component: Login
+    },
+    {
+      path: '/revision',
+      name: 'revision',
+      component: revision
     },
     {
       path: '/collection/:id',
