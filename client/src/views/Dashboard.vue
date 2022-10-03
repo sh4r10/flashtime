@@ -25,9 +25,6 @@ export default {
     }
   },
   name: 'Dashboard',
-  methods: {
-    showModel() {}
-  },
   components: {
     CreateCollection,
     Searchbar,
@@ -36,10 +33,8 @@ export default {
   },
   mounted: function () {
     Api.get('/collections')
-      .then((res) => {
-        this.deckCollections = res.data
-      })
-      .catch((err) => console.error(err))
+      .then(res => { this.deckCollections = res.data })
+      .catch(err => console.error(err))
   }
 }
 </script>

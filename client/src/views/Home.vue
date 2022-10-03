@@ -17,7 +17,7 @@
 <script>
 import Navbar from '../components/Navbar.vue'
 export default {
-  name: 'home',
+  name: 'Home',
   components: { Navbar }
 }
 </script>
