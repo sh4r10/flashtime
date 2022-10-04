@@ -14,6 +14,17 @@ body {
   background: #f7f7f7;
 }
 
+:root {
+  --primary: #3399ff;
+  --red: #ff3300;
+  --secondary: #121212;
+  --green: #4caf50;
+}
+
+.btn-success {
+  background: var(--green);
+}
+
 @media screen and (max-width: 768px) {
   :root {
     font-size: 80%;

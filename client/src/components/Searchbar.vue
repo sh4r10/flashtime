@@ -18,7 +18,7 @@ input {
   border: none;
   transition: 0.4s;
   border-radius: 30px;
-  box-shadow: 0 3px 5px rgba(0,0,0,0.1);
+  box-shadow: 2px 3px 5px rgba(0,0,0,0.1);
 }
 
 input:focus{
