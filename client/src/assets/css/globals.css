@@ -1,0 +1,21 @@
+@font-face {
+  font-family: 'Adelia';
+  src: local('Adelia'), url(../fonts/adelia.ttf) format('truetype');
+  src: local('Adelia'), url(../fonts/adelia.otf) format('opentype');
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #f7f7f7;
+}
+
+@media screen and (max-width: 768px) {
+  :root {
+    font-size: 80%;
+  }
+}

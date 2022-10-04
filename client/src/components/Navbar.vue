@@ -13,3 +13,12 @@ export default {
   name: 'Navbar'
 }
 </script>
+
+<style scoped>
+    nav {
+        position: fixed;
+        top: 0;
+        padding: 1rem 2rem;
+        width: 100%;
+    }
+</style>
