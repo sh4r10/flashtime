@@ -6,7 +6,7 @@
         header-bg-variant="primary"
         header-text-variant="white"
       >
-      <button class="update" v-b-modal.cardModal @click="$emit('setCurrentCard', card)">UPDATE</button>
+      <button class="update" @click="clickHandler">UPDATE</button>
       <button class="delete" @click="deleteCard(card._id)">DELETE</button>
         <b-card-text>{{card.back}}</b-card-text>
       </b-card>
@@ -22,6 +22,10 @@ export default {
       // eslint-disable-next-line no-return-assign, vue/no-mutating-props
         .then(() => this.$emit('deleteCard', id))
         .catch(err => console.log(err))
+    },
+    clickHandler: function () {
+      this.$emit('setCurrentCard', this.card)
+      this.$bvModal.show('cardModal')
     }
   }
 }

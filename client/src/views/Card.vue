@@ -1,8 +1,8 @@
 <template>
     <div>
         <Navbar/>
-        <CardModal :card="currentCard" @createCard="createCard" />
-        <CreateCard @fetchCard="fetchCards" @setCurrentCard="setCurrentCard"/>
+        <CardModal :card="currentCard" @updateCard="updateCard" @createCard="createCard"/>
+        <CreateCard @setCurrentCard="setCurrentCard"/>
         <Cards v-for ="card in cards" :key="card._id" :card="card" @deleteCard="deleteCard" @setCurrentCard="setCurrentCard"/>
 </div>
 </template>
@@ -11,6 +11,7 @@ import Navbar from '../components/Navbar.vue'
 import Cards from '../components/Cards.vue'
 import { Api } from '../Api'
 import CreateCard from '../components/CreateCard.vue'
+import CardModal from '../components/CardModal.vue'
 export default {
   name: 'home',
   data() {
@@ -25,14 +26,33 @@ export default {
         .then(res => { this.cards = res.data })
         .catch(err => console.log(err))
     },
+    async createCard(front, back) {
+      try {
+        await Api.post(`/decks/${this.$route.params.id}/cards/`, { front, back })
+        this.fetchCards()
+      } catch (err) {
+        this.$vToastify.error('Something went wrong')
+        this.$router.push('/')
+      }
+    },
+    async updateCard(id, front, back) {
+      try {
+        await Api.put(`/cards/${id}`, { front, back })
+        this.$vToastify.success('Card updated')
+        this.fetchCards()
+      } catch (err) {
+        this.$vToastify.error('Something went wrong')
+      }
+    },
     deleteCard: function (id) {
       this.cards = this.cards.filter((card) => card._id !== id)
     },
     setCurrentCard: function (card) {
       this.currentCard = card
+      this.$bvModal.show('card-modal')
     }
   },
-  components: { Navbar, Cards, CreateCard },
+  components: { Navbar, Cards, CreateCard, CardModal },
   mounted: function () {
     this.fetchCards()
   }

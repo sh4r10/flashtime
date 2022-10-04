@@ -1,38 +1,39 @@
 <template>
           <b-modal
-        id="cardModal"
-        title="Submit Your Front and Back"
+        id="card-modal"
+        :title="card ? 'Edit Card' : 'Create New Card'"
         @show="resetModal"
         @hidden="resetModal"
         @ok="handleOk"
+        :ok-title="card ? 'Update' : 'Create'"
       >
-        <form ref="form" @submit.stop.prevent="handleSubmit">
+        <form ref="frontForm" @submit.stop.prevent="handleSubmit">
           <b-form-group
             label ="Front"
             label-for="front-input"
             invalid-feedback="Front is required"
-            :state="nameState"
+            :state="frontState"
           >
             <b-form-input
               id="front-input"
               v-model="front"
-              :state="frontState"
               required
+              :state="frontState"
             ></b-form-input>
           </b-form-group>
-        </form>
-        <form ref="form" @submit.stop.prevent="handleSubmit">
+          </form>
+          <form ref="backForm" @submit.stop.prevent="handleSubmit">
           <b-form-group
             label ="Back"
             label-for="back-input"
             invalid-feedback="Back is required"
-            :state="nameState"
+            :state="backState"
           >
             <b-form-input
               id="back-input"
               v-model="back"
-              :state="bsckState"
               required
+              :state="backState"
             ></b-form-input>
           </b-form-group>
         </form>
@@ -41,23 +42,27 @@
 <script>
 
 export default {
+  name: 'CardModal',
   data() {
     return {
       front: '',
-      back: ''
+      back: '',
+      frontState: null,
+      backState: null
     }
   },
   props: ['card'],
   methods: {
     checkFormValidity() {
-      const valid = this.$refs.form.checkValidity()
-      this.nameState = valid
-      return valid
+      const front = this.$refs.frontForm.checkValidity()
+      const back = this.$refs.backForm.checkValidity()
+      this.frontState = front
+      this.backState = back
+      return front && back
     },
     resetModal() {
       this.front = ''
       this.back = ''
-      this.nameState = null
     },
     async handleOk(bvModalEvent) {
       bvModalEvent.preventDefault()
@@ -65,14 +70,28 @@ export default {
       this.handleSubmit()
     },
     handleSubmit() {
-      if (!this.checkFormValidity()) {
-        return
+      if (!this.checkFormValidity()) return
+      if (this.card) {
+        this.$emit('updateCard', this.card._id, this.front, this.back)
+      } else {
+        this.$emit('createCard', this.front, this.back)
       }
-      this.$emit('createCard', this.front, this.back)
+
       // Hide the modal manually
       this.$nextTick(() => {
-        this.$bvModal.hide('modal-prevent-closing')
+        this.$bvModal.hide('card-modal')
       })
+    }
+  },
+  watch: {
+    card: {
+      immediate: true,
+      handler: function (newCard) {
+        if (newCard) {
+          this.front = newCard.front
+          this.back = newCard.back
+        }
+      }
     }
   }
 }
