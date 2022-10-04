@@ -1,17 +1,11 @@
 <template>
-  <div>
-    <router-link
-      :to="{ name: 'collection', params: { id: collection._id } }"
-      class="box"
-      >{{ collection.name }}</router-link
-    >
+  <div class="box">
+    <RemoveDeckFromCollection class="button" />
   </div>
 </template>
 <script>
 export default {
-  name: 'Deckbox',
-  props: ['collection'],
-  components: {}
+  name: 'deckContainer'
 }
 </script>
 <style scoped>
@@ -24,5 +18,11 @@ export default {
   box-shadow: 0px 0px 16px rgba(234, 6, 6, 0.25);
   background-color: rgba(225, 225, 225, 0.75);
   text-decoration: none;
+}
+.button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  text-align: right;
 }
 </style>
