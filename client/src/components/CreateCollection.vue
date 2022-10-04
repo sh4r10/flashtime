@@ -5,14 +5,14 @@
     <b-modal
       id="modal-prevent-closing"
       ref="modal"
-      title="Submit Your Name"
+      title="Create new collection"
       @show="resetModal"
       @hidden="resetModal"
       @ok="handleOk"
     >
       <form ref="form" @submit.stop.prevent="handleSubmit">
         <b-form-group
-          label="Name"
+          label="Collection Name"
           label-for="name-input"
           invalid-feedback="Name is required"
           :state="nameState"
@@ -33,11 +33,11 @@
 import { Api } from '../Api'
 
 export default {
+  name: 'CreateCollection',
   data() {
     return {
       name: '',
-      nameState: null,
-      submittedNames: []
+      nameState: null
     }
   },
   methods: {
@@ -50,30 +50,24 @@ export default {
       this.name = ''
       this.nameState = null
     },
-    async handleOk(bvModalEvent) {
+    handleOk(bvModalEvent) {
+      bvModalEvent.preventDefault()
+      // Trigger submit handler
+      this.handleSubmit()
+      // Prevent modal from closing
+    },
+    async handleSubmit() {
+      // Exit when the form isn't valid
+      if (!this.checkFormValidity()) {
+        return
+      }
       try {
-        bvModalEvent.preventDefault()
-        // Trigger submit handler
-        this.handleSubmit()
         const response = await Api.post('/collections/', { name: this.name })
         this.$router.push(`/collection/${response.data._id}`)
       } catch (err) {
         this.$vToastify.error('Something went wrong')
         this.$router.push('/')
       }
-      // Prevent modal from closing
-    },
-    handleSubmit() {
-      // Exit when the form isn't valid
-      if (!this.checkFormValidity()) {
-        return
-      }
-      // Push the name to submitted names
-      this.submittedNames.push(this.name)
-      // Hide the modal manually
-      this.$nextTick(() => {
-        this.$bvModal.hide('modal-prevent-closing')
-      })
     }
   }
 }

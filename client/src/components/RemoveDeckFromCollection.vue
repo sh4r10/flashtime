@@ -1,14 +1,14 @@
 <template>
   <div>
-    <b-button v-b-modal.modal-1>Add a new deck</b-button>
+    <b-button v-b-modal.modal-1>Remove deck</b-button>
 
     <b-modal id="modal-1" title="BootstrapVue">
-      <p class="my-4">Add a new deck</p>
+      <p class="my-4">Remove deck</p>
       <b-list-group>
         <b-list-group-item
           v-for="deck in decks"
           :key="deck._id"
-          @click="addDeck(deck._id)"
+          @click="removeDeck(deck._id)"
           button
           >{{ deck.name }}</b-list-group-item
         >
@@ -21,7 +21,7 @@
 import { Api } from '../Api'
 
 export default {
-  name: 'AddNewDeck',
+  name: 'RemoveDeckFromCollection',
   data: function () {
     return {
       decks: []
@@ -29,18 +29,18 @@ export default {
   },
   mounted: async function () {
     try {
-      const res = await Api.get('/decks')
-      this.decks = res.data.filter((d) => !d.collection)
+      const res = await Api.get(`/collections/${this.$route.params.id}/decks/`)
+      this.decks = res.data
     } catch (err) {
       this.$vToastify.error('Something went wrong')
     }
   },
   methods: {
-    addDeck: async function (deckId) {
+    removeDeck: async function (deckId) {
       try {
-        await Api.put(`/collections/${this.$route.params.id}/decks`, {
-          deckId
-        })
+        await Api.delete(
+          `/collections/${this.$route.params.id}/decks/${deckId}`
+        )
       } catch (err) {
         this.$vToastify.error('Something went wrong')
       }
