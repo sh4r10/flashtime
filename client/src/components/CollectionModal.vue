@@ -1,14 +1,13 @@
 <template>
   <div>
-    <b-button v-b-modal.modal-prevent-closing>Create new Collection</b-button>
-
     <b-modal
-      id="modal-prevent-closing"
+      id="collection-modal"
       ref="modal"
-      title="Create new collection"
+      :title="collection ? 'Update Collection' : 'Create new collection'"
       @show="resetModal"
       @hidden="resetModal"
       @ok="handleOk"
+      :ok-title="collection ? 'Update' : 'Create'"
     >
       <form ref="form" @submit.stop.prevent="handleSubmit">
         <b-form-group
@@ -33,13 +32,14 @@
 import { Api } from '../Api'
 
 export default {
-  name: 'CreateCollection',
+  name: 'CollectionModal',
   data() {
     return {
       name: '',
       nameState: null
     }
   },
+  props: ['collection'],
   methods: {
     checkFormValidity() {
       const valid = this.$refs.form.checkValidity()
@@ -61,12 +61,28 @@ export default {
       if (!this.checkFormValidity()) {
         return
       }
-      try {
-        const response = await Api.post('/collections/', { name: this.name })
-        this.$router.push(`/collection/${response.data._id}`)
-      } catch (err) {
-        this.$vToastify.error('Something went wrong')
-        this.$router.push('/')
+      if (!this.collection) {
+        try {
+          const response = await Api.post('/collections/', { name: this.name })
+          this.$router.push(`/collection/${response.data._id}`)
+        } catch (err) {
+          this.$vToastify.error('Something went wrong')
+          this.$router.push('/')
+        }
+      } else {
+        this.$emit('updateCollection', this.collection._id, this.name)
+      }
+      // Hide the modal manually
+      this.$nextTick(() => {
+        this.$bvModal.hide('collection-modal')
+      })
+    }
+  },
+  watch: {
+    collection: {
+      immediate: true,
+      handler: function (newCollection) {
+        this.name = newCollection ? newCollection.name : ''
       }
     }
   }

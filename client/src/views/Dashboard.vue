@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Navbar />
     <Searchbar />
     <NeedRevisionDecks />
     <h2>Your Collections</h2>
@@ -8,7 +9,8 @@
       :key="collection._id"
       :collection="collection"
     />
-    <CreateCollection />
+    <b-button v-b-modal.collection-modal>Create new Collection</b-button>
+    <CollectionModal />
   </div>
 </template>
 
@@ -17,7 +19,8 @@ import { Api } from '../Api'
 import Searchbar from '../components/Searchbar.vue'
 import Deckbox from '../components/Deckbox.vue'
 import NeedRevisionDecks from '../components/NeedRevisionDecks.vue'
-import CreateCollection from '../components/CreateCollection.vue'
+import Navbar from '../components/Navbar.vue'
+import CollectionModal from '../components/CollectionModal.vue'
 export default {
   data() {
     return {
@@ -26,15 +29,18 @@ export default {
   },
   name: 'Dashboard',
   components: {
-    CreateCollection,
     Searchbar,
     NeedRevisionDecks,
-    Deckbox
+    Deckbox,
+    Navbar,
+    CollectionModal
   },
   mounted: function () {
     Api.get('/collections')
-      .then(res => { this.deckCollections = res.data })
-      .catch(err => console.error(err))
+      .then((res) => {
+        this.deckCollections = res.data
+      })
+      .catch((err) => console.error(err))
   }
 }
 </script>

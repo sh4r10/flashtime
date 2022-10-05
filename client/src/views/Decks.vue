@@ -18,7 +18,7 @@ export default {
   data() {
     return {
       decks: [],
-      collection: undefined
+      collection: ''
     }
   },
   components: {
