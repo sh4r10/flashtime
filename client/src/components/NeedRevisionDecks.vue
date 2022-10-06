@@ -1,10 +1,12 @@
 <template>
-  <div>
-    <h1>Needs Revision</h1>
+  <b-col cols="12" md="8" class="mx-auto mt-3">
+    <h2>Needs Revision</h2>
     <b-container fluid>
-      <Deck v-for="deck in topDecks" :deck="deck" :key="deck.id" url="/" />
+      <b-row v-for="deck in topDecks" :key="deck._id">
+        <Deck :deck="deck" url="/" />
+      </b-row>
     </b-container>
-  </div>
+  </b-col>
 </template>
 
 <script>
@@ -35,13 +37,9 @@ export default {
 </script>
 
 <style scoped>
-div {
-  margin: 0 auto;
-}
-.container-fluid {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
+h2 {
+  font-size: 1.5rem;
+  text-align: left;
+  margin: 0;
 }
 </style>

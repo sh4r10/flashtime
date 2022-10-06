@@ -4,6 +4,9 @@
       {{ deck.name }}
       <button @click="removeDeck(deck._id)">Remove</button>
     </div>
+    <router-link :to="{ name: 'deck', params: { id: deck._id } }" class="box">{{
+      deck.name
+    }}</router-link>
   </div>
 </template>
 <script>

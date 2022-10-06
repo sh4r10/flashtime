@@ -43,16 +43,10 @@ router.get('/:id', verifyToken, async (req, res) => {
 router.put('/:id', verifyToken, async (req, res) => {
   if (req.body.hasOwnProperty('deckID'))
     res.status(400).json({ message: 'ID cannot be change' })
-  Card.find({ user: req.user._id })
-    .then((err, card) => {
-      if (!card) res.status(403).json({ message: 'No card found.' })
-      Card.findByIdAndUpdate(req.params.id, req.body)
-        .then((err, updatedCard) => {
-          if (err) res.sendStatus(404)
-          res.json(updatedCard)
-        })
-        .catch((err) => res.sendStatus(500))
-      res.json('your card have been updated')
+  Card.findByIdAndUpdate(req.params.id, req.body)
+    .then((updatedCard, err) => {
+      if (err) res.sendStatus(404)
+      res.json(updatedCard)
     })
     .catch((err) => res.sendStatus(500))
 })
