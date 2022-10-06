@@ -128,13 +128,14 @@ router.post('/:id/cards', verifyToken, async (req, res) => {
   }
 })
 
-router.put('/:id', verifyToken, (req, res) => {
+router.put('/:id', verifyToken, async (req, res) => {
   const deckID = req.params.id
-  const updateDeckName = req.body.deck_name
+  const updateDeckName = req.body.name
+
   Deck.findById(deckID)
     .then((deck) => {
       if (req.user.decks.some((d) => d._id == deckID)) {
-        deck.deck_name = updateDeckName
+        deck.name = updateDeckName
         return deck.save()
       } else {
         res.sendStatus(403)
