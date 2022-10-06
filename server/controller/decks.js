@@ -29,11 +29,11 @@ router.get('/:id', verifyToken, (req, res) => {
     .populate('deckCollection')
     .then(async (deck) => {
       if (req.user.decks.some((d) => d._id == deckID)) {
-        const cardsDue = await Card.count({
+        const cardsDue = await Card.countDocuments({
           deck: deckID,
           nextRevision: { $lte: Date.now() },
         })
-        const totalCards = await Card.count({ deck: deckID })
+        const totalCards = await Card.countDocuments({ deck: deckID })
         const collection = await DeckCollection.findOne({
           deck: deck._id,
           user: req.user._id,

@@ -22,19 +22,7 @@ import { Api } from '../Api'
 
 export default {
   name: 'AddNewDeck',
-  data: function () {
-    return {
-      decks: []
-    }
-  },
-  mounted: async function () {
-    try {
-      const res = await Api.get('/decks')
-      this.decks = res.data.filter((d) => !d.collection)
-    } catch (err) {
-      this.$vToastify.error('Something went wrong')
-    }
-  },
+  props: ['decks'],
   methods: {
     addDeck: async function (deckId) {
       try {
