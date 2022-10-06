@@ -1,7 +1,7 @@
 <template>
-    <div>
-        <input type="text" :value="filter" placeholder="Search for deck and decks collections..." >
-    </div>
+    <b-col cols="12" md="8" class="mx-auto mb-3">
+        <input type="text" placeholder="Search for deck and decks collections..." >
+    </b-col>
 </template>
 <script>
 export default {
@@ -11,23 +11,20 @@ export default {
 </script>
 <style scoped>
 input {
-  display: inline-block;
-  width: 75%;
-  padding: 15px;
+  width: 100%;
+  padding: 15px 30px;
+  padding-top: 20px;
   color:#313131;
-  font-size:20px;
-  appearance: none;
-  margin-top: 20%;
-  border:none;
-  background: none;
-  box-shadow: 0px 0px 16px rgba(0,0,0,0.25);
-  background-color: rgba(225,225,225,0.5);
-  border-radius: 0px 16px 0px 16px;
+  background: #fff;
+  border: none;
   transition: 0.4s;
+  border-radius: 30px;
+  box-shadow: 2px 3px 5px rgba(0,0,0,0.1);
 }
-input {
-  box-shadow: 0px 0px 16px rgba(234, 6, 6, 0.25); ;
-  background-color: rgba(225,225,225,0.75);
-  border-radius: 16px 0px 16px 0px;
+
+input:focus{
+  outline: none;
+  box-shadow: 2px 8px 20px rgba(0,0,0,0.2);
 }
+
 </style>

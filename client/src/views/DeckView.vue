@@ -2,18 +2,17 @@
     <div>
         <Navbar/>
         <CardModal :card="currentCard" @updateCard="updateCard" @createCard="createCard"/>
-        <CreateCard @setCurrentCard="setCurrentCard"/>
-        <Cards v-for ="card in cards" :key="card._id" :card="card" @deleteCard="deleteCard" @setCurrentCard="setCurrentCard"/>
+        <b-button @click="setCurrentCard(undefined)">Add new card</b-button>
+        <Card v-for ="card in cards" :key="card._id" :card="card" @deleteCard="deleteCard" @setCurrentCard="setCurrentCard"/>
 </div>
 </template>
 <script>
 import Navbar from '../components/Navbar.vue'
-import Cards from '../components/Cards.vue'
+import Card from '../components/Card.vue'
 import { Api } from '../Api'
-import CreateCard from '../components/CreateCard.vue'
 import CardModal from '../components/CardModal.vue'
 export default {
-  name: 'home',
+  name: 'DeckView',
   data() {
     return {
       cards: [],
@@ -52,7 +51,7 @@ export default {
       this.$bvModal.show('card-modal')
     }
   },
-  components: { Navbar, Cards, CreateCard, CardModal },
+  components: { Navbar, Card, CardModal },
   mounted: function () {
     this.fetchCards()
   }

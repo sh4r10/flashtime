@@ -5,8 +5,7 @@ import Signup from './views/Signup.vue'
 import Login from './views/Login.vue'
 import Revision from './views/Revision.vue'
 import Decks from './views/Decks.vue'
-import Card from './views/Card.vue'
-import DeckPage from './views/DeckPage.vue'
+import DeckView from './views/DeckView.vue'
 
 Vue.use(Router)
 
@@ -42,12 +41,7 @@ export default new Router({
     {
       path: '/deck/:id',
       name: 'deck',
-      component: Card
-    },
-    {
-      path: '/decks',
-      name: 'decks',
-      component: DeckPage
+      component: DeckView
     }
   ]
 })
