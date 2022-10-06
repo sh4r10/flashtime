@@ -5,8 +5,7 @@
 </template>
 <script>
 export default {
-  name: 'Searchbar',
-  props: 'filter'
+  name: 'Searchbar'
 }
 </script>
 <style scoped>

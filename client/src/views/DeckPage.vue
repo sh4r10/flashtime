@@ -1,29 +1,26 @@
 <template>
     <div>
         <Navbar/>
-        <input type="text" v-model="search">
+        <b-button @click="setCurrentCard(undefined)">Add new deck</b-button>
         <DeckModal :deck="currentDeck" @updateDeck="updateDeck" @createDeck="createDeck"/>
-        <CreateDeck @setCurrentDeck="setCurrentDeck"/>
-        <Decks v-for="deck in filteredDecks" :key="deck._id" :deck="deck" @deleteDeck="deleteDeck" @setCurrentDeck="setCurrentDeck"/>
+        <Decks v-for="deck in decks" :key="deck._id" :deck="deck" @deleteDeck="deleteDeck" @setCurrentDeck="setCurrentDeck"/>
     </div>
 </template>
 <script>
 import Navbar from '../components/Navbar.vue'
-import Decks from '../components/Decks.vue'
+import Decks from '../components/DeckComp.vue'
 import { Api } from '../Api'
-import CreateDeck from '../components/CreateDeck.vue'
 import DeckModal from '../components/DeckModal.vue'
 
 export default {
   data() {
     return {
-      search: '',
       decks: [],
       currentDeck: undefined
     }
   },
   components: {
-    Navbar, Decks, DeckModal, CreateDeck
+    Navbar, Decks, DeckModal
   },
   methods: {
     fetchDecks: function () {
@@ -61,11 +58,6 @@ export default {
     Api.get('/decks')
       .then((res) => (this.decks = res.data))
       .catch((err) => console.log(err))
-  },
-  computed: {
-    filteredDecks() {
-      return this.decks.filter(deck => deck.name.includes(this.search))
-    }
   }
 }
 </script>
