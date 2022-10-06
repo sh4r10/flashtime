@@ -7,13 +7,13 @@
         {{ this.currentCard + 1 }}/{{ this.cards.length }}
       </h5>
     </div>
-    <Card @nextCard="nextCard" :card="cards[currentCard]" />
+    <CardRevision @nextCard="nextCard" :card="cards[currentCard]" />
   </div>
 </template>
 
 <script>
 import Navbar from '../components/Navbar.vue'
-import Card from '../components/Card.vue'
+import CardRevision from '../components/CardRevision.vue'
 import { Api } from '../Api'
 export default {
   name: 'revision',
@@ -37,7 +37,7 @@ export default {
     }
   },
   // eslint-disable-next-line vue/no-unused-components
-  components: { Navbar, Card },
+  components: { Navbar, CardRevision },
   mounted: function () {
     Api.get('/decks/632365d448fcf9ad5966d735/cards/due')
       .then((res) => {

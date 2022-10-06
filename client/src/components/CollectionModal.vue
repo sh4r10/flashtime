@@ -1,5 +1,7 @@
 <template>
   <div>
+    <button v-b-modal.modal-prevent-closing>Create</button>
+
     <b-modal
       id="collection-modal"
       ref="modal"
@@ -88,3 +90,25 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+button,
+button:focus,
+button:hover {
+  background: none;
+  border: 1px solid var(--green);
+  color: var(--green);
+  padding: 0.25rem 1.5rem;
+  outline: none;
+  transition: 0.2s;
+  border-radius: 5px;
+  text-transform: uppercase;
+  font-size: 14px;
+}
+
+button:hover {
+  background: var(--green);
+  color: #fff;
+  border: 1px solid var(--green);
+}
+</style>
