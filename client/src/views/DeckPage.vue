@@ -1,9 +1,10 @@
 <template>
     <div>
         <Navbar/>
+        <input type="text" v-model="search">
         <DeckModal :deck="currentDeck" @updateDeck="updateDeck" @createDeck="createDeck"/>
         <CreateDeck @setCurrentDeck="setCurrentDeck"/>
-        <Decks v-for="deck in decks" :key="deck._id" :deck="deck" @deleteDeck="deleteDeck" @setCurrentDeck="setCurrentDeck"/>
+        <Decks v-for="deck in filteredDecks" :key="deck._id" :deck="deck" @deleteDeck="deleteDeck" @setCurrentDeck="setCurrentDeck"/>
     </div>
 </template>
 <script>
@@ -16,6 +17,7 @@ import DeckModal from '../components/DeckModal.vue'
 export default {
   data() {
     return {
+      search: '',
       decks: [],
       currentDeck: undefined
     }
@@ -59,6 +61,11 @@ export default {
     Api.get('/decks')
       .then((res) => (this.decks = res.data))
       .catch((err) => console.log(err))
+  },
+  computed: {
+    filteredDecks() {
+      return this.decks.filter(deck => deck.name.includes(this.search))
+    }
   }
 }
 </script>

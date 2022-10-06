@@ -1,11 +1,12 @@
 <template>
     <div>
-        <input type="text" placeholder="Search for deck and decks collections..." >
+        <input type="text" :value="filter" placeholder="Search for deck and decks collections..." >
     </div>
 </template>
 <script>
 export default {
-  name: 'Searchbar'
+  name: 'Searchbar',
+  props: 'filter'
 }
 </script>
 <style scoped>
