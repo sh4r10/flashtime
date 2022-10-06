@@ -21,6 +21,5 @@ export default {
   background: transparent;
   box-shadow: 0px 0px 16px rgba(234, 6, 6, 0.25);
   background-color: rgba(225, 225, 225, 0.75);
-  text-decoration: none;
 }
 </style>
