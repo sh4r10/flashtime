@@ -2,7 +2,7 @@
   <b-col cols="12" md="8" class="mx-auto mt-3">
     <div class="header">
       <h2>Your Collections</h2>
-      <CreateCollection />
+      <b-button v-b-modal.collection-modal>Create</b-button>
     </div>
     <div class="collection-container">
       <Collection
@@ -11,13 +11,14 @@
         :collection="collection"
       />
     </div>
+    <CollectionModal />
   </b-col>
 </template>
 
 <script>
 import { Api } from '../Api'
-import CreateCollection from './CreateCollection.vue'
 import Collection from './Collection.vue'
+import CollectionModal from './CollectionModal.vue'
 
 export default {
   name: 'TopCollections',
@@ -33,7 +34,7 @@ export default {
       })
       .catch((err) => console.error(err))
   },
-  components: { CreateCollection, Collection }
+  components: { Collection, CollectionModal }
 }
 </script>
 
@@ -58,6 +59,24 @@ h2 {
   align-items: center;
   margin: 1rem auto;
 }
+
+button, button:focus, button:hover{
+    background: none;
+    border: 1px solid var(--green);
+    color: var(--green);
+    padding: 0.25rem 1.5rem;
+    outline: none;
+    transition: .2s;
+    border-radius: 5px;
+    text-transform: uppercase;
+    font-size: 14px;
+  }
+
+  button:hover{
+    background: var(--green);
+    color: #fff;
+    border: 1px solid var(--green);
+  }
 
 @media screen and (max-width: 1200px){
   .collection-container{
