@@ -37,9 +37,9 @@ export default {
   props: ['deck'],
   methods: {
     checkFormValidity() {
-      const name = this.$refs.nameForm.checkValidity()
-      this.nameState = name
-      return name
+      const valid = this.$refs.nameForm.checkValidity()
+      this.nameState = valid
+      return valid
     },
     resetModal() {
       this.name = ''
@@ -56,7 +56,6 @@ export default {
       } else {
         this.$emit('createDeck', this.name)
       }
-
       // Hide the modal manually
       this.$nextTick(() => {
         this.$bvModal.hide('deck-modal')
@@ -67,9 +66,7 @@ export default {
     card: {
       immediate: true,
       handler: function (newDeck) {
-        if (newDeck) {
-          this.name = newDeck.name
-        }
+        this.name = newDeck ? newDeck.name : ''
       }
     }
   }
