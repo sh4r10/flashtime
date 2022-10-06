@@ -1,10 +1,31 @@
 <template>
-    <router-link :to="{name: 'deck', params:{id:deck._id}}" class="box">{{ deck.name }}</router-link>
+  <div>
+    <div class="box">
+      {{ deck.name }}
+      <button @click="removeDeck(deck._id)">Remove</button>
+    </div>
+    <router-link :to="{ name: 'deck', params: { id: deck._id } }" class="box">{{
+      deck.name
+    }}</router-link>
+  </div>
 </template>
 <script>
+import { Api } from '../Api'
 export default {
   name: 'DeckCard',
-  props: ['deck']
+  props: ['deck'],
+  methods: {
+    removeDeck: async function (deckId) {
+      try {
+        await Api.delete(
+          `/collections/${this.$route.params.id}/decks/${deckId}`
+        )
+        this.$emit('removeDeck', deckId)
+      } catch (err) {
+        this.$vToastify.error('Something went wrong')
+      }
+    }
+  }
 }
 </script>
 <style scoped>

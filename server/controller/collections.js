@@ -3,6 +3,7 @@ const DeckCollection = require('../models/deckCollection.schema')
 const Deck = require('../models/deck.schema')
 const User = require('../models/user.schema')
 const verifyToken = require('../middlewares/verifyToken')
+const { collection } = require('../models/deck.schema')
 
 router.get('/', verifyToken, async (req, res) => {
   res.json(req.user.deckCollections)
@@ -108,6 +109,32 @@ router.delete('/:id', verifyToken, async (req, res) => {
     .catch((err) => {
       res.json({ message: err })
     })
+})
+
+router.delete('/:collectionId/decks/:deckId', verifyToken, async (req, res) => {
+  try {
+    const collectionId = req.params.collectionId
+    const deckId = req.params.deckId
+    const collection = await DeckCollection.findById(collectionId)
+    if (
+      req.user.deckCollections.some((c) => c._id == collectionId) &&
+      req.user.decks.some((d) => d._id == deckId) &&
+      collection.deck.some((d) => d._id == deckId)
+    ) {
+      collection.deck = collection.deck.filter((d) => d._id != deckId)
+      await Deck.findByIdAndUpdate(
+        deckId,
+        { deckCollection: null },
+        { useFindAndModify: false }
+      )
+      await collection.save()
+      res.sendStatus(204)
+    } else {
+      res.sendStatus(400)
+    }
+  } catch (err) {
+    res.status(500).json({ error: err })
+  }
 })
 
 module.exports = router
