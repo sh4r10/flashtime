@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-button v-b-modal.modal-prevent-closing>Create new Collection</b-button>
+    <button v-b-modal.modal-prevent-closing>Create</button>
 
     <b-modal
       id="modal-prevent-closing"
@@ -9,6 +9,8 @@
       @show="resetModal"
       @hidden="resetModal"
       @ok="handleOk"
+      ok-title="Create"
+      ok-variant="success"
     >
       <form ref="form" @submit.stop.prevent="handleSubmit">
         <b-form-group
@@ -72,3 +74,23 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  button, button:focus, button:hover{
+    background: none;
+    border: 1px solid var(--green);
+    color: var(--green);
+    padding: 0.25rem 1.5rem;
+    outline: none;
+    transition: .2s;
+    border-radius: 5px;
+    text-transform: uppercase;
+    font-size: 14px;
+  }
+
+  button:hover{
+    background: var(--green);
+    color: #fff;
+    border: 1px solid var(--green);
+  }
+</style>

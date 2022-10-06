@@ -1,8 +1,8 @@
 <template>
-  <router-link :to="url">
+  <router-link :to="url" class="mt-3">
     <p>
         {{ deck.name }}
-        <b-badge variant="primary" pill v-if="deck.collection">{{ deck.collection }}</b-badge>
+        <b-badge pill v-if="deck.collection">{{ deck.collection }}</b-badge>
     </p>
     <div class="deck-info">
       <div>
@@ -27,15 +27,14 @@ export default {
 <style scoped>
     a, a:hover {
         background: #fff;
-        color: #121212;
-        width: 500px;
+        color: var(--secondary);
+        width: 100%;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin: 10px auto;
-        padding: 10px 20px;
+        padding: 8px 20px;
         text-decoration: none;
-        border-radius: 5px;
+        border-radius: 8px;
         box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.05);
         transition: .2s;
     }
@@ -71,12 +70,16 @@ export default {
 
     a .deck-info p.total-cards{
         font-size: 20px;
-        color: #3399ff;
+        color: var(--primary);
     }
 
     a .deck-info p.cards-due{
         font-size: 20px;
-        color: #ff3300;
+        color: var(--red);
+    }
+
+    .badge{
+      background: var(--primary);
     }
 
 </style>
