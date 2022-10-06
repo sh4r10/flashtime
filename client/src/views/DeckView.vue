@@ -2,7 +2,7 @@
     <div>
         <Navbar/>
         <CardModal :card="currentCard" @updateCard="updateCard" @createCard="createCard"/>
-        <CreateCard @setCurrentCard="setCurrentCard"/>
+        <b-button @click="setCurrentCard(undefined)">Add new card</b-button>
         <Card v-for ="card in cards" :key="card._id" :card="card" @deleteCard="deleteCard" @setCurrentCard="setCurrentCard"/>
 </div>
 </template>
@@ -10,10 +10,9 @@
 import Navbar from '../components/Navbar.vue'
 import Card from '../components/Card.vue'
 import { Api } from '../Api'
-import CreateCard from '../components/CreateCard.vue'
 import CardModal from '../components/CardModal.vue'
 export default {
-  name: 'home',
+  name: 'DeckView',
   data() {
     return {
       cards: [],
@@ -37,7 +36,7 @@ export default {
     },
     async updateCard(id, front, back) {
       try {
-        await Api.patch(`/cards/${id}`, { front, back })
+        await Api.put(`/cards/${id}`, { front, back })
         this.$vToastify.success('Card updated')
         this.fetchCards()
       } catch (err) {
@@ -52,7 +51,7 @@ export default {
       this.$bvModal.show('card-modal')
     }
   },
-  components: { Navbar, Card, CreateCard, CardModal },
+  components: { Navbar, Card, CardModal },
   mounted: function () {
     this.fetchCards()
   }

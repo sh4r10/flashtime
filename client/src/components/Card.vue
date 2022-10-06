@@ -16,6 +16,7 @@
 import { Api } from '../Api'
 export default {
   props: ['card'],
+  name: 'card',
   methods: {
     deleteCard(id) {
       Api.delete(`/cards/${id}`)
