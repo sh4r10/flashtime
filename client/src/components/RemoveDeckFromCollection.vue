@@ -1,5 +1,5 @@
 <template>
-  <b-button class="button" @click="removeDeck">Remmove</b-button>
+  <b-button class="button" @click="removeDeck">Reove</b-button>
 </template>
 
 <script>
@@ -12,7 +12,8 @@ export default {
       decks: []
     }
   },
-  mounted: async function () {
+  props: ['deck'],
+  mounted: async function (e) {
     try {
       const res = await Api.get(`/collections/${this.$route.params.id}/decks/`)
       this.decks = res.data
@@ -21,7 +22,7 @@ export default {
     }
   },
   methods: {
-    removeDeck: async function (deckId) {
+    removeDeck: async function (deckId, e) {
       try {
         await Api.delete(
           `/collections/${this.$route.params.id}/decks/${deckId}`
