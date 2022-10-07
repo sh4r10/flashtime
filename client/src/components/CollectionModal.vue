@@ -1,7 +1,5 @@
 <template>
   <div>
-    <button v-b-modal.modal-prevent-closing>Create</button>
-
     <b-modal
       id="collection-modal"
       ref="modal"
@@ -111,4 +109,13 @@ button:hover {
   color: #fff;
   border: 1px solid var(--green);
 }
+
+.btn-primary {
+  background-color: var(--primary);
+}
+
+.btn-primary:hover{
+  background-color: #0a3880;
+}
+
 </style>

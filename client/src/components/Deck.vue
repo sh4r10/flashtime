@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="url" class="mt-3">
+  <router-link :to="{name:'deck', params: {id: deck._id}}" class="mt-3">
     <p>
         {{ deck.name }}
         <b-badge pill v-if="deck.collection">{{ deck.collection }}</b-badge>
@@ -27,7 +27,7 @@ export default {
 <style scoped>
     a, a:hover {
         background: #fff;
-        color: var(--secondary);
+        color: var(--black);
         width: 100%;
         display: flex;
         justify-content: space-between;
@@ -65,7 +65,7 @@ export default {
     }
 
     a .deck-info p{
-        color: #808080;
+        color: var(--tertiary);
     }
 
     a .deck-info p.total-cards{

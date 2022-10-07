@@ -24,7 +24,7 @@ export default {
   border-radius: 8px;
   transition: .4s;
   text-decoration: none;
-  color: var(--secondary);
+  color: var(--black);
   text-transform: capitalize;
 }
 

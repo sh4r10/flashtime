@@ -3,7 +3,9 @@
         <Navbar/>
         <CardModal :card="currentCard" @updateCard="updateCard" @createCard="createCard"/>
         <b-button @click="setCurrentCard(undefined)">Add new card</b-button>
-        <Card v-for ="card in cards" :key="card._id" :card="card" @deleteCard="deleteCard" @setCurrentCard="setCurrentCard"/>
+        <b-container fluid>
+          <Card v-for ="card in cards" :key="card._id" :card="card" @deleteCard="deleteCard" @setCurrentCard="setCurrentCard"/>
+        </b-container>
 </div>
 </template>
 <script>
@@ -60,4 +62,12 @@ export default {
 
 </script>
 <style scoped>
+  .container-fluid{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 900px;
+  }
+
 </style>

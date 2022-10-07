@@ -62,8 +62,8 @@ h2 {
 
 button, button:focus, button:hover{
     background: none;
-    border: 1px solid var(--green);
-    color: var(--green);
+    border: 1px solid var(--primary);
+    color: var(--primary);
     padding: 0.25rem 1.5rem;
     outline: none;
     transition: .2s;
@@ -73,9 +73,9 @@ button, button:focus, button:hover{
   }
 
   button:hover{
-    background: var(--green);
+    background: var(--primary);
     color: #fff;
-    border: 1px solid var(--green);
+    border: 1px solid var(--primary);
   }
 
 @media screen and (max-width: 1200px){

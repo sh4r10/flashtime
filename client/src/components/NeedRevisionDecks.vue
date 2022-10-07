@@ -25,10 +25,8 @@ export default {
   mounted: async function () {
     try {
       const response = await Api.get('/decks/')
-      response.data.sort((a, b) => {
-        return a.cardsDue < b.cardsDue
-      })
-      this.topDecks = response.data.slice(0, 5)
+      response.data.sort((a, b) => a.cardsDue < b.cardsDue)
+      this.topDecks = response.data.slice(0, 3).filter((deck) => deck.cardsDue > 0)
     } catch (err) {
       console.error(err)
     }

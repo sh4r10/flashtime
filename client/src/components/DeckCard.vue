@@ -1,8 +1,5 @@
 <template>
   <div>
-<<<<<<< HEAD
-    <router-link :to="{name: 'decks', params:{id:deck._id}}" class="box">{{ deck.name }}</router-link>
-=======
     <div class="box">
       {{ deck.name }}
       <button @click="removeDeck(deck._id)">Remove</button>
@@ -10,7 +7,6 @@
     <router-link :to="{ name: 'deck', params: { id: deck._id } }" class="box">{{
       deck.name
     }}</router-link>
->>>>>>> master
   </div>
 </template>
 <script>
