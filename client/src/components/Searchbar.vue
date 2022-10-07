@@ -1,6 +1,6 @@
 <template>
     <b-col cols="12" md="8" class="mx-auto mb-3">
-        <input type="text" placeholder="Search for deck and decks collections..." >
+        <input type="text" placeholder="Search for deck and decks collections...">
     </b-col>
 </template>
 <script>

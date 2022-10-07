@@ -1,13 +1,12 @@
 <template>
     <div>
-        <Navbar/>
+        <input type="text" v-model="search">
         <CardModal :card="currentCard" @updateCard="updateCard" @createCard="createCard"/>
         <b-button @click="setCurrentCard(undefined)">Add new card</b-button>
-        <Card v-for ="card in cards" :key="card._id" :card="card" @deleteCard="deleteCard" @setCurrentCard="setCurrentCard"/>
+        <Card v-for ="card in filteredCards" :key="card._id" :card="card" @deleteCard="deleteCard" @setCurrentCard="setCurrentCard"/>
 </div>
 </template>
 <script>
-import Navbar from '../components/Navbar.vue'
 import Card from '../components/Card.vue'
 import { Api } from '../Api'
 import CardModal from '../components/CardModal.vue'
@@ -16,6 +15,7 @@ export default {
   data() {
     return {
       cards: [],
+      search: '',
       currentCard: undefined
     }
   },
@@ -51,9 +51,14 @@ export default {
       this.$bvModal.show('card-modal')
     }
   },
-  components: { Navbar, Card, CardModal },
+  components: { Card, CardModal },
   mounted: function () {
     this.fetchCards()
+  },
+  computed: {
+    filteredCards() {
+      return this.cards.filter(card => card.front.toLowerCase().includes(this.search) || card.back.toLowerCase().includes(this.search))
+    }
   }
 
 }
