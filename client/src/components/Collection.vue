@@ -13,13 +13,13 @@ export default {
 }
 </script>
 <style scoped>
-.box, .box:hover{
+.box{
   float: left;
   display: flex;
   justify-content: center;
   align-items: center;
   background: #fff;
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.05);
   padding: 2rem;
   border-radius: 8px;
   transition: .4s;
@@ -29,7 +29,7 @@ export default {
 }
 
 .box:hover{
-  box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.1);
 }
 
 </style>

@@ -1,24 +1,39 @@
 <template>
-    <div>
-        <Navbar/>
-        <CardModal :card="currentCard" @updateCard="updateCard" @createCard="createCard"/>
-        <b-button @click="setCurrentCard(undefined)">Add new card</b-button>
-        <b-container fluid>
-          <Card v-for ="card in cards" :key="card._id" :card="card" @deleteCard="deleteCard" @setCurrentCard="setCurrentCard"/>
-        </b-container>
-</div>
+  <div class="main-container">
+    <Navbar />
+    <CardModal
+      :card="currentCard"
+      @updateCard="updateCard"
+      @createCard="createCard"
+    />
+    <h1 v-if="deck">{{deck.name}} <span><CollectionBadge :deck="deck"/></span></h1>
+    <b-container fluid>
+      <div class="actions">
+      <b-button class="add-button" variant="outlined" @click="setCurrentCard(undefined)">Add Card</b-button>
+    </div>
+      <Card
+        v-for="card in cards"
+        :key="card._id"
+        :card="card"
+        @deleteCard="deleteCard"
+        @setCurrentCard="setCurrentCard"
+      />
+    </b-container>
+  </div>
 </template>
 <script>
 import Navbar from '../components/Navbar.vue'
 import Card from '../components/Card.vue'
 import { Api } from '../Api'
 import CardModal from '../components/CardModal.vue'
+import CollectionBadge from '../components/CollectionBadge.vue'
 export default {
   name: 'DeckView',
   data() {
     return {
       cards: [],
-      currentCard: undefined
+      currentCard: undefined,
+      deck: undefined
     }
   },
   methods: {
@@ -53,21 +68,66 @@ export default {
       this.$bvModal.show('card-modal')
     }
   },
-  components: { Navbar, Card, CardModal },
-  mounted: function () {
+  components: { Navbar, Card, CardModal, CollectionBadge },
+  mounted: async function () {
     this.fetchCards()
+    try {
+      const res = await Api.get(`/decks/${this.$route.params.id}`)
+      this.deck = res.data
+    } catch (err) {
+      console.error(err)
+    }
   }
 
 }
-
 </script>
 <style scoped>
-  .container-fluid{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    max-width: 900px;
-  }
+.container-fluid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 900px;
+}
 
+.main-container{
+  margin: 7rem auto;
+}
+
+h1{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+h1 span{
+  font-size: 1rem;
+}
+
+.actions{
+  width: 100%;
+  text-align: right;
+}
+
+button,
+button:focus,
+button:hover {
+  background: none;
+  border: 1px solid var(--secondary);
+  color: var(--secondary);
+  padding: 0.25rem 1.5rem;
+  outline: none;
+  transition: 0.2s;
+  border-radius: 5px;
+  text-transform: uppercase;
+  font-size: 14px;
+}
+
+button:hover {
+  background: var(--secondary);
+  color: #fff;
+  border: 1px solid var(--secondary);
+}
 </style>

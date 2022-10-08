@@ -31,8 +31,8 @@ export default new Router({
       component: Login
     },
     {
-      path: '/revision',
-      name: 'revision',
+      path: '/revise/:id',
+      name: 'revise',
       component: Revision
     },
     {

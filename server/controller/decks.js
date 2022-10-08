@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const Deck = require('../models/deck.schema')
+const DeckCollection = require('../models/deckCollection.schema')
 const User = require('../models/user.schema')
 const Card = require('../models/card.schema')
 const verifyToken = require('../middlewares/verifyToken')
@@ -13,45 +14,32 @@ router.get('/', verifyToken, async (req, res) => {
     const cardsDue = deck.cards.filter(
       (card) => card.nextRevision < new Date()
     ).length
-    const collection = deck.deckCollection ? deck.deckCollection.name : null
-    const res = { ...deck._doc, totalCards, cardsDue, collection }
+    const res = { ...deck._doc, totalCards, cardsDue }
     delete res.cards
-    delete res.deckCollection
     return res
   })
   res.json(decks)
 })
 
-router.get('/:id', verifyToken, (req, res) => {
+router.get('/:id', verifyToken, async (req, res) => {
   const deckID = req.params.id
-  Deck.findById(deckID)
-    .populate('cards')
-    .populate('deckCollection')
-    .then(async (deck) => {
-      if (req.user.decks.some((d) => d._id == deckID)) {
-        const cardsDue = await Card.countDocuments({
-          deck: deckID,
-          nextRevision: { $lte: Date.now() },
-        })
-        const totalCards = await Card.countDocuments({ deck: deckID })
-        const collection = await DeckCollection.findOne({
-          deck: deck._id,
-          user: req.user._id,
-        })
-        deck = await deck.toJSON()
-        deck.totalCards = totalCards
-        deck.cardsDue = cardsDue
-        deck.collection = collection
-        res.json(deck)
-      } else {
-        res.sendStatus(403)
-      }
+  if (!req.user.decks.some((d) => d._id == deckID)) return res.sendStatus(403)
+  try {
+    let deck = await Deck.findById(deckID)
+      .populate('cards')
+      .populate('deckCollection')
+    const cardsDue = await Card.countDocuments({
+      deck: deckID,
+      nextRevision: { $lte: Date.now() },
     })
-    .catch((err) => {
-      res.json({ message: err })
-
-      res.sendStatus(403)
-    })
+    const totalCards = await Card.countDocuments({ deck: deckID })
+    deck = await deck.toJSON()
+    deck.totalCards = totalCards
+    deck.cardsDue = cardsDue
+    res.json(deck)
+  } catch (err) {
+    res.status(500).json({ error: err })
+  }
 })
 
 router.get('/:id/cards', verifyToken, async (req, res) => {

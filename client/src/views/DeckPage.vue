@@ -1,7 +1,7 @@
 <template>
     <div>
         <Navbar/>
-        <b-button @click="setCurrentCard(undefined)">Add new deck</b-button>
+        <b-button @click="setCurrentDeck(undefined)">Add new deck</b-button>
         <DeckModal :deck="currentDeck" @updateDeck="updateDeck" @createDeck="createDeck"/>
         <Decks v-for="deck in decks" :key="deck._id" :deck="deck" @deleteDeck="deleteDeck" @setCurrentDeck="setCurrentDeck"/>
     </div>

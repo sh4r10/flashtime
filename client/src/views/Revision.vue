@@ -39,7 +39,7 @@ export default {
   // eslint-disable-next-line vue/no-unused-components
   components: { Navbar, CardRevision },
   mounted: function () {
-    Api.get('/decks/632365d448fcf9ad5966d735/cards/due')
+    Api.get(`/decks/${this.$route.params.id}/cards/due`)
       .then((res) => {
         if (res.data.length === 0) {
           this.$vToastify.success('You have no cards to revise.')

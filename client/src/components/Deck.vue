@@ -1,8 +1,8 @@
 <template>
-  <router-link :to="{name:'deck', params: {id: deck._id}}" class="mt-3">
+  <router-link :to="{ name: 'revise', params: { id: deck._id } }" class="mt-3">
     <p>
-        {{ deck.name }}
-        <b-badge pill v-if="deck.collection">{{ deck.collection }}</b-badge>
+      {{ deck.name }}
+      <CollectionBadge :deck="deck" />
     </p>
     <div class="deck-info">
       <div>
@@ -18,68 +18,62 @@
 </template>
 
 <script>
+import CollectionBadge from './CollectionBadge.vue'
 export default {
   name: 'Deck',
-  props: ['deck', 'url']
+  props: ['deck', 'url'],
+  components: { CollectionBadge }
 }
 </script>
 
 <style scoped>
-    a, a:hover {
-        background: #fff;
-        color: var(--black);
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 8px 20px;
-        text-decoration: none;
-        border-radius: 8px;
-        box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.05);
-        transition: .2s;
-    }
+a {
+  background: #fff;
+  color: var(--black);
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 20px;
+  text-decoration: none;
+  border-radius: 8px;
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.05);
+  transition: 0.2s;
+}
 
-    a:hover{
-        box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.1);
-    }
+a:hover {
+  text-decoration: none;
+  box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.1);
+}
 
-    p{
-        margin: 0;
-    }
+p {
+  margin: 0;
+}
 
-    p:first{
-        display: flex;
-        align-items: center;
-    }
+p:first {
+  display: flex;
+  align-items: center;
+}
 
-    p span{
-        margin-left: 5px;
-    }
+a .deck-info {
+  display: flex;
+}
 
-    a .deck-info{
-        display: flex;
-    }
+a .deck-info div:last-child {
+  margin-left: 20px;
+}
 
-    a .deck-info div:last-child{
-        margin-left: 20px;
-    }
+a .deck-info p {
+  color: var(--tertiary);
+}
 
-    a .deck-info p{
-        color: var(--tertiary);
-    }
+a .deck-info p.total-cards {
+  font-size: 20px;
+  color: var(--primary);
+}
 
-    a .deck-info p.total-cards{
-        font-size: 20px;
-        color: var(--primary);
-    }
-
-    a .deck-info p.cards-due{
-        font-size: 20px;
-        color: var(--red);
-    }
-
-    .badge{
-      background: var(--primary);
-    }
-
+a .deck-info p.cards-due {
+  font-size: 20px;
+  color: var(--red);
+}
 </style>
