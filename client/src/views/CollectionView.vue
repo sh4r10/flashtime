@@ -1,18 +1,16 @@
 <template>
   <div>
     <Navbar />
-    <h1>{{ collection.name }}</h1>
-    <!--eslint-disable-next-line vue/no-multiple-template-root-->
-    <DeckCard
-      v-for="deck in decks"
-      :key="deck._id"
-      :deck="deck"
-      @removeDeck="removeDeck"
-    />
+    <b-container fluid class="main-container">
+      <h1>{{ collection.name }}</h1>
+      <DeckCard
+        v-for="deck in decks"
+        :key="deck._id"
+        :deck="deck"
+        @removeDeck="removeDeck"
+      />
+    </b-container>
     <AddNewDeck :decks="decksToAdd" />
-    <div class="box">
-      <RemoveDeckFromCollection class="button" />
-    </div>
   </div>
 </template>
 <script>
@@ -21,6 +19,7 @@ import DeckCard from '../components/DeckCard.vue'
 import Navbar from '../components/Navbar.vue'
 import AddNewDeck from '../components/AddNewDeck.vue'
 export default {
+  name: 'CollectionView',
   data() {
     return {
       decks: [],
@@ -63,6 +62,10 @@ export default {
 }
 </script>
 <style scoped>
+.main-container {
+  margin: 7rem auto;
+}
+
 .box {
   margin-left: 11%;
   width: 200px;
@@ -78,5 +81,13 @@ export default {
   top: 5px;
   right: 5px;
   text-align: right;
+}
+
+.container-fluid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 900px;
 }
 </style>

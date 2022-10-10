@@ -8,8 +8,7 @@
 <script>
 export default {
   name: 'Collection',
-  props: ['collection'],
-  components: {}
+  props: ['collection']
 }
 </script>
 <style scoped>

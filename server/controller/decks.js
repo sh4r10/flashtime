@@ -1,6 +1,5 @@
 const router = require('express').Router()
 const Deck = require('../models/deck.schema')
-const DeckCollection = require('../models/deckCollection.schema')
 const User = require('../models/user.schema')
 const Card = require('../models/card.schema')
 const verifyToken = require('../middlewares/verifyToken')
@@ -10,12 +9,10 @@ router.get('/', verifyToken, async (req, res) => {
     .populate('cards')
     .populate('deckCollection')
   decks = decks.map((deck) => {
-    const totalCards = deck.cards.length
     const cardsDue = deck.cards.filter(
       (card) => card.nextRevision < new Date()
     ).length
-    const res = { ...deck._doc, totalCards, cardsDue }
-    delete res.cards
+    const res = { ...deck._doc, cardsDue }
     return res
   })
   res.json(decks)
@@ -28,15 +25,11 @@ router.get('/:id', verifyToken, async (req, res) => {
     let deck = await Deck.findById(deckID)
       .populate('cards')
       .populate('deckCollection')
-    const cardsDue = await Card.countDocuments({
-      deck: deckID,
-      nextRevision: { $lte: Date.now() },
-    })
-    const totalCards = await Card.countDocuments({ deck: deckID })
-    deck = await deck.toJSON()
-    deck.totalCards = totalCards
-    deck.cardsDue = cardsDue
-    res.json(deck)
+    const cardsDue = deck.cards.filter(
+      (card) => card.nextRevision < new Date()
+    ).length
+    const finalDeck = { ...deck._doc, cardsDue }
+    res.json(finalDeck)
   } catch (err) {
     res.status(500).json({ error: err })
   }

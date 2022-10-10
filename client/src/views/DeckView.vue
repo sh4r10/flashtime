@@ -6,7 +6,7 @@
       @updateCard="updateCard"
       @createCard="createCard"
     />
-    <h1 v-if="deck">{{deck.name}} <span><CollectionBadge :deck="deck"/></span></h1>
+    <h1>{{deck ? deck.name : ''}} <span v-if="!!deck"><CollectionBadge :deck="deck || undefined"/></span></h1>
     <b-container fluid>
       <div class="actions">
       <b-button class="add-button" variant="outlined" @click="setCurrentCard(undefined)">Add Card</b-button>

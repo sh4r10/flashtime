@@ -3,7 +3,7 @@
     <h2>Needs Revision</h2>
     <b-container fluid>
       <b-row v-for="deck in topDecks" :key="deck._id">
-        <Deck :deck="deck" url="/" />
+        <RevisionDeck :deck="deck" url="/" />
       </b-row>
     </b-container>
   </b-col>
@@ -11,7 +11,7 @@
 
 <script>
 import { Api } from '../Api'
-import Deck from './Deck.vue'
+import RevisionDeck from './RevisionDeck.vue'
 
 export default {
   name: 'NeedRevisionDecks',
@@ -21,7 +21,7 @@ export default {
     }
   },
   methods: {},
-  components: { Deck },
+  components: { RevisionDeck },
   mounted: async function () {
     try {
       const response = await Api.get('/decks/')

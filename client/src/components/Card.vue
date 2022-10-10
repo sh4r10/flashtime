@@ -7,8 +7,8 @@
       <p>{{ card.back }}</p>
     </div>
     <div class="actions">
-        <b-icon @click="clickHandler" icon="pencil"></b-icon>
-        <b-icon @click="deleteCard" icon="trash"></b-icon>
+        <b-icon @click="clickHandler" icon="pencil" title="Edit card"></b-icon>
+        <b-icon @click="deleteCard" icon="trash" title="Delete card"></b-icon>
       </div>
   </div>
 </template>

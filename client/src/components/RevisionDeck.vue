@@ -6,7 +6,7 @@
     </p>
     <div class="deck-info">
       <div>
-        <p class="total-cards">{{ deck.totalCards }}</p>
+        <p class="total-cards">{{ deck.cards.length }}</p>
         <p>cards</p>
       </div>
       <div>
@@ -44,6 +44,7 @@ a {
 a:hover {
   text-decoration: none;
   box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.1);
+  color: var(--black);
 }
 
 p {

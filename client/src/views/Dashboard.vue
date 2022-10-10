@@ -9,7 +9,7 @@
         <Searchbar />
       </b-row>
       <b-row>
-        <NeedRevisionDecks />
+        <RevisionDecksContainer />
       </b-row>
       <b-row>
         <TopCollections />
@@ -20,10 +20,10 @@
 
 <script>
 import Searchbar from '../components/Searchbar.vue'
-import NeedRevisionDecks from '../components/NeedRevisionDecks.vue'
 import Navbar from '../components/Navbar.vue'
 import TextLogo from '../components/TextLogo.vue'
 import TopCollections from '../components/TopCollections.vue'
+import RevisionDecksContainer from '../components/RevisionDecksContainer.vue'
 export default {
   data() {
     return {
@@ -33,10 +33,10 @@ export default {
   name: 'Dashboard',
   components: {
     Searchbar,
-    NeedRevisionDecks,
     Navbar,
     TextLogo,
-    TopCollections
+    TopCollections,
+    RevisionDecksContainer
   }
 }
 </script>
