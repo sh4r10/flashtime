@@ -22,9 +22,11 @@ export default {
 
 <style scoped>
 nav {
+  background: none;
   position: fixed;
   top: 0;
   padding: 1rem 2rem;
   width: 100%;
+  z-index: 0;
 }
 </style>

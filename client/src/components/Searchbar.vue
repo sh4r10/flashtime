@@ -1,7 +1,7 @@
 <template>
-    <b-col cols="12" md="8" class="mx-auto mb-3">
-        <input type="text" placeholder="Search for deck and decks collections..." >
-    </b-col>
+  <b-col cols="12" md="8" class="mx-auto mb-3 container">
+    <input type="text" placeholder="Search for deck and decks collections..." />
+  </b-col>
 </template>
 <script>
 export default {
@@ -13,17 +13,24 @@ input {
   width: 100%;
   padding: 15px 30px;
   padding-top: 20px;
-  color:#313131;
+  color: #313131;
   background: #fff;
   border: none;
   transition: 0.4s;
   border-radius: 30px;
-  box-shadow: 2px 3px 5px rgba(0,0,0,0.1);
+  box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.1);
 }
 
-input:focus{
+input:focus {
   outline: none;
-  box-shadow: 2px 8px 20px rgba(0,0,0,0.2);
+  box-shadow: 2px 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.input::after{
+  content:'\F52A';
+  display: block;
+  width: 24px;
+  height: 24px;
 }
 
 </style>

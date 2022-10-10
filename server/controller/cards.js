@@ -52,15 +52,14 @@ router.put('/:id', verifyToken, async (req, res) => {
 })
 
 router.delete('/:id', verifyToken, async (req, res) => {
-  Card.find({ user: req.user._id })
-    .then((err, card) => {
-      if (!card) res.status(403).json({ message: 'No card found' })
-      const cardId = req.params.id
-      Card.findByIdAndDelete(cardId)
-        .then(() => res.status(204).json('Deleted successfully.'))
-        .catch((err) => res.status(500))
-    })
-    .catch((err) => res.sendStatus(500))
+  try {
+    const card = await Card.findById(req.params.id)
+    if (!card) return res.status(403).json({ message: 'Wrong ID' })
+    await Card.findByIdAndDelete(req.params.id)
+    res.sendStatus(204)
+  } catch (err) {
+    res.sendStatus(500)
+  }
 })
 
 router.patch('/:id/revise', verifyToken, async (req, res) => {

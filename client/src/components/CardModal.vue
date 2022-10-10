@@ -72,7 +72,7 @@ export default {
     handleSubmit() {
       if (!this.checkFormValidity()) return
       if (this.card) {
-        this.$emit('updateCard', this.card, this.front, this.back)
+        this.$emit('updateCard', this.card._id, this.front, this.back)
       } else {
         this.$emit('createCard', this.front, this.back)
       }
@@ -90,6 +90,8 @@ export default {
         if (newCard) {
           this.front = newCard.front
           this.back = newCard.back
+          this.frontState = null
+          this.backState = null
         }
       }
     }
