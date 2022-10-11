@@ -8,6 +8,7 @@ import CollectionView from './views/CollectionView.vue'
 import Collections from './views/Collections.vue'
 import DeckView from './views/DeckView.vue'
 import DeckPage from './views/DeckPage.vue'
+import Profile from './views/Profile.vue'
 
 Vue.use(Router)
 
@@ -54,6 +55,11 @@ export default new Router({
       path: '/decks',
       name: 'decks',
       component: DeckPage
+    },
+    {
+      path: '/profile',
+      name: 'profile',
+      component: Profile
     }
   ]
 })

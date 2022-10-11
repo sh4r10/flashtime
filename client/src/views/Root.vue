@@ -1,6 +1,6 @@
 <template>
-    <Dashboard v-if="loggedIn"/>
-    <Home v-else/>
+  <Dashboard v-if="loggedIn" />
+  <Home v-else />
 </template>
 
 <script>
