@@ -65,6 +65,7 @@ export default {
 </script>
 <style scoped>
 .card-container {
+  -webkit-perspective: 1000px;
   perspective: 1000px;
   border-radius: 4px;
   margin-top: 2rem;
@@ -72,9 +73,17 @@ export default {
   width: 100%;
 }
 .card {
+  -webkit-transform-style: preserve-3d;
   transform-style: preserve-3d;
+  -webkit-transition: -webkit-transform 0.8s
+    cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: -webkit-transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  -o-transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+    -webkit-transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   cursor: pointer;
+  -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   border: none;
 }
@@ -87,19 +96,22 @@ export default {
   color: black;
   text-align: center;
   font-size: 40px;
+  -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
+  -webkit-box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
   border-radius: 6px;
   border: none;
 }
 
 .card-face.back {
+  -webkit-transform: rotateY(180deg);
   transform: rotateY(180deg);
 }
 
 .flipped {
+  -webkit-transform: rotateY(180deg);
   transform: rotateY(180deg);
-  -moz-transform: rotateY(180deg);
 }
 
 .btn-group {
