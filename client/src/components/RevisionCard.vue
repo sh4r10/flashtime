@@ -11,39 +11,27 @@ vue/no-mutating-props */
         :data-contentlength="Math.floor(card.front.length / 7)"
         class="card-face card-front"
       >
-        <p>{{ card.front }}</p>
+        <p>{{ card.front || '' }}</p>
       </div>
       <div
         :data-contentlength="Math.floor(card.back.length / 7)"
         class="card-face card-back"
       >
-        {{ card.back }}
+        {{ card.back || '' }}
       </div>
     </div>
     <div
-      v-show="cardFlipped"
+      v-if="cardFlipped"
       class="btn-group"
       role="group"
       aria-label="First group"
     >
-      <button @click="handleClick" value="0" class="btn">
-        0
-      </button>
-      <button @click="handleClick" value="1" class="btn">
-        1
-      </button>
-      <button @click="handleClick" value="2" class="btn">
-        2
-      </button>
-      <button @click="handleClick" value="3" class="btn">
-        3
-      </button>
-      <button @click="handleClick" value="4" class="btn">
-        4
-      </button>
-      <button @click="handleClick" value="5" class="btn">
-        5
-      </button>
+      <button @click="handleClick" value="0" class="btn">0</button>
+      <button @click="handleClick" value="1" class="btn">1</button>
+      <button @click="handleClick" value="2" class="btn">2</button>
+      <button @click="handleClick" value="3" class="btn">3</button>
+      <button @click="handleClick" value="4" class="btn">4</button>
+      <button @click="handleClick" value="5" class="btn">5</button>
     </div>
   </div>
 </template>
@@ -95,6 +83,8 @@ export default {
   justify-content: center;
   align-items: center;
   padding: 2rem;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
 }
 
 .card-face[data-contentlength='0'] {
@@ -127,32 +117,36 @@ export default {
   transform: rotateY(180deg);
 }
 
+.card-front{
+  background-color: #fff;
+}
+
 .btn-group {
   margin-top: 1.5rem;
   width: 100%;
 }
 
-.btn[value="0"]{
+.btn[value='0'] {
   background: #ef9a9a;
 }
 
-.btn[value="1"]{
+.btn[value='1'] {
   background: #ffab91;
 }
 
-.btn[value="2"]{
+.btn[value='2'] {
   background: #ffcc80;
 }
 
-.btn[value="3"]{
+.btn[value='3'] {
   background: #ffe082;
 }
 
-.btn[value="4"]{
+.btn[value='4'] {
   background: #a5d6a7;
 }
 
-.btn[value="5"]{
+.btn[value='5'] {
   background: #81c784;
 }
 </style>
