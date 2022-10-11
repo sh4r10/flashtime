@@ -3,11 +3,10 @@
         <Navbar/>
         <b-button @click="setCurrentDeck(undefined)">Add new deck</b-button>
         <DeckModal :deck="currentDeck" @updateDeck="updateDeck" @createDeck="createDeck"/>
-        <Decks v-for="deck in decks" :key="deck._id" :deck="deck" @deleteDeck="deleteDeck" @setCurrentDeck="setCurrentDeck"/>
+        <Decks v-for="deck in filteredDeck" :key="deck._id" :deck="deck" @deleteDeck="deleteDeck" @setCurrentDeck="setCurrentDeck"/>
     </div>
 </template>
 <script>
-import Navbar from '../components/Navbar.vue'
 import Decks from '../components/DeckComp.vue'
 import { Api } from '../Api'
 import DeckModal from '../components/DeckModal.vue'
@@ -16,11 +15,12 @@ export default {
   data() {
     return {
       decks: [],
+      search: '',
       currentDeck: undefined
     }
   },
   components: {
-    Navbar, Decks, DeckModal
+    Decks, DeckModal
   },
   methods: {
     fetchDecks: function () {
@@ -52,12 +52,20 @@ export default {
     setCurrentDeck: function (deck) {
       this.currentDeck = deck
       this.$bvModal.show('deck-modal')
+    },
+    handleInputChange: function (input) {
+      this.query = input
     }
   },
   mounted: function () {
     Api.get('/decks')
       .then((res) => (this.decks = res.data))
       .catch((err) => console.log(err))
+  },
+  computed: {
+    filteredDeck() {
+      return this.decks.filter(deck => deck.name.toLowerCase().includes(this.search))
+    }
   }
 }
 </script>
