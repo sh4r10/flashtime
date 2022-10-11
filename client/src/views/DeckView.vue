@@ -22,7 +22,6 @@
   </div>
 </template>
 <script>
-import Navbar from '../components/Navbar.vue'
 import Card from '../components/Card.vue'
 import { Api } from '../Api'
 import CardModal from '../components/CardModal.vue'
