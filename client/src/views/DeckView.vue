@@ -1,6 +1,6 @@
 <template>
   <div class="main-container">
-    <Navbar />
+    <Navbar/>
     <CardModal
       :card="currentCard"
       @updateCard="updateCard"
@@ -26,6 +26,7 @@ import Card from '../components/Card.vue'
 import { Api } from '../Api'
 import CardModal from '../components/CardModal.vue'
 import CollectionBadge from '../components/CollectionBadge.vue'
+import Navbar from '../components/Navbar.vue'
 export default {
   name: 'DeckView',
   data() {
@@ -67,7 +68,7 @@ export default {
       this.$bvModal.show('card-modal')
     }
   },
-  components: { Navbar, Card, CardModal, CollectionBadge },
+  components: { Card, CardModal, CollectionBadge, Navbar },
   mounted: async function () {
     this.fetchCards()
     try {

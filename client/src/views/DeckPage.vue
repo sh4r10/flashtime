@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Navbar/>
+      <Navbar/>
         <b-button @click="setCurrentDeck(undefined)">Add new deck</b-button>
         <DeckModal :deck="currentDeck" @updateDeck="updateDeck" @createDeck="createDeck"/>
         <Decks v-for="deck in filteredDeck" :key="deck._id" :deck="deck" @deleteDeck="deleteDeck" @setCurrentDeck="setCurrentDeck"/>
@@ -10,6 +10,7 @@
 import Decks from '../components/DeckComp.vue'
 import { Api } from '../Api'
 import DeckModal from '../components/DeckModal.vue'
+import Navbar from '../components/Navbar.vue'
 
 export default {
   data() {
@@ -20,7 +21,9 @@ export default {
     }
   },
   components: {
-    Decks, DeckModal
+    Decks,
+    DeckModal,
+    Navbar
   },
   methods: {
     fetchDecks: function () {
