@@ -8,7 +8,13 @@
           {{ this.currentCard + 1 }}/{{ this.cards.length }}
         </p>
       </div>
-      <b-progress variant="primary" :value="this.currentCard" :max="this.cards.length" :precision="1" class="mb-3 w-100"></b-progress>
+      <b-progress
+        variant="primary"
+        :value="this.currentCard"
+        :max="this.cards.length"
+        :precision="1"
+        class="mb-3 w-100"
+      ></b-progress>
       <RevisionCard @nextCard="nextCard" :card="cards[currentCard]" />
     </div>
   </div>
@@ -31,11 +37,26 @@ export default {
     }
   },
   methods: {
-    nextCard() {
-      if (this.currentCard + 1 < this.cards.length) {
-        this.currentCard++
-      } else {
-        this.$vToastify.success('You are done with your revision.')
+    nextCard: async function (id, grade) {
+      try {
+        const res = await Api.patch(`/cards/${id}/revise`, { grade })
+        const card = res.data
+        // add card back to cards if it still needs revision
+        if (card.nextRevision <= Date.now()) {
+          this.cards.splice(this.currentCard, 1)
+          this.cards.push(card)
+        }
+
+        if (this.currentCard + 1 < this.cards.length) {
+          this.currentCard++
+          this.cardFlipped = false
+        } else {
+          this.$vToastify.success('You are done with your revision.')
+          this.$router.push('/')
+        }
+      } catch (err) {
+        console.error(err)
+        this.$vToastify.error('Something went wrong')
       }
     }
   },
@@ -70,7 +91,7 @@ export default {
   justify-content: space-between;
 }
 
-.headers{
+.headers {
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -83,5 +104,4 @@ export default {
 .progress-card {
   text-align: right;
 }
-
 </style>

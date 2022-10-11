@@ -38,7 +38,6 @@ vue/no-mutating-props */
   </div>
 </template>
 <script>
-import { Api } from '../Api'
 
 export default {
   name: 'CardRevision',
@@ -50,15 +49,7 @@ export default {
   },
   methods: {
     async handleClick(e) {
-      try {
-        await Api.patch(`/cards/${this.card._id}/revise`, {
-          grade: e.target.value
-        })
-        this.$emit('nextCard')
-        this.cardFlipped = false
-      } catch (err) {
-        console.error(err)
-      }
+      this.$emit('nextCard', this.card._id, e.target.value)
     }
   }
 }
