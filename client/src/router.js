@@ -4,7 +4,7 @@ import Root from './views/Root.vue'
 import Signup from './views/Signup.vue'
 import Login from './views/Login.vue'
 import Revision from './views/Revision.vue'
-import Decks from './views/Decks.vue'
+import CollectionView from './views/CollectionView.vue'
 import Collections from './views/Collections.vue'
 import DeckView from './views/DeckView.vue'
 import DeckPage from './views/DeckPage.vue'
@@ -31,14 +31,14 @@ export default new Router({
       component: Login
     },
     {
-      path: '/revision',
-      name: 'revision',
+      path: '/revise/:id',
+      name: 'revise',
       component: Revision
     },
     {
       path: '/collection/:id',
       name: 'collection',
-      component: Decks
+      component: CollectionView
     },
     {
       path: '/collections',

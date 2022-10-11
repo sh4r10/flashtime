@@ -1,6 +1,6 @@
 <template>
     <div>
-        <input type="text" v-modal="search">
+        <Navbar/>
         <b-button @click="setCurrentDeck(undefined)">Add new deck</b-button>
         <DeckModal :deck="currentDeck" @updateDeck="updateDeck" @createDeck="createDeck"/>
         <Decks v-for="deck in filteredDeck" :key="deck._id" :deck="deck" @deleteDeck="deleteDeck" @setCurrentDeck="setCurrentDeck"/>

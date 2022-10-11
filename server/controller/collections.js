@@ -45,10 +45,14 @@ router.post('/', verifyToken, async (req, res) => {
 })
 
 router.get('/:id/decks', verifyToken, async (req, res) => {
+  if (!req.user.deckCollections.some((c) => c._id == req.params.id))
+    return res.sendStatus(403)
   try {
     const collectionId = req.params.id
-    const decks = await DeckCollection.findById(collectionId).populate('deck')
-    res.json(decks.deck)
+    const collection = await DeckCollection.findById(collectionId).populate(
+      'deck'
+    )
+    res.json(collection.deck)
   } catch (err) {
     res.sendStatus(500)
   }

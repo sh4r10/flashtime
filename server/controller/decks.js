@@ -9,49 +9,30 @@ router.get('/', verifyToken, async (req, res) => {
     .populate('cards')
     .populate('deckCollection')
   decks = decks.map((deck) => {
-    const totalCards = deck.cards.length
     const cardsDue = deck.cards.filter(
       (card) => card.nextRevision < new Date()
     ).length
-    const collection = deck.deckCollection ? deck.deckCollection.name : null
-    const res = { ...deck._doc, totalCards, cardsDue, collection }
-    delete res.cards
-    delete res.deckCollection
+    const res = { ...deck._doc, cardsDue }
     return res
   })
   res.json(decks)
 })
 
-router.get('/:id', verifyToken, (req, res) => {
+router.get('/:id', verifyToken, async (req, res) => {
   const deckID = req.params.id
-  Deck.findById(deckID)
-    .populate('cards')
-    .populate('deckCollection')
-    .then(async (deck) => {
-      if (req.user.decks.some((d) => d._id == deckID)) {
-        const cardsDue = await Card.countDocuments({
-          deck: deckID,
-          nextRevision: { $lte: Date.now() },
-        })
-        const totalCards = await Card.countDocuments({ deck: deckID })
-        const collection = await DeckCollection.findOne({
-          deck: deck._id,
-          user: req.user._id,
-        })
-        deck = await deck.toJSON()
-        deck.totalCards = totalCards
-        deck.cardsDue = cardsDue
-        deck.collection = collection
-        res.json(deck)
-      } else {
-        res.sendStatus(403)
-      }
-    })
-    .catch((err) => {
-      res.json({ message: err })
-
-      res.sendStatus(403)
-    })
+  if (!req.user.decks.some((d) => d._id == deckID)) return res.sendStatus(403)
+  try {
+    let deck = await Deck.findById(deckID)
+      .populate('cards')
+      .populate('deckCollection')
+    const cardsDue = deck.cards.filter(
+      (card) => card.nextRevision < new Date()
+    ).length
+    const finalDeck = { ...deck._doc, cardsDue }
+    res.json(finalDeck)
+  } catch (err) {
+    res.status(500).json({ error: err })
+  }
 })
 
 router.get('/:id/cards', verifyToken, async (req, res) => {
