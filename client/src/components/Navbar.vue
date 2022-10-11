@@ -47,7 +47,6 @@
 
 <script>
 import { Api } from '../Api'
-
 export default {
   name: 'Navbar',
   data: function () {
