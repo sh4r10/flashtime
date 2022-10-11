@@ -1,22 +1,31 @@
 <template>
   <div>
     <Navbar />
-    <div>
-      <h5 class="deck-name">{{ deckName }}</h5>
-      <h5 class="progress-card">
-        {{ this.currentCard + 1 }}/{{ this.cards.length }}
-      </h5>
+    <div class="main-container">
+      <div class="headers">
+        <p class="deck-name">{{ deckName }}</p>
+        <p class="progress-card">
+          {{ this.currentCard + 1 }}/{{ this.cards.length }}
+        </p>
+      </div>
+      <b-progress
+        variant="primary"
+        :value="this.currentCard"
+        :max="this.cards.length"
+        :precision="1"
+        class="mb-3 w-100"
+      ></b-progress>
+      <RevisionCard @nextCard="nextCard" :card="cards[currentCard]" />
     </div>
-    <CardRevision @nextCard="nextCard" :card="cards[currentCard]" />
   </div>
 </template>
 
 <script>
 import Navbar from '../components/Navbar.vue'
-import CardRevision from '../components/CardRevision.vue'
+import RevisionCard from '../components/RevisionCard.vue'
 import { Api } from '../Api'
 export default {
-  name: 'revision',
+  name: 'Revision',
   data() {
     return {
       currentCard: 0,
@@ -28,16 +37,31 @@ export default {
     }
   },
   methods: {
-    nextCard() {
-      if (this.currentCard + 1 < this.cards.length) {
-        this.currentCard++
-      } else {
-        this.$vToastify.success('You are done with your revision.')
+    nextCard: async function (id, grade) {
+      try {
+        const res = await Api.patch(`/cards/${id}/revise`, { grade })
+        const card = res.data
+        // add card back to cards if it still needs revision
+        if (card.nextRevision <= Date.now()) {
+          this.cards.splice(this.currentCard, 1)
+          this.cards.push(card)
+        }
+
+        if (this.currentCard + 1 < this.cards.length) {
+          this.currentCard++
+          this.cardFlipped = false
+        } else {
+          this.$vToastify.success('You are done with your revision.')
+          this.$router.push('/')
+        }
+      } catch (err) {
+        console.error(err)
+        this.$vToastify.error('Something went wrong')
       }
     }
   },
   // eslint-disable-next-line vue/no-unused-components
-  components: { Navbar, CardRevision },
+  components: { Navbar, RevisionCard },
   mounted: function () {
     Api.get(`/decks/${this.$route.params.id}/cards/due`)
       .then((res) => {
@@ -57,18 +81,27 @@ export default {
 </script>
 
 <style scoped>
-body {
-  background: #00a5f7;
+.main-container {
+  margin: 7rem auto;
+  width: 100%;
+  max-width: 900px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: space-between;
 }
+
+.headers {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.5rem;
+}
+
 .deck-name {
   text-align: left;
 }
 .progress-card {
   text-align: right;
-  font-weight: 400;
 }
 </style>
