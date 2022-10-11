@@ -1,14 +1,24 @@
 /* eslint-disable vue/no-mutating-props */ /* eslint-disable
 vue/no-mutating-props */
 <template>
-  <div class="card-container">
-    <div
-      class="card"
-      @click="cardFlipped = !cardFlipped"
-      v-bind:class="{ flipped: cardFlipped }"
-    >
-      <div class="card-face front" v-if="!cardFlipped">{{ card.front }}</div>
-      <div class="card-face back" v-else>{{ card.back }}</div>
+  <div
+    class="card-container"
+    @click="cardFlipped = !cardFlipped"
+    v-bind:class="{ flipped: cardFlipped }"
+  >
+    <div class="card">
+      <div
+        :data-contentlength="Math.floor(card.front.length / 7)"
+        class="card-face card-front"
+      >
+        <p>{{ card.front }}</p>
+      </div>
+      <div
+        :data-contentlength="Math.floor(card.back.length / 7)"
+        class="card-face card-back"
+      >
+        {{ card.back }}
+      </div>
     </div>
     <div
       v-show="cardFlipped"
@@ -16,29 +26,28 @@ vue/no-mutating-props */
       role="group"
       aria-label="First group"
     >
-      <button @click="handleClick" value="0" class="btn btn-secondary">
+      <button @click="handleClick" value="0" class="btn">
         0
       </button>
-      <button @click="handleClick" value="1" class="btn btn-secondary">
+      <button @click="handleClick" value="1" class="btn">
         1
       </button>
-      <button @click="handleClick" value="2" class="btn btn-secondary">
+      <button @click="handleClick" value="2" class="btn">
         2
       </button>
-      <button @click="handleClick" value="3" class="btn btn-secondary">
+      <button @click="handleClick" value="3" class="btn">
         3
       </button>
-      <button @click="handleClick" value="4" class="btn btn-secondary">
+      <button @click="handleClick" value="4" class="btn">
         4
       </button>
-      <button @click="handleClick" value="5" class="btn btn-secondary">
+      <button @click="handleClick" value="5" class="btn">
         5
       </button>
     </div>
   </div>
 </template>
 <script>
-
 export default {
   name: 'CardRevision',
   props: ['card'],
@@ -56,56 +65,94 @@ export default {
 </script>
 <style scoped>
 .card-container {
-  -webkit-perspective: 1000px;
-  perspective: 1000px;
-  border-radius: 4px;
-  margin-top: 2rem;
-  max-width: 600px;
+  background-color: transparent;
   width: 100%;
-}
-.card {
-  -webkit-transform-style: preserve-3d;
-  transform-style: preserve-3d;
-  -webkit-transition: -webkit-transform 0.8s
-    cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  transition: -webkit-transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  -o-transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275),
-    -webkit-transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  cursor: pointer;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  border: none;
+  height: 400px;
+  perspective: 2000px;
 }
 
-.card-face {
-  background: #fff;
+.card {
+  position: relative;
   width: 100%;
   height: 100%;
-  line-height: 260px;
-  color: black;
   text-align: center;
-  font-size: 40px;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  -webkit-box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-  border-radius: 6px;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
   border: none;
 }
 
-.card-face.back {
-  -webkit-transform: rotateY(180deg);
+.card-container.flipped .card {
   transform: rotateY(180deg);
 }
 
-.flipped {
-  -webkit-transform: rotateY(180deg);
+.card-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.card-face[data-contentlength='0'] {
+  font-size: 1.75rem;
+}
+.card-face[data-contentlength='1'] {
+  font-size: 1.5rem;
+}
+.card-face[data-contentlength='2'] {
+  font-size: 1.3rem;
+}
+.card-face[data-contentlength='3'] {
+  font-size: 1.2rem;
+}
+.card-face[data-contentlength='4'] {
+  font-size: 1.1rem;
+}
+.card-face[data-contentlength='5'] {
+  font-size: 1rem;
+}
+.card-face[data-contentlength='6'] {
+  font-size: 0.9rem;
+}
+.card-face[data-contentlength='7'] {
+  font-size: 0.8rem;
+}
+
+.card-back {
+  background-color: #fff;
   transform: rotateY(180deg);
 }
 
 .btn-group {
   margin-top: 1.5rem;
+  width: 100%;
+}
+
+.btn[value="0"]{
+  background: #ef9a9a;
+}
+
+.btn[value="1"]{
+  background: #ffab91;
+}
+
+.btn[value="2"]{
+  background: #ffcc80;
+}
+
+.btn[value="3"]{
+  background: #ffe082;
+}
+
+.btn[value="4"]{
+  background: #a5d6a7;
+}
+
+.btn[value="5"]{
+  background: #81c784;
 }
 </style>
