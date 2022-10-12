@@ -24,7 +24,9 @@ export default {
   props: ['deck'],
   data: function () {
     return {
-      cardsDue: 0
+      cardsDue: 0,
+      cards: 0
+
     }
   },
   methods: {
