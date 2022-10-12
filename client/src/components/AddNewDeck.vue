@@ -1,15 +1,14 @@
 <template>
   <div>
-    <b-button v-b-modal.modal-1>Add a new deck</b-button>
+    <b-button v-b-modal.decks-to-add-modal>Add a new deck</b-button>
 
-    <b-modal id="modal-1" title="BootstrapVue">
-      <p class="my-4">Add a new deck</p>
+    <b-modal id="decks-to-add-modal" title="Add Decks" hide-footer>
       <b-list-group>
         <b-list-group-item
           v-for="deck in decks"
           :key="deck._id"
-          @click="addDeck(deck._id)"
           button
+          @click="addDeck(deck._id)"
           >{{ deck.name }}</b-list-group-item
         >
       </b-list-group>
@@ -32,6 +31,7 @@ export default {
       } catch (err) {
         this.$vToastify.error('Something went wrong')
       }
+      this.$emit('addDeck')
     }
   }
 }

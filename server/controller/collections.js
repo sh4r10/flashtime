@@ -65,9 +65,16 @@ router.put('/:id/decks/', verifyToken, async (req, res) => {
     const deck = await Deck.findById(deckId)
     if (
       req.user.decks.some((d) => d._id == deckId) &&
-      deck.collection !== collection._id &&
+      deck.deckCollection !== collection._id &&
       !collection.deck.some((d) => d._id == deckId)
     ) {
+      if (deck.deckCollection) {
+        const oldCollection = await DeckCollection.findById(deck.deckCollection)
+        oldCollection.deck = oldCollection.deck.filter(
+          (d) => d._id.toString() != deckId
+        )
+        oldCollection.save()
+      }
       collection.deck.push(deckId)
       deck.deckCollection = collection._id
       await deck.save()
