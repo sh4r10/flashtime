@@ -3,12 +3,9 @@
     <Navbar />
     <b-container fluid class="main-container">
       <h1>{{ collection.name }}</h1>
-      <DeckCard
-        v-for="deck in decks"
-        :key="deck._id"
-        :deck="deck"
-        @removeDeck="removeDeck"
-      />
+      <DeckCard v-for="deck in decks" :key="deck._id" :deck="deck" :actions="[{
+      id: 'remove', title: 'Remove from collection', icon: 'x-circle-fill',
+      color: 'var(--danger)', clickHandler: removeDeck }]" />
     </b-container>
     <AddNewDeck :decks="decksToAdd" />
   </div>
@@ -35,20 +32,27 @@ export default {
   mounted: function () {
     Api.get(`/collections/${this.$route.params.id}`)
       .then((res) => (this.collection = res.data))
-      .catch((err) => console.log(err))
+      .catch((err) => console.error(err))
     Api.get(`/collections/${this.$route.params.id}/decks`)
       .then((res) => {
         this.decks = res.data
       })
-      .catch((err) => console.log(err))
+      .catch((err) => console.error(err))
 
     this.fetchDecksToAdd()
   },
   methods: {
     addNewDeck() {},
     removeDeck: async function (deckId) {
-      this.decks = this.decks.filter((d) => d._id !== deckId)
-      this.fetchDecksToAdd()
+      try {
+        await Api.delete(
+          `/collections/${this.$route.params.id}/decks/${deckId}`
+        )
+        this.decks = this.decks.filter((d) => d._id !== deckId)
+        this.fetchDecksToAdd()
+      } catch (err) {
+        this.$vToastify.error('Something went wrong')
+      }
     },
     fetchDecksToAdd: async function () {
       try {

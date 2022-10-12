@@ -73,7 +73,7 @@ export default {
       })
       .catch((err) => {
         this.$vToastify.error('An error occurred.')
-        console.log(err)
+        console.error(err)
         this.$router.push('/')
       })
   }

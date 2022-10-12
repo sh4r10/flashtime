@@ -4,7 +4,7 @@
       <h2>Your Collections</h2>
       <b-button v-b-modal.collection-modal>Create</b-button>
     </div>
-    <div class="collection-container">
+    <div class="collections-container">
       <Collection
         v-for="collection in deckCollections.slice(0, 9)"
         :key="collection._id"
@@ -47,7 +47,7 @@ h2 {
   margin: 0;
 }
 
-.collection-container {
+.collections-container {
   display: grid;
   grid-template-columns: repeat(3, minmax(200px, 1fr));
   grid-gap: 1rem;

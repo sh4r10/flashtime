@@ -1,16 +1,32 @@
 <template>
-    <div>
-      <Navbar/>
+  <div class="main-container">
+    <Navbar />
+    <div class="content-container">
+      <div class="headers">
+        <h1>Your Decks</h1>
         <b-button @click="setCurrentDeck(undefined)">Add new deck</b-button>
-        <DeckModal :deck="currentDeck" @updateDeck="updateDeck" @createDeck="createDeck"/>
-        <Decks v-for="deck in filteredDeck" :key="deck._id" :deck="deck" @deleteDeck="deleteDeck" @setCurrentDeck="setCurrentDeck"/>
+      </div>
+      <!-- <Decks v-for="deck in filteredDeck" :key="deck._id" :deck="deck" @deleteDeck="deleteDeck" @setCurrentDeck="setCurrentDeck"/> -->
+      <div class="decks-container">
+        <DeckCard v-for="deck in filteredDeck" :key="deck._id" :deck="deck" :actions="[{
+      id: 'delete', title: 'Delete Deck', icon: 'trash',
+      color: 'var(--danger)', clickHandler: deleteDeck }, {
+      id: 'update', title: 'Update Deck', icon: 'pencil',
+      color: 'var(--primary)', clickHandler: setCurrentDeck }]"/>
+      </div>
     </div>
+    <DeckModal
+      :deck="currentDeck"
+      @updateDeck="updateDeck"
+      @createDeck="createDeck"
+    />
+  </div>
 </template>
 <script>
-import Decks from '../components/DeckComp.vue'
 import { Api } from '../Api'
 import DeckModal from '../components/DeckModal.vue'
 import Navbar from '../components/Navbar.vue'
+import DeckCard from '../components/DeckCard.vue'
 
 export default {
   data() {
@@ -21,39 +37,45 @@ export default {
     }
   },
   components: {
-    Decks,
     DeckModal,
-    Navbar
+    Navbar,
+    DeckCard
   },
   methods: {
     fetchDecks: function () {
       Api.get('/decks')
-        .then(res => { this.decks = res.data })
-        .catch(err => console.log(err))
+        .then((res) => {
+          this.decks = res.data
+        })
+        .catch((err) => console.error(err))
     },
     async createDeck(name) {
       try {
         await Api.post('/decks', { name })
         this.fetchDecks()
-        this.$vToastify.success('Deck created successfully')
       } catch (err) {
-        this.$vToastify.error('Something wennnt wrong')
+        this.$vToastify.error('Something went wrong')
       }
     },
     async updateDeck(id, name) {
       try {
         await Api.put(`/decks/${id}`, { name })
-        this.$vToastify.success('Deck updated')
         this.fetchDecks()
       } catch (err) {
         this.$vToastify.error('Something went wrong')
       }
     },
-    deleteDeck: function (id) {
-      this.decks = this.decks.filter((deck) => deck._id !== id)
+    deleteDeck: async function (id) {
+      try {
+        await Api.delete(`/decks/${id}`)
+        this.decks = this.decks.filter((deck) => deck._id !== id)
+      } catch (err) {
+        this.$vToastify.error('Something went wrong')
+      }
     },
-    setCurrentDeck: function (deck) {
-      this.currentDeck = deck
+    setCurrentDeck: function (id) {
+      this.currentDeck = this.decks.find((deck) => deck._id === id)
+      console.log(this.currentDeck)
       this.$bvModal.show('deck-modal')
     },
     handleInputChange: function (input) {
@@ -63,15 +85,45 @@ export default {
   mounted: function () {
     Api.get('/decks')
       .then((res) => (this.decks = res.data))
-      .catch((err) => console.log(err))
+      .catch((err) => console.error(err))
   },
   computed: {
     filteredDeck() {
-      return this.decks.filter(deck => deck.name.toLowerCase().includes(this.search))
+      return this.decks.filter((deck) =>
+        deck.name.toLowerCase().includes(this.search)
+      )
     }
   }
 }
 </script>
 
 <style scoped>
+.main-container {
+  margin: 8rem auto;
+}
+
+.content-container {
+  max-width: 900px;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 2rem;
+}
+
+.decks-container{
+  width: 100%;
+}
+
+.headers {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.headers h1 {
+  width: auto;
+}
 </style>

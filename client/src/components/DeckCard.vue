@@ -1,5 +1,5 @@
 <template>
-  <b-container class="deck-container">
+  <b-container class="deck-container" fluid>
     <router-link
       :to="{ name: 'deck', params: { id: deck._id } }"
       class="content-container"
@@ -11,9 +11,9 @@
       </div>
     </router-link>
     <div class="actions">
-      <b-button variant="outlined" class="remove" @click="removeDeck" title="Remove from collection"
-        ><b-icon icon="x-circle-fill"></b-icon
-      ></b-button>
+      <b-button variant="outlined" v-for="action in actions" :key="action.id" @click="action.clickHandler(deck._id)" :title="action.title">
+        <b-icon :icon="action.icon" :style="{color: action.color}"></b-icon>
+      </b-button>
     </div>
   </b-container>
 </template>
@@ -21,24 +21,12 @@
 import { Api } from '../Api'
 export default {
   name: 'DeckCard',
-  props: ['deck'],
+  props: ['deck', 'actions'],
   data: function () {
     return {
       cardsDue: 0,
       cards: 0
 
-    }
-  },
-  methods: {
-    removeDeck: async function () {
-      try {
-        await Api.delete(
-          `/collections/${this.$route.params.id}/decks/${this.deck._id}`
-        )
-        this.$emit('removeDeck', this.deck._id)
-      } catch (err) {
-        this.$vToastify.error('Something went wrong')
-      }
     }
   },
   mounted: async function () {
@@ -48,10 +36,10 @@ export default {
 }
 </script>
 <style scoped>
-.deck-container {
-  width: 100%;
+div.deck-container {
   padding: 1rem 2rem;
   background: #fff;
+  margin: 0;
   margin-top: 1rem;
   border-radius: 5px;
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.05);
@@ -60,6 +48,7 @@ export default {
   transition: 0.2s;
   display: grid;
   grid-template-columns: 9fr 1fr;
+  box-sizing: border-box;
 }
 
 .deck-container:hover  {
@@ -101,13 +90,13 @@ p {
 
 .actions{
   text-align: right;
+  display: flex;
+  justify-content: flex-end;
 }
 
-.remove {
-  color: var(--secondary-light);
+.actions *, .actions *:focus, .actions *:hover {
+  outline: none;
+  border: none;
 }
 
-.remove:hover {
-  color: var(--secondary);
-}
 </style>
