@@ -10,6 +10,7 @@ import DeckView from './views/DeckView.vue'
 import DeckPage from './views/DeckPage.vue'
 import RevisionPage from './views/RevisionPage.vue'
 import Profile from './views/Profile.vue'
+import PasswordUpdate from './views/PasswordUpdate.vue'
 
 Vue.use(Router)
 
@@ -66,6 +67,11 @@ export default new Router({
       path: '/profile',
       name: 'profile',
       component: Profile
+    },
+    {
+      path: '/profile/password',
+      name: 'passwordUpdate',
+      component: PasswordUpdate
     }
   ]
 })
