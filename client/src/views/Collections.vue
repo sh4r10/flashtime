@@ -42,7 +42,7 @@ export default {
   mounted: function () {
     Api.get('/collections')
       .then((res) => (this.deckCollections = res.data))
-      .catch((err) => console.log(err))
+      .catch((err) => console.error(err))
     this.fetchCollections()
   },
   methods: {
@@ -51,7 +51,7 @@ export default {
         .then((res) => {
           this.deckCollections = res.data
         })
-        .catch((err) => console.log(err))
+        .catch((err) => console.error(err))
     },
 
     setCurrentCollection: function (newCollection) {

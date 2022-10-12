@@ -23,7 +23,7 @@ export default {
     fetchCards: function () {
       Api.get(`/decks/${this.$route.params.id}/cards`)
         .then(res => { this.cards = res.data })
-        .catch(err => console.log(err))
+        .catch(err => console.error(err))
     },
     async createCard(front, back) {
       try {

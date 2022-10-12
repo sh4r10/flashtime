@@ -63,7 +63,7 @@ export default {
     }
   },
   watch: {
-    card: {
+    deck: {
       immediate: true,
       handler: function (newDeck) {
         this.name = newDeck ? newDeck.name : ''
