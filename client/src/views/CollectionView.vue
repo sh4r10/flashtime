@@ -10,7 +10,7 @@
         @removeDeck="removeDeck"
       />
     </b-container>
-    <AddNewDeck :decks="decksToAdd" />
+    <AddNewDeck @addDeck="addNewDeck" :decks="decksToAdd" />
   </div>
 </template>
 <script>
@@ -18,6 +18,7 @@ import { Api } from '../Api'
 import DeckCard from '../components/DeckCard.vue'
 import Navbar from '../components/Navbar.vue'
 import AddNewDeck from '../components/AddNewDeck.vue'
+
 export default {
   name: 'CollectionView',
   data() {
@@ -45,7 +46,12 @@ export default {
     this.fetchDecksToAdd()
   },
   methods: {
-    addNewDeck() {},
+    addNewDeck: async function () {
+      Api.get(`/collections/${this.$route.params.id}/decks`).then((res) => {
+        this.decks = res.data
+      })
+      this.fetchDecksToAdd()
+    },
     removeDeck: async function (deckId) {
       this.decks = this.decks.filter((d) => d._id !== deckId)
       this.fetchDecksToAdd()
@@ -53,7 +59,7 @@ export default {
     fetchDecksToAdd: async function () {
       try {
         const res = await Api.get('/decks')
-        this.decksToAdd = res.data.filter((d) => !d.collection)
+        this.decksToAdd = res.data.filter((d) => d.deckCollection === null)
       } catch (err) {
         this.$vToastify.error('Something went wrong')
       }
