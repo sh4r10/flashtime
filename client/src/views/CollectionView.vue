@@ -10,6 +10,17 @@
         @removeDeck="removeDeck"
       />
     </b-container>
+    <div>
+      <b-form-select
+        v-model="selected"
+        @change="sort"
+        :options="options"
+        class="mb-3"
+        value-field="item"
+        text-field="name"
+        disabled-field="notEnabled"
+      ></b-form-select>
+    </div>
     <AddNewDeck :decks="decksToAdd" />
   </div>
 </template>
@@ -24,7 +35,12 @@ export default {
     return {
       decks: [],
       collection: '',
-      decksToAdd: []
+      decksToAdd: [],
+      selected: 'Alphabetically',
+      options: [
+        { item: 'Alphabetically', name: 'Alphabetically' },
+        { item: 'Number Of Cards', name: 'Number Of Cards' }
+      ]
     }
   },
   components: {
@@ -56,6 +72,41 @@ export default {
         this.decksToAdd = res.data.filter((d) => !d.collection)
       } catch (err) {
         this.$vToastify.error('Something went wrong')
+      }
+    },
+    sortAlphabetically: function () {
+      console.log(12)
+      this.decks.sort((a, b) => {
+        if (a.name < b.name) {
+          return -1
+        }
+        if (a.name > b.name) {
+          return 1
+        }
+        return 0
+      })
+    },
+    sortByNumOfCards: function () {
+      this.decks.sort((a, b) => {
+        if (a.cards.length > b.cards.length) {
+          return -1
+        }
+        if (a.cards.length < b.cards.length) {
+          return 1
+        }
+        return 0
+      })
+    },
+    sort: function () {
+      switch (this.selected) {
+        case 'Alphabetically':
+          this.sortAlphabetically()
+          break
+        case 'Number Of Cards':
+          this.sortByNumOfCards()
+          break
+        default:
+          this.sortAlphabetically()
       }
     }
   }

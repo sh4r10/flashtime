@@ -12,6 +12,17 @@
       @removeCollection="removeCollection"
       @updateCurrentCollection="setCurrentCollection"
     />
+    <div>
+      <b-form-select
+        v-model="selected"
+        @change="sort"
+        :options="options"
+        class="mb-3"
+        value-field="item"
+        text-field="name"
+        disabled-field="notEnabled"
+      ></b-form-select>
+    </div>
   </div>
 </template>
 
@@ -25,24 +36,27 @@ export default {
   data() {
     return {
       deckCollections: [],
-      currentCollection: undefined
+      currentCollection: undefined,
+      sorted: false,
+      selected: 'Alphabetically',
+      options: [
+        { item: 'Alphabetically', name: 'Alphabetically' },
+        { item: 'Newest to Oldest', name: 'Newest to Oldest' },
+        { item: 'Oldest to Newest', name: 'Oldest to Newest' }
+      ]
     }
   },
   components: { Searchbar, CollectionBox, CollectionModal },
 
   mounted: function () {
-    Api.get('/collections')
-      .then((res) => (this.deckCollections = res.data))
-      .catch((err) => console.log(err))
     this.fetchCollections()
   },
   methods: {
     fetchCollections: function () {
       Api.get('/collections')
-        .then((res) => {
-          this.deckCollections = res.data
-        })
+        .then((res) => (this.deckCollections = res.data))
         .catch((err) => console.log(err))
+      this.sortAlphabetically()
     },
 
     setCurrentCollection: function (newCollection) {
@@ -68,6 +82,54 @@ export default {
       } catch (err) {
         this.$vToastify.error('Something went wrong')
       }
+    },
+    sort: function () {
+      switch (this.selected) {
+        case 'Alphabetically':
+          this.sortAlphabetically()
+          break
+        case 'Newest to Oldest':
+          this.sortByNewest()
+          break
+        case 'Oldest to Newest':
+          this.sortByOldest()
+          break
+        default:
+          this.sortAlphabetically()
+      }
+    },
+    sortAlphabetically: function () {
+      this.deckCollections.sort((a, b) => {
+        if (a.name < b.name) {
+          return -1
+        }
+        if (a.name > b.name) {
+          return 1
+        }
+        return 0
+      })
+    },
+    sortByNewest: function () {
+      this.deckCollections.sort((a, b) => {
+        if (a.createdAt > b.createdAt) {
+          return -1
+        }
+        if (a.createdAt < b.createdAt) {
+          return 1
+        }
+        return 0
+      })
+    },
+    sortByOldest: function () {
+      this.deckCollections.sort((a, b) => {
+        if (a.createdAt < b.createdAt) {
+          return -1
+        }
+        if (a.createdAt > b.createdAt) {
+          return 1
+        }
+        return 0
+      })
     }
   }
 }
