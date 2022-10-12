@@ -7,10 +7,29 @@
         v-for="deck in decks"
         :key="deck._id"
         :deck="deck"
-        @removeDeck="removeDeck"
+        :actions="[
+          {
+            id: 'remove',
+            title: 'Remove from collection',
+            icon: 'x-circle-fill',
+            color: 'var(--danger)',
+            clickHandler: removeDeck
+          }
+        ]"
       />
     </b-container>
-    <AddNewDeck @addDeck="addNewDeck" :decks="decksToAdd" />
+    <div>
+      <b-form-select
+        v-model="selected"
+        @change="sort"
+        :options="options"
+        class="mb-3"
+        value-field="item"
+        text-field="name"
+        disabled-field="notEnabled"
+      ></b-form-select>
+    </div>
+    <AddNewDeck :decks="decksToAdd" />
   </div>
 </template>
 <script>
@@ -25,7 +44,12 @@ export default {
     return {
       decks: [],
       collection: '',
-      decksToAdd: []
+      decksToAdd: [],
+      selected: 'Alphabetically',
+      options: [
+        { item: 'Alphabetically', name: 'Alphabetically' },
+        { item: 'Number Of Cards', name: 'Number Of Cards' }
+      ]
     }
   },
   components: {
@@ -33,16 +57,20 @@ export default {
     Navbar,
     AddNewDeck
   },
-  mounted: function () {
-    Api.get(`/collections/${this.$route.params.id}`)
-      .then((res) => (this.collection = res.data))
-      .catch((err) => console.log(err))
-    Api.get(`/collections/${this.$route.params.id}/decks`)
-      .then((res) => {
-        this.decks = res.data
-      })
-      .catch((err) => console.log(err))
-
+  mounted: async function () {
+    try {
+      const collectionRes = await Api.get(
+        `/collections/${this.$route.params.id}`
+      )
+      this.collection = collectionRes.data
+      const decksRes = await Api.get(
+        `/collections/${this.$route.params.id}/decks`
+      )
+      this.decks = decksRes.data
+    } catch (err) {
+      console.error(err)
+    }
+    this.sortAlphabetically()
     this.fetchDecksToAdd()
   },
   methods: {
@@ -53,8 +81,15 @@ export default {
       this.fetchDecksToAdd()
     },
     removeDeck: async function (deckId) {
-      this.decks = this.decks.filter((d) => d._id !== deckId)
-      this.fetchDecksToAdd()
+      try {
+        await Api.delete(
+          `/collections/${this.$route.params.id}/decks/${deckId}`
+        )
+        this.decks = this.decks.filter((d) => d._id !== deckId)
+        this.fetchDecksToAdd()
+      } catch (err) {
+        this.$vToastify.error('Something went wrong')
+      }
     },
     fetchDecksToAdd: async function () {
       try {
@@ -62,6 +97,41 @@ export default {
         this.decksToAdd = res.data.filter((d) => d.deckCollection === null)
       } catch (err) {
         this.$vToastify.error('Something went wrong')
+      }
+    },
+    sortAlphabetically: function () {
+      this.decks.sort((a, b) => {
+        console.log(a, b)
+        if (a.name.toLowerCase() < b.name.toLowerCase()) {
+          return -1
+        }
+        if (a.name.toLowerCase() > b.name.toLowerCase()) {
+          return 1
+        }
+        return 0
+      })
+    },
+    sortByNumOfCards: function () {
+      this.decks.sort((a, b) => {
+        if (a.cards.length > b.cards.length) {
+          return -1
+        }
+        if (a.cards.length < b.cards.length) {
+          return 1
+        }
+        return 0
+      })
+    },
+    sort: function () {
+      switch (this.selected) {
+        case 'Alphabetically':
+          this.sortAlphabetically()
+          break
+        case 'Number Of Cards':
+          this.sortByNumOfCards()
+          break
+        default:
+          this.sortAlphabetically()
       }
     }
   }

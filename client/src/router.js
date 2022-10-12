@@ -8,6 +8,7 @@ import CollectionView from './views/CollectionView.vue'
 import Collections from './views/Collections.vue'
 import DeckView from './views/DeckView.vue'
 import DeckPage from './views/DeckPage.vue'
+import RevisionPage from './views/RevisionPage.vue'
 import Profile from './views/Profile.vue'
 
 Vue.use(Router)
@@ -55,6 +56,11 @@ export default new Router({
       path: '/decks',
       name: 'decks',
       component: DeckPage
+    },
+    {
+      path: '/revisionPage',
+      name: 'revisionPage',
+      component: RevisionPage
     },
     {
       path: '/profile',

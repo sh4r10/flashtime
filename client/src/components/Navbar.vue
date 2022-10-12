@@ -61,7 +61,7 @@ export default {
       .then((res) => {
         this.currentUser = res.data.firstName + ' ' + res.data.lastName
       })
-      .catch((err) => console.log(err))
+      .catch((err) => console.error(err))
   },
   methods: {
     signOut: async function () {
