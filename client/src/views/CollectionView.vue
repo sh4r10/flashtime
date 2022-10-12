@@ -7,7 +7,15 @@
         v-for="deck in decks"
         :key="deck._id"
         :deck="deck"
-        @removeDeck="removeDeck"
+        :actions="[
+          {
+            id: 'remove',
+            title: 'Remove from collection',
+            icon: 'x-circle-fill',
+            color: 'var(--danger)',
+            clickHandler: removeDeck
+          }
+        ]"
       />
     </b-container>
     <div>
@@ -48,23 +56,34 @@ export default {
     Navbar,
     AddNewDeck
   },
-  mounted: function () {
-    Api.get(`/collections/${this.$route.params.id}`)
-      .then((res) => (this.collection = res.data))
-      .catch((err) => console.log(err))
-    Api.get(`/collections/${this.$route.params.id}/decks`)
-      .then((res) => {
-        this.decks = res.data
-      })
-      .catch((err) => console.log(err))
-
+  mounted: async function () {
+    try {
+      const collectionRes = await Api.get(
+        `/collections/${this.$route.params.id}`
+      )
+      this.collection = collectionRes.data
+      const decksRes = await Api.get(
+        `/collections/${this.$route.params.id}/decks`
+      )
+      this.decks = decksRes.data
+    } catch (err) {
+      console.error(err)
+    }
+    this.sortAlphabetically()
     this.fetchDecksToAdd()
   },
   methods: {
     addNewDeck() {},
     removeDeck: async function (deckId) {
-      this.decks = this.decks.filter((d) => d._id !== deckId)
-      this.fetchDecksToAdd()
+      try {
+        await Api.delete(
+          `/collections/${this.$route.params.id}/decks/${deckId}`
+        )
+        this.decks = this.decks.filter((d) => d._id !== deckId)
+        this.fetchDecksToAdd()
+      } catch (err) {
+        this.$vToastify.error('Something went wrong')
+      }
     },
     fetchDecksToAdd: async function () {
       try {
@@ -75,12 +94,12 @@ export default {
       }
     },
     sortAlphabetically: function () {
-      console.log(12)
       this.decks.sort((a, b) => {
-        if (a.name < b.name) {
+        console.log(a, b)
+        if (a.name.toLowerCase() < b.name.toLowerCase()) {
           return -1
         }
-        if (a.name > b.name) {
+        if (a.name.toLowerCase() > b.name.toLowerCase()) {
           return 1
         }
         return 0

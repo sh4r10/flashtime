@@ -3,7 +3,7 @@
     <div class="box">
       <p>{{ collection.name }}</p>
 
-      <button class="delete" @click="removeCollection(collection._id)">
+      <button class="delete" @click="removeCollection">
         Delete
       </button>
       <b-button @click="clickHandler">Edit</b-button>
@@ -19,12 +19,13 @@ export default {
     clickHandler: function () {
       this.$emit('updateCurrentCollection', this.collection)
     },
-    removeCollection: async function (collectionId) {
+    removeCollection: async function () {
       try {
-        await Api.delete(`/collections/${collectionId}`)
-        this.$emit('removeCollection', collectionId)
+        const res = await Api.delete(`/collections/${this.collection._id}`)
+        if (res.status.code !== 204) throw new Error()
+        this.$emit('removeCollection', this.collection._id)
       } catch (err) {
-        this.$vTostify.error('something went wrong')
+        console.error(err)
       }
     }
   }

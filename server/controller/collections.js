@@ -83,36 +83,30 @@ router.put('/:id/decks/', verifyToken, async (req, res) => {
 
 router.put('/:id', verifyToken, async (req, res) => {
   const collectionNameUpdate = req.body.name
-  DeckCollection.findById(req.params.id).then((collection) => {
-    if (req.user.deckCollection.some((c) => c._id == req.params.id)) {
-      collection.name = collectionNameUpdate
-      return collection
-        .save()
-        .then((result) => {
-          res.json({ result: result })
-        })
-        .catch((err) => res.json({ message: err }))
-    } else {
-      res.sendStatus(403)
-    }
-  })
+  if (!req.user.deckCollections.some((c) => c._id == req.params.id))
+    return res.sendStatus(403)
+  try {
+    const collection = await DeckCollection.findByIdAndUpdate(
+      req.params.id,
+      { name: collectionNameUpdate },
+      { new: true }
+    )
+    res.json(collection)
+  } catch (err) {
+    res.status(500).json({ error: err })
+  }
 })
 
 router.delete('/:id', verifyToken, async (req, res) => {
   const collectionID = req.params.id
-  DeckCollection.findById(collectionID)
-    .then((collection) => {
-      if (req.user.deckCollection.some((c) => c._id == collectionID)) {
-        collection.delete().then(() => {
-          res.status(204).json(`Deck  has been deleted`)
-        })
-      } else {
-        res.json('you are not allowd to delete this deck')
-      }
-    })
-    .catch((err) => {
-      res.json({ message: err })
-    })
+  if (!req.user.deckCollections.some((c) => c._id == collectionID))
+    return res.sendStatus(403)
+  try {
+    await DeckCollection.findByIdAndDelete(collectionID)
+    res.sendStatus(204)
+  } catch (err) {
+    res.status(500).json({ error: err })
+  }
 })
 
 router.delete('/:collectionId/decks/:deckId', verifyToken, async (req, res) => {

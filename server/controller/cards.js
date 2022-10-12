@@ -53,9 +53,16 @@ router.put('/:id', verifyToken, async (req, res) => {
 
 router.delete('/:id', verifyToken, async (req, res) => {
   try {
-    const card = await Card.findById(req.params.id)
+    const card = await Card.findOne({ _id: req.params.id, user: req.user._id })
     if (!card) return res.status(403).json({ message: 'Wrong ID' })
+    const deck = await Deck.findById(card.deck)
+    if (!req.user.decks.some((d) => d._id.toString() === card.deck.toString()))
+      return res.status(403).json({ message: 'Invalid Deck' })
+    deck.cards = deck.cards.filter(
+      (c) => c._id.toString() != card._id.toString()
+    )
     await Card.findByIdAndDelete(req.params.id)
+    await deck.save()
     res.sendStatus(204)
   } catch (err) {
     res.sendStatus(500)

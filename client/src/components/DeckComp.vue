@@ -18,10 +18,10 @@ export default {
   props: ['deck'],
   methods: {
     deleteDeck(id) {
-      Api.delete(`/decks/${id}`)
+      
       // eslint-disable-next-line no-return-assign, vue/no-mutating-props
         .then(() => this.$emit('deleteDeck', id))
-        .catch(err => console.log(err))
+        .catch(err => console.error(err))
     },
     clickHandler: function () {
       this.$emit('setCurrentDeck', this.deck)
