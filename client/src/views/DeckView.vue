@@ -6,7 +6,8 @@
       @updateCard="updateCard"
       @createCard="createCard"
     />
-    <h1>{{deck ? deck.name : ''}} <span v-if="!!deck"><CollectionBadge :deck="deck || undefined"/></span></h1>
+    <h1>{{deck ? deck.name : ''}} <span v-if="!!deck"><CollectionBadge :deck="deck || undefined"/>
+    </span></h1>
     <b-container fluid>
       <div class="actions">
       <b-button class="add-button" variant="outlined" @click="setCurrentCard(undefined)">Add Card</b-button>
@@ -82,6 +83,20 @@ export default {
 }
 </script>
 <style scoped>
+.action {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.action .b-icon {
+  font-size: 1.25rem;
+  cursor: pointer;
+  box-sizing: content-box;
+  padding: 3px;
+}
+.actions .bi-pencil{
+  color: var(--primary);
+}
 .container-fluid {
   display: flex;
   flex-direction: column;
