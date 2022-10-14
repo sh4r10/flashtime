@@ -11,6 +11,7 @@
           v-model="form.email"
           type="email"
           placeholder="Enter email"
+          :disabled="!Boolean(ready)"
           required
         ></b-form-input>
       </b-form-group>
@@ -57,7 +58,8 @@ export default {
         firstName: '',
         lastName: ''
       },
-      show: true
+      show: true,
+      ready: false
     }
   },
   methods: {

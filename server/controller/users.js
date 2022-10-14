@@ -9,12 +9,13 @@ const validator = require('validator')
 const SALT_ROUNDS = 10
 
 router.get('/', verifyToken, (req, res) => {
-  const { firstName, lastName, decks, deckCollections } = req.user
+  const { firstName, lastName, email, decks, deckCollections } = req.user
   res.json({
-    firstName: firstName,
-    lastName: lastName,
-    decks: decks,
-    deckCollections: deckCollections,
+    firstName,
+    lastName,
+    email,
+    decks,
+    deckCollections,
   })
 })
 
@@ -49,26 +50,41 @@ router.post('/', async (req, res) => {
   }
 })
 
-router.put('/:id', verifyToken, async (req, res) => {
-  const userId = req.params.id
+router.put('/', verifyToken, async (req, res) => {
+  const userId = req.user._id
   const firstNameUpdate = req.body.firstName
   const lastNameUpdate = req.body.lastName
   const emailUpdate = req.body.email
   const passwordUpdate = req.body.password
-  User.findById(userId)
-    .then((userInfo) => {
-      userInfo.firstName = firstNameUpdate
-      userInfo.lastName = lastNameUpdate
-      userInfo.email = emailUpdate
-      userInfo.decks.push()
-      return userInfo.save()
-    })
-    .then((result) => {
-      res.json(result)
-    })
-    .catch((err) => {
-      res.json({ message: err })
-    })
+  try {
+    const userInfo = await User.findByIdAndUpdate(
+      userId,
+      {
+        firstName: firstNameUpdate,
+        lastName: lastNameUpdate,
+        email: emailUpdate,
+      },
+      { new: true }
+    )
+    const updatedUser = await userInfo.save()
+    res.json(updatedUser)
+  } catch (err) {
+    res.status(500).json({ error: err })
+  }
+  // User.findById(userId)
+  //   .then((userInfo) => {
+  //     userInfo.firstName = firstNameUpdate
+  //     userInfo.lastName = lastNameUpdate
+  //     userInfo.email = emailUpdate
+  //     userInfo.decks.push()
+  //     return userInfo.save()
+  //   })
+  //   .then((result) => {
+  //     res.json(result)
+  //   })
+  //   .catch((err) => {
+  //     res.json({ message: err })
+  //   })
 })
 
 router.patch('/password', verifyToken, async (req, res) => {
