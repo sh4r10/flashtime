@@ -66,7 +66,8 @@ export default {
           const response = await Api.post('/collections/', { name: this.name })
           this.$router.push(`/collection/${response.data._id}`)
         } catch (err) {
-          this.$vToastify.error('Something went wrong')
+          const error = err.response.data.error
+          this.$vToastify.error(error)
           this.$router.push('/')
         }
       } else {
@@ -114,8 +115,7 @@ button:hover {
   background-color: var(--primary);
 }
 
-.btn-primary:hover{
+.btn-primary:hover {
   background-color: #0a3880;
 }
-
 </style>

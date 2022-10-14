@@ -1,10 +1,13 @@
 <template>
-  <b-col cols="12" md="8" class="mx-auto mt-3">
+  <b-col cols="12" md="8" class="mx-auto mt-5">
     <div class="header">
-      <h2>Your Collections</h2>
+      <h2>Top Collections</h2>
       <b-button v-b-modal.collection-modal>Create</b-button>
     </div>
-    <div class="collections-container">
+    <div class="no-collections" v-if="deckCollections.length === 0">
+      <p>You have not created any collections yet</p>
+    </div>
+    <div class="collections-container" v-else>
       <Collection
         v-for="collection in deckCollections.slice(0, 9)"
         :key="collection._id"
@@ -80,6 +83,21 @@ button:hover {
   background: var(--secondary);
   color: #fff;
   border: 1px solid var(--secondary);
+}
+
+.no-collections {
+  background: white;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
+  border-radius: 5px;
+}
+
+.no-collections p{
+  margin: 0;
+  color: var(--tertiary)
 }
 
 @media screen and (max-width: 1200px) {
