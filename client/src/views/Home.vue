@@ -102,6 +102,25 @@ export default {
 .btn.btn-secondary:hover{
   background: var(--secondary);
 }
+
+.home-container h1 span {
+  text-align: center;
+  background: linear-gradient(to right, var(--secondary-light) 20%, var(--primary) 40%, var(--primary) 60%, var(--secondary-light) 80%);
+  background-size: 200% auto;
+  color: #000;
+  background-clip: text;
+  text-fill-color: transparent;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine 3s linear infinite;
+}
+
+@keyframes shine {
+    to {
+      background-position: 200% center;
+    }
+  }
+
 .custom-shape-divider-bottom-1665711853 {
     position: absolute;
     bottom: 0;
