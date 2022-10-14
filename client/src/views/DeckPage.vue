@@ -6,8 +6,8 @@
         <h1>Your Decks</h1>
         <b-button @click="setCurrentDeck(undefined)">Add new deck</b-button>
       </div>
-      <!-- <Decks v-for="deck in filteredDeck" :key="deck._id" :deck="deck" @deleteDeck="deleteDeck" @setCurrentDeck="setCurrentDeck"/> -->
-      <div class="decks-container">
+      <NoItems v-if="decks.length === 0" message="You do not have any decks. Click on New Deck to get started."/>
+      <div class="decks-container" v-else>
         <DeckCard
           v-for="deck in filteredDeck"
           :key="deck._id"
@@ -28,6 +28,7 @@ import { Api } from '../Api'
 import DeckModal from '../components/DeckModal.vue'
 import Navbar from '../components/Navbar.vue'
 import DeckCard from '../components/DeckCard.vue'
+import NoItems from '../components/NoItems.vue'
 
 export default {
   data() {
@@ -40,7 +41,8 @@ export default {
   components: {
     DeckModal,
     Navbar,
-    DeckCard
+    DeckCard,
+    NoItems
   },
   methods: {
     fetchDecks: function () {

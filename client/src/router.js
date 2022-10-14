@@ -59,7 +59,7 @@ export default new Router({
       component: DeckPage
     },
     {
-      path: '/revisionPage',
+      path: '/revision',
       name: 'revisionPage',
       component: RevisionPage
     },
