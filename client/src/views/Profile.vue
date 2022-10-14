@@ -91,7 +91,7 @@ export default {
         lastName: ''
       },
       show: true,
-      ready: false
+      ready: false,
       password: '',
       passwordState: null
     }
