@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-navbar toggleable="lg" variant="outlined">
-      <b-navbar-brand @click="$router.push({name: 'root'})">
+      <b-navbar-brand @click="$router.push({ name: 'root' })">
         <img src="../assets/images/logo.svg" />
         flashtime
       </b-navbar-brand>
@@ -20,7 +20,7 @@
         <b-navbar-nav class="ml-auto">
           <b-nav-item-dropdown right v-if="loggedIn">
             <!-- Using 'button-content' slot -->
-            <template  #button-content :style="{ color: 'var(--primary)' }">
+            <template #button-content :style="{ color: 'var(--primary)' }">
               <em>{{ currentUser }}</em>
             </template>
             <b-dropdown-item @click="$router.push('/profile')"
@@ -28,10 +28,10 @@
             >
             <b-dropdown-item @click="signOut">Sign Out</b-dropdown-item>
           </b-nav-item-dropdown>
-          <b-nav-item v-if="!loggedIn" @click="$router.push({name: 'login'})"
+          <b-nav-item v-if="!loggedIn" @click="$router.push({ name: 'login' })"
             >Login</b-nav-item
           >
-          <b-nav-item v-if="!loggedIn" @click="$router.push({name: 'signup'})"
+          <b-nav-item v-if="!loggedIn" @click="$router.push({ name: 'signup' })"
             >Sign Up</b-nav-item
           >
         </b-navbar-nav>
@@ -61,12 +61,15 @@ export default {
   methods: {
     signOut: async function () {
       try {
+        console.log(1)
         await Api.delete('/auth/logout', { withCredentials: true })
-        localStorage.removeItem('accessToken')
-        window.location = '/'
       } catch (err) {
+        console.log(11)
         this.$vToastify.error('Something went wrong')
       }
+      console.log(111)
+      localStorage.removeItem('accessToken')
+      window.location = '/'
     }
   }
 }
@@ -112,7 +115,7 @@ div.navbar-brand img {
   color: var(--primary-dark);
 }
 
-a.dropdown-toggle em{
+a.dropdown-toggle em {
   text-transform: capitalize;
   color: var(--primary);
 }
