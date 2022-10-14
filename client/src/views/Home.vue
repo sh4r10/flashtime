@@ -1,5 +1,5 @@
 <template>
-  <b-container fluid class="main-container">
+  <b-container fluid class="main-home-container">
     <Navbar />
     <b-container fluid class="home-container">
       <h1>The <span>Modern</span> Solution to Flashcards</h1>
@@ -42,6 +42,10 @@ export default {
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+.main-home-container{
+  padding: 0;
+}
 .home-container {
   display: flex;
   flex-direction: column;
