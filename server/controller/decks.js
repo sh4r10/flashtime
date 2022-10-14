@@ -3,6 +3,7 @@ const Deck = require('../models/deck.schema')
 const User = require('../models/user.schema')
 const Card = require('../models/card.schema')
 const verifyToken = require('../middlewares/verifyToken')
+const validator = require('validator')
 
 router.get('/', verifyToken, async (req, res) => {
   let decks = await Deck.find({ _id: { $in: req.user.decks } })
@@ -64,8 +65,12 @@ router.get('/:id/cards/due', verifyToken, async (req, res) => {
   }
 })
 
-router.post('/', verifyToken, (req, res) => {
+router.post('/', verifyToken, async (req, res) => {
   const deckName = req.body.name
+  if (!validator.isLength(deckName, { max: 20 }))
+    return res
+      .status(400)
+      .json({ error: 'Deck name can not be more then 20 character' })
   const newDeck = new Deck({ name: deckName })
   newDeck
     .save()
