@@ -60,7 +60,6 @@ export default {
         this.$vToastify.error('Passwords do not match')
         return
       }
-      console.log(this.currentPassword)
       try {
         await Api.patch('/users/password', {
           currentPassword: this.currentPassword,
@@ -71,7 +70,6 @@ export default {
       } catch (err) {
         this.$vToastify.error('Something went wrong')
       }
-      // console.log(this.user.password)
     }
   }
 }

@@ -61,13 +61,10 @@ export default {
   methods: {
     signOut: async function () {
       try {
-        console.log(1)
         await Api.delete('/auth/logout', { withCredentials: true })
       } catch (err) {
-        console.log(11)
         this.$vToastify.error('Something went wrong')
       }
-      console.log(111)
       localStorage.removeItem('accessToken')
       window.location = '/'
     }

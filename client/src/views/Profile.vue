@@ -122,10 +122,8 @@ export default {
         await Api.delete('/users', { data: { password: this.password } })
         localStorage.removeItem('accessToken')
         window.location = '/'
-        console.log('you have deleted the user account successfully')
       } catch (err) {
         this.$vToastify.error(err)
-        console.log(this.password)
       }
 
       // Hide the modal manually

@@ -76,7 +76,6 @@ export default {
     },
     setCurrentDeck: function (id) {
       this.currentDeck = this.decks.find((deck) => deck._id === id)
-      console.log(this.currentDeck)
       this.$bvModal.show('deck-modal')
     },
     handleInputChange: function (input) {
