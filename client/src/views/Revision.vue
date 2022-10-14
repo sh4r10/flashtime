@@ -82,7 +82,6 @@ export default {
 
 <style scoped>
 .main-container {
-  margin: 7rem auto;
   width: 100%;
   max-width: 900px;
   display: flex;

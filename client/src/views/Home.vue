@@ -1,5 +1,5 @@
 <template>
-  <b-container fluid>
+  <b-container fluid class="main-container">
     <Navbar />
     <b-container fluid class="home-container">
       <h1>The <span>Modern</span> Solution to Flashcards</h1>

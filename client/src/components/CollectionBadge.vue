@@ -19,8 +19,8 @@ export default {
         '#0277bd',
         '#6a1b9a',
         '#4527a0',
-        '#d84315',
         '#558b2f',
+        '#d84315',
         '#2e7d32'
       ]
       const colorNum = id

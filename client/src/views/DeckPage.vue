@@ -8,11 +8,12 @@
       </div>
       <!-- <Decks v-for="deck in filteredDeck" :key="deck._id" :deck="deck" @deleteDeck="deleteDeck" @setCurrentDeck="setCurrentDeck"/> -->
       <div class="decks-container">
-        <DeckCard v-for="deck in filteredDeck" :key="deck._id" :deck="deck" :actions="[{
-      id: 'delete', title: 'Delete Deck', icon: 'trash',
-      color: 'var(--danger)', clickHandler: deleteDeck }, {
-      id: 'update', title: 'Update Deck', icon: 'pencil',
-      color: 'var(--primary)', clickHandler: setCurrentDeck }]"/>
+        <DeckCard
+          v-for="deck in filteredDeck"
+          :key="deck._id"
+          :deck="deck"
+          :actions="deckActions[deck._id]"
+        />
       </div>
     </div>
     <DeckModal
@@ -92,16 +93,44 @@ export default {
       return this.decks.filter((deck) =>
         deck.name.toLowerCase().includes(this.search)
       )
+    },
+    deckActions() {
+      const decks = this.decks.map((deck) => {
+        const actions = [
+          {
+            id: 'update',
+            title: 'Update Deck',
+            icon: 'pencil',
+            color: 'var(--primary)',
+            clickHandler: this.setCurrentDeck
+          },
+          {
+            id: 'delete',
+            title: 'Delete Deck',
+            icon: 'trash',
+            color: 'var(--danger)',
+            clickHandler: this.deleteDeck
+          }
+        ]
+        if (deck.cardsDue > 0) {
+          actions.unshift({
+            id: 'revise',
+            title: 'Revise Deck',
+            icon: 'journals',
+            color: 'var(--green)',
+            clickHandler: () =>
+              this.$router.push({ name: 'revise', params: { id: deck._id } })
+          })
+        }
+        return [deck._id, actions]
+      })
+      return Object.fromEntries(decks)
     }
   }
 }
 </script>
 
 <style scoped>
-.main-container {
-  margin: 8rem auto;
-}
-
 .content-container {
   max-width: 900px;
   margin: auto;
@@ -112,7 +141,7 @@ export default {
   padding: 2rem;
 }
 
-.decks-container{
+.decks-container {
   width: 100%;
 }
 
