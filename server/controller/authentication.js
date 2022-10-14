@@ -93,19 +93,23 @@ router.post('/refresh', (req, res) => {
 router.delete('/logout', async (req, res) => {
   try {
     const { refreshToken } = req.cookies
-    if (!refreshToken) res.status(401).json({ message: 'Unauthorized' })
+    if (!refreshToken) return res.status(401).json({ message: 'Unauthorized' })
     jwt.verify(
       refreshToken,
       process.env.REFRESH_TOKEN_SECRET,
       async (err, user) => {
-        if (err) res.status(403).json({ message: 'Forbidden' })
-        const tokens = await Token.find({ user: user.id })
-        const matchedToken = tokens.filter((t) =>
-          bcrypt.compare(refreshToken, t.token)
-        )
-        await Token.deleteOne({ _id: matchedToken[0]._id })
-        res.clearCookie('refreshToken')
-        res.status(200).json({ message: 'Logged out' })
+        try {
+          if (err) res.status(403).json({ message: 'Forbidden' })
+          const tokens = await Token.find({ user: user.id })
+          const matchedToken = tokens.filter((t) =>
+            bcrypt.compare(refreshToken, t.token)
+          )
+          await Token.deleteOne({ _id: matchedToken[0]._id })
+          res.clearCookie('refreshToken')
+          res.status(200).json({ message: 'Logged out' })
+        } catch (error) {
+          res.sendStatus(500)
+        }
       }
     )
   } catch (err) {

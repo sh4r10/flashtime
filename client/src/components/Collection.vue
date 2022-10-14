@@ -55,7 +55,7 @@ export default {
   background: #fff;
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.05);
   padding: 3rem;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   border-radius: 8px;
   transition: 0.4s;
   text-decoration: none;

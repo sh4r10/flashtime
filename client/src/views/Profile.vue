@@ -11,6 +11,7 @@
           v-model="form.email"
           type="email"
           placeholder="Enter email"
+          :disabled="!Boolean(ready)"
           required
         ></b-form-input>
       </b-form-group>
@@ -32,6 +33,38 @@
           required
         ></b-form-input>
       </b-form-group>
+
+      <div>
+        <b-button v-b-modal.modal-prevent-closing>Delete Account</b-button>
+
+        <b-modal
+          id="modal-prevent-closing"
+          ref="modal"
+          title="Delete your account"
+          @show="resetModal"
+          @hidden="resetModal"
+          @ok="handleOk"
+          ok-title="Delete"
+          ok-variant="danger"
+        >
+          <form ref="form" @submit.stop.prevent="handleSubmit">
+            <b-form-group
+              label="Please type your password"
+              label-for="password-input"
+              invalid-feedback="password is required"
+              :state="passwordState"
+            >
+              <b-form-input
+                id="name-input"
+                type="password"
+                v-model="password"
+                :state="passwordState"
+                required
+              ></b-form-input>
+            </b-form-group>
+          </form>
+        </b-modal>
+      </div>
 
       <b-button type="submit" variant="primary">Submit</b-button>
       <b-button type="reset" variant="danger">Reset</b-button>
@@ -57,10 +90,51 @@ export default {
         firstName: '',
         lastName: ''
       },
-      show: true
+      show: true,
+      ready: false
+      password: '',
+      passwordState: null
     }
   },
   methods: {
+    // Delete Account methods:
+
+    deleteAccount: function () {},
+    checkFormValidity() {
+      const valid = this.$refs.form.checkValidity()
+      this.passwordState = valid
+      return valid
+    },
+    resetModal() {
+      this.password = ''
+      this.passwordState = null
+    },
+    handleOk(bvModalEvent) {
+      // Prevent modal from closing
+      bvModalEvent.preventDefault()
+      // Trigger submit handler
+      this.handleSubmit()
+    },
+    handleSubmit: async function () {
+      // Exit when the form isn't valid
+      if (!this.checkFormValidity()) {
+        return
+      }
+      try {
+        await Api.delete('/users', { data: { password: this.password } })
+        localStorage.removeItem('accessToken')
+        window.location = '/'
+      } catch (err) {
+        this.$vToastify.error(err)
+      }
+
+      // Hide the modal manually
+      this.$nextTick(() => {
+        this.$bvModal.hide('modal-prevent-closing')
+      })
+    },
+
+    // Update User information methods
     onSubmit: async function (event) {
       event.preventDefault()
       try {

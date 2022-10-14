@@ -3,6 +3,7 @@
     <Navbar />
     <b-container fluid class="main-container">
       <h1>{{ collection.name }}</h1>
+      <NoItems v-if="decks.length === 0" message="This collection does not have any decks, click Add to start" variant="secondary"/>
       <DeckCard
         v-for="deck in decks"
         :key="deck._id"
@@ -37,6 +38,7 @@ import { Api } from '../Api'
 import DeckCard from '../components/DeckCard.vue'
 import Navbar from '../components/Navbar.vue'
 import AddNewDeck from '../components/AddNewDeck.vue'
+import NoItems from '../components/NoItems.vue'
 
 export default {
   name: 'CollectionView',
@@ -55,7 +57,8 @@ export default {
   components: {
     DeckCard,
     Navbar,
-    AddNewDeck
+    AddNewDeck,
+    NoItems
   },
   mounted: async function () {
     try {
@@ -101,7 +104,6 @@ export default {
     },
     sortAlphabetically: function () {
       this.decks.sort((a, b) => {
-        console.log(a, b)
         if (a.name.toLowerCase() < b.name.toLowerCase()) {
           return -1
         }

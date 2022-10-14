@@ -12,6 +12,7 @@
       <div class="actions">
       <b-button class="add-button" variant="outlined" @click="setCurrentCard(undefined)">Add Card</b-button>
     </div>
+    <NoItems v-if="cards.length === 0" message="This deck does not have any cards, click Create to add a card" variant="secondary"/>
       <Card
         v-for="card in cards"
         :key="card._id"
@@ -28,6 +29,7 @@ import { Api } from '../Api'
 import CardModal from '../components/CardModal.vue'
 import CollectionBadge from '../components/CollectionBadge.vue'
 import Navbar from '../components/Navbar.vue'
+import NoItems from '../components/NoItems.vue'
 export default {
   name: 'DeckView',
   data() {
@@ -69,7 +71,7 @@ export default {
       this.$bvModal.show('card-modal')
     }
   },
-  components: { Card, CardModal, CollectionBadge, Navbar },
+  components: { Card, CardModal, CollectionBadge, Navbar, NoItems },
   mounted: async function () {
     this.fetchCards()
     try {
