@@ -2,15 +2,15 @@
   <div>
     <Navbar />
     <div class="main-container">
-      <h1>Your Collections</h1>
       <div class="actions">
+        <h1>Your Collections</h1>
         <b-button @click="clickHandler">Create</b-button>
       </div>
-      <CollectionModal
-        :collection="currentCollection"
-        @updateCollection="updateCollectionName"
+      <NoItems
+        v-if="deckCollections.length === 0"
+        message="You do not have any Collections. Click on Create to get started."
       />
-      <div class="collections-container">
+      <div class="collections-container" v-else>
         <Collection
           v-for="collection in deckCollections"
           :key="collection._id"
@@ -30,6 +30,10 @@
         disabled-field="notEnabled"
       ></b-form-select>
     </div>
+    <CollectionModal
+      :collection="currentCollection"
+      @updateCollection="updateCollectionName"
+    />
   </div>
 </template>
 
@@ -38,6 +42,7 @@ import { Api } from '../Api'
 import CollectionModal from '../components/CollectionModal.vue'
 import Collection from '../components/Collection.vue'
 import Navbar from '../components/Navbar.vue'
+import NoItems from '../components/NoItems.vue'
 
 export default {
   data() {
@@ -53,7 +58,7 @@ export default {
       ]
     }
   },
-  components: { CollectionModal, Collection, Navbar },
+  components: { CollectionModal, Collection, Navbar, NoItems },
 
   mounted: async function () {
     await this.fetchCollections()
@@ -148,10 +153,6 @@ export default {
   width: 100%;
 }
 
-.main-container h1 {
-  margin-bottom: 2rem;
-}
-
 .collections-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -160,7 +161,8 @@ export default {
 
 .actions {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 1rem;
 }
 

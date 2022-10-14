@@ -3,7 +3,11 @@
     <b-button v-b-modal.decks-to-add-modal>Add a new deck</b-button>
 
     <b-modal id="decks-to-add-modal" title="Add Decks" hide-footer>
-      <b-list-group>
+      <div class="no-decks" v-if="decks.length === 0">
+        <p>You have no decks to add</p>
+        <b-button variant="outlined" @click="handleNewDeck">New Deck</b-button>
+      </div>
+      <b-list-group v-else>
         <b-list-group-item
           v-for="deck in decks"
           :key="deck._id"
@@ -32,9 +36,28 @@ export default {
         this.$vToastify.error('Something went wrong')
       }
       this.$emit('addDeck')
+    },
+    handleNewDeck: async function () {
+      const navigation = await this.$router.push({ name: 'decks' })
+      if (navigation) this.$bvModal.show('deck-modal')
     }
   }
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+
+.no-decks{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 1rem auto;
+}
+
+.no-decks .btn{
+  background: var(--secondary-light);
+  color: white;
+  margin: 0;
+}
+
+</style>
