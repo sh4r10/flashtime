@@ -1,46 +1,47 @@
 <template>
-          <b-modal
-        id="card-modal"
-        :title="card ? 'Edit Card' : 'Create New Card'"
-        @show="resetModal"
-        @hidden="resetModal"
-        @ok="handleOk"
-        :ok-title="card ? 'Update' : 'Create'"
+  <b-modal
+    id="card-modal"
+    :title="card ? 'Edit Card' : 'Create New Card'"
+    @show="resetModal"
+    @hidden="resetModal"
+    @ok="handleOk"
+    :ok-title="card ? 'Update' : 'Create'"
+  >
+    <form ref="frontForm" @submit.stop.prevent="handleSubmit">
+      <b-form-group
+        label="Front"
+        label-for="front-input"
+        invalid-feedback="Front is required"
+        :state="frontState"
       >
-        <form ref="frontForm" @submit.stop.prevent="handleSubmit">
-          <b-form-group
-            label ="Front"
-            label-for="front-input"
-            invalid-feedback="Front is required"
-            :state="frontState"
-          >
-            <b-form-input
-              id="front-input"
-              v-model="front"
-              required
-              :state="frontState"
-            ></b-form-input>
-          </b-form-group>
-          </form>
-          <form ref="backForm" @submit.stop.prevent="handleSubmit">
-          <b-form-group
-            label ="Back"
-            label-for="back-input"
-            invalid-feedback="Back is required"
-            :state="backState"
-          >
-            <b-form-input
-              id="back-input"
-              v-model="back"
-              required
-              :state="backState"
-            ></b-form-input>
-          </b-form-group>
-        </form>
-      </b-modal>
+        <b-form-input
+          id="front-input"
+          v-model="front"
+          required
+          :state="frontState"
+          ref="frontInput"
+          autofocus
+        ></b-form-input>
+      </b-form-group>
+    </form>
+    <form ref="backForm" @submit.stop.prevent="handleSubmit">
+      <b-form-group
+        label="Back"
+        label-for="back-input"
+        invalid-feedback="Back is required"
+        :state="backState"
+      >
+        <b-form-input
+          id="back-input"
+          v-model="back"
+          required
+          :state="backState"
+        ></b-form-input>
+      </b-form-group>
+    </form>
+  </b-modal>
 </template>
 <script>
-
 export default {
   name: 'CardModal',
   data() {
@@ -79,7 +80,13 @@ export default {
 
       // Hide the modal manually
       this.$nextTick(() => {
-        this.$bvModal.hide('card-modal')
+        // this.$bvModal.hide('card-modal')
+        this.frontState = null
+        this.backState = null
+        this.front = ''
+        this.back = ''
+        this.$vToastify.success('Card created')
+        this.$refs.frontInput.focus()
       })
     }
   },
