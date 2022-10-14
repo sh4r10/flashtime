@@ -98,10 +98,6 @@ export default {
 </script>
 
 <style scoped>
-.main-container {
-  margin: 8rem auto;
-}
-
 .content-container {
   max-width: 900px;
   margin: auto;

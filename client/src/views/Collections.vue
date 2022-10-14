@@ -144,7 +144,6 @@ export default {
 </script>
 <style scoped>
 .main-container {
-  margin: 8rem auto;
   max-width: 900px;
   width: 100%;
 }

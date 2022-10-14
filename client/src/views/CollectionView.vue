@@ -138,10 +138,6 @@ export default {
 }
 </script>
 <style scoped>
-.main-container {
-  margin: 7rem auto;
-}
-
 .box {
   margin-left: 11%;
   width: 200px;
