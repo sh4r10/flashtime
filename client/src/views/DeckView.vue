@@ -105,10 +105,6 @@ export default {
   max-width: 900px;
 }
 
-.main-container{
-  margin: 7rem auto;
-}
-
 h1{
   display: flex;
   flex-direction: column;

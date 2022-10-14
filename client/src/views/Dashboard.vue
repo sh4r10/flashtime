@@ -1,5 +1,5 @@
 <template>
-  <div class="main-container">
+  <div class="dashboard-container">
     <Navbar />
     <b-container>
       <b-row>
@@ -42,7 +42,7 @@ export default {
 </script>
 
 <style scoped>
-.main-container {
+.dashboard-container {
   display: flex;
   justify-content: center;
   flex-direction: column;
