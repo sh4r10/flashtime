@@ -96,9 +96,13 @@ router.patch('/password', verifyToken, async (req, res) => {
 })
 
 router.delete('/:id', verifyToken, async (req, res) => {
-  const userId = req.params.id
-  const deleteUser = await User.findByIdAndDelete(userId)
-  res.json(`User with ${User.firstName} was deleted!`)
+  try {
+    const userId = req.params.id
+    const deleteUser = await User.findByIdAndDelete(userId)
+    res.sendStatus(204)
+  } catch (err) {
+    res.sendStatus(500)
+  }
 })
 
 module.exports = router
