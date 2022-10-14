@@ -6,17 +6,21 @@ const verifyToken = require('../middlewares/verifyToken')
 const validator = require('validator')
 
 router.get('/', verifyToken, async (req, res) => {
-  let decks = await Deck.find({ _id: { $in: req.user.decks } })
-    .populate('cards')
-    .populate('deckCollection')
-  decks = decks.map((deck) => {
-    const cardsDue = deck.cards.filter(
-      (card) => card.nextRevision < new Date()
-    ).length
-    const res = { ...deck._doc, cardsDue }
-    return res
-  })
-  res.json(decks)
+  try {
+    let decks = await Deck.find({ _id: { $in: req.user.decks } })
+      .populate('cards')
+      .populate('deckCollection')
+    decks = decks.map((deck) => {
+      const cardsDue = deck.cards.filter(
+        (card) => card.nextRevision < new Date()
+      ).length
+      const res = { ...deck._doc, cardsDue }
+      return res
+    })
+    res.json(decks)
+  } catch (err) {
+    res.sendStatus(500)
+  }
 })
 
 router.get('/:id', verifyToken, async (req, res) => {
