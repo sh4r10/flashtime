@@ -31,7 +31,7 @@ export default {
       } catch (err) {
         this.$vToastify.error('Something went wrong')
       }
-      this.$emit('addDeck')
+      this.$emit('addDeck', deckId)
     }
   }
 }

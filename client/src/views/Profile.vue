@@ -70,7 +70,6 @@ export default {
           email: this.form.email
         })
         this.$vToastify.success('User updated')
-        console.log('sub')
       } catch (err) {
         this.$vToastify.error('Something went wrong')
       }

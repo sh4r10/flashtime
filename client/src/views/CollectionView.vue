@@ -29,7 +29,7 @@
         disabled-field="notEnabled"
       ></b-form-select>
     </div>
-    <AddNewDeck :decks="decksToAdd" />
+    <AddNewDeck :decks="decksToAdd" @addDeck="addNewDeck" />
   </div>
 </template>
 <script>
@@ -94,7 +94,7 @@ export default {
     fetchDecksToAdd: async function () {
       try {
         const res = await Api.get('/decks')
-        this.decksToAdd = res.data.filter((d) => d.deckCollection === null)
+        this.decksToAdd = res.data.filter((d) => d.deckCollection == null)
       } catch (err) {
         this.$vToastify.error('Something went wrong')
       }
