@@ -4,6 +4,7 @@ const Deck = require('../models/deck.schema')
 const User = require('../models/user.schema')
 const verifyToken = require('../middlewares/verifyToken')
 const { collection } = require('../models/deck.schema')
+const validator = require('validator')
 
 router.get('/', verifyToken, async (req, res) => {
   res.json(req.user.deckCollections)
@@ -27,6 +28,10 @@ router.get('/:id', verifyToken, (req, res) => {
 
 router.post('/', verifyToken, async (req, res) => {
   const deckCollectionName = req.body.name
+  if (!validator.isLength(deckCollectionName, { max: 20 }))
+    return res
+      .status(400)
+      .json({ error: 'Collection name can not be more than 20 characters' })
   const newdeckCollection = new DeckCollection({
     name: deckCollectionName,
   })

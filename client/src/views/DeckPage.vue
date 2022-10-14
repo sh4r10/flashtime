@@ -55,7 +55,8 @@ export default {
         await Api.post('/decks', { name })
         this.fetchDecks()
       } catch (err) {
-        this.$vToastify.error('Something went wrong')
+        const error = err.response.data.error
+        this.$vToastify.error(error)
       }
     },
     async updateDeck(id, name) {
