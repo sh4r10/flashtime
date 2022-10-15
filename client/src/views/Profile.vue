@@ -65,10 +65,19 @@
           </form>
         </b-modal>
       </div>
+      <div class="mb-1">
+        <b-button @click="deleteAllDecks">Delete All Decks</b-button>
+      </div>
+      <div class="mb-1">
+        <b-button @click="deleteAllCollections"
+          >Delete All Collections</b-button
+        >
+      </div>
 
       <b-button type="submit" variant="primary">Submit</b-button>
       <b-button type="reset" variant="danger">Reset</b-button>
     </b-form>
+
     <b-button
       class="change-password"
       @click="changePassword"
@@ -93,13 +102,73 @@ export default {
       show: true,
       ready: false,
       password: '',
-      passwordState: null
+      passwordState: null,
+      decks: [],
+      deckCollections: []
     }
   },
   methods: {
     // Delete Account methods:
 
     deleteAccount: function () {},
+    deleteAllDecks: async function () {
+      this.$bvModal
+        .msgBoxConfirm(
+          'Please confirm that you want to delete All your decks.',
+          {
+            title: 'Please Confirm',
+            size: 'sm',
+            buttonSize: 'sm',
+            okVariant: 'danger',
+            okTitle: 'YES',
+            cancelTitle: 'NO',
+            footerClass: 'p-2',
+            hideHeaderClose: false,
+            centered: true
+          }
+        )
+        .then(() => {
+          console.log(this.decks)
+          if (this.decks.length === 0) {
+            return this.$vToastify.error('You have no decks to delete')
+          }
+          Api.delete('/decks')
+          this.decks = ''
+          this.$vToastify.success('You have deleted all your decks')
+        })
+        .catch(() => {
+          this.$vToastify.error('Something went wrong')
+        })
+    },
+    deleteAllCollections: async function () {
+      this.$bvModal
+        .msgBoxConfirm(
+          'Please confirm that you want to delete All your Collections.',
+          {
+            title: 'Please Confirm',
+            size: 'sm',
+            buttonSize: 'sm',
+            okVariant: 'danger',
+            okTitle: 'YES',
+            cancelTitle: 'NO',
+            footerClass: 'p-2',
+            hideHeaderClose: false,
+            centered: true
+          }
+        )
+        .then(() => {
+          console.log(this.deckCollections)
+          if (this.deckCollections.length === 0) {
+            return this.$vToastify.error('You have no collections to delete')
+          }
+          Api.delete('/collections')
+          this.deleteAllCollections = ''
+          this.$vToastify.success('You have deleted all your collections')
+        })
+        .catch(() => {
+          this.$vToastify.error('Something went wrong')
+        })
+    },
     checkFormValidity() {
       const valid = this.$refs.form.checkValidity()
       this.passwordState = valid
@@ -154,9 +223,13 @@ export default {
   },
   mounted: async function () {
     const res = await Api.get('/users')
+    const decksfromUser = await Api.get('/decks')
+    const collectionsfromUser = await Api.get('/collections')
     this.form.firstName = res.data.firstName
     this.form.lastName = res.data.lastName
     this.form.email = res.data.email
+    this.decks = decksfromUser.data
+    this.deckCollections = collectionsfromUser.data
   }
 }
 </script>

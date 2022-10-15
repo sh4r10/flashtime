@@ -6,7 +6,10 @@
         <h1>Your Decks</h1>
         <b-button @click="setCurrentDeck(undefined)">Add new deck</b-button>
       </div>
-      <NoItems v-if="decks.length === 0" message="You do not have any decks. Click on New Deck to get started."/>
+      <NoItems
+        v-if="decks.length === 0"
+        message="You do not have any decks. Click on New Deck to get started."
+      />
       <div class="decks-container" v-else>
         <DeckCard
           v-for="deck in filteredDeck"
@@ -77,6 +80,14 @@ export default {
         this.$vToastify.error('Something went wrong')
       }
     },
+    // deletAllDecks: async function () {
+    //   try {
+    //     await Api.delete('/decks')
+    //     this.decks = ''
+    //   } catch (err) {
+    //     this.$vToastify.error('Something went wrong')
+    //   }
+    // },
     setCurrentDeck: function (id) {
       this.currentDeck = this.decks.find((deck) => deck._id === id)
       this.$bvModal.show('deck-modal')
