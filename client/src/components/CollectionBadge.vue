@@ -36,8 +36,10 @@ export default {
 <style scoped>
 .badge {
   background: var(--primary);
+  margin: 0;
+  padding: 0.25rem 0.5rem;
   margin-left: 5px;
   align-self: center;
-  text-transform: capitalize;
+  text-transform: lowercase;
 }
 </style>

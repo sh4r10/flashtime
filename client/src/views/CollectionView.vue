@@ -2,10 +2,31 @@
   <div>
     <Navbar />
     <b-container fluid class="main-container">
-      <h1>{{ collection.name }}</h1>
-      <NoItems v-if="decks.length === 0" message="This collection does not have any decks, click Add to start" variant="secondary"/>
+      <h2>{{ collection.name }}</h2>
+      <div class="headers">
+        <div>
+          <InlineSearch @search="(value) => (query = value)" variant="secondary"/>
+        </div>
+        <div class="align-right">
+          <b-form-select
+            v-model="selected"
+            @change="sort"
+            :options="options"
+            class="mr-3"
+            value-field="item"
+            text-field="name"
+            disabled-field="notEnabled"
+          ></b-form-select>
+          <AddNewDeck :decks="decksToAdd" @addDeck="addNewDeck" />
+        </div>
+      </div>
+      <NoItems
+        v-if="decks.length === 0"
+        message="This collection does not have any decks, click Add Deck to start"
+        variant="secondary"
+      />
       <DeckCard
-        v-for="deck in decks"
+        v-for="deck in filteredDecks"
         :key="deck._id"
         :deck="deck"
         :actions="[
@@ -19,18 +40,6 @@
         ]"
       />
     </b-container>
-    <div>
-      <b-form-select
-        v-model="selected"
-        @change="sort"
-        :options="options"
-        class="mb-3"
-        value-field="item"
-        text-field="name"
-        disabled-field="notEnabled"
-      ></b-form-select>
-    </div>
-    <AddNewDeck :decks="decksToAdd" @addDeck="addNewDeck" />
   </div>
 </template>
 <script>
@@ -39,12 +48,14 @@ import DeckCard from '../components/DeckCard.vue'
 import Navbar from '../components/Navbar.vue'
 import AddNewDeck from '../components/AddNewDeck.vue'
 import NoItems from '../components/NoItems.vue'
+import InlineSearch from '../components/InlineSearch.vue'
 
 export default {
   name: 'CollectionView',
   data() {
     return {
       decks: [],
+      query: '',
       collection: '',
       decksToAdd: [],
       selected: 'Alphabetically',
@@ -58,7 +69,8 @@ export default {
     DeckCard,
     Navbar,
     AddNewDeck,
-    NoItems
+    NoItems,
+    InlineSearch
   },
   mounted: async function () {
     try {
@@ -136,32 +148,65 @@ export default {
           this.sortAlphabetically()
       }
     }
+  },
+  computed: {
+    filteredDecks: function () {
+      return this.decks.filter((deck) => {
+        return deck.name.toLowerCase().includes(this.query.toLowerCase())
+      })
+    }
   }
 }
 </script>
 <style scoped>
-.box {
-  margin-left: 11%;
-  width: 200px;
-  height: 100px;
-  border: none;
-  background: transparent;
-  box-shadow: 0px 0px 16px rgba(234, 6, 6, 0.25);
-  background-color: rgba(225, 225, 225, 0.75);
-  text-decoration: none;
-}
-.button {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  text-align: right;
-}
 
+.main-container h2{
+  text-align: left;
+  width: 100%;
+  text-transform: capitalize;
+}
 .container-fluid {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   max-width: 900px;
+}
+
+.headers {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 1rem auto;
+}
+
+.headers > .align-right {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.headers .custom-select,
+.headers .custom-select:focus {
+  box-shadow: none;
+  border: 0.5px solid rgba(212, 79, 95, 0.2);
+  padding: 0.5rem auto;
+}
+
+@media screen and (max-width: 768px) {
+  .headers {
+    flex-direction: column;
+  }
+
+  .headers > .align-right {
+    margin-top: 1rem;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .headers > div:first-child {
+    width: 100%;
+  }
 }
 </style>
