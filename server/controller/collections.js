@@ -31,7 +31,7 @@ router.post('/', verifyToken, async (req, res) => {
   if (!validator.isLength(deckCollectionName, { max: 20 }))
     return res
       .status(400)
-      .json({ error: 'Collection name can not be more than 20 characters' })
+      .json({ error: 'Collection name can not be more than 20 character' })
   const newdeckCollection = new DeckCollection({
     name: deckCollectionName,
   })
@@ -106,6 +106,16 @@ router.put('/:id', verifyToken, async (req, res) => {
     res.json(collection)
   } catch (err) {
     res.status(500).json({ error: err })
+  }
+})
+
+router.delete('/', verifyToken, async (req, res) => {
+  try {
+    const userCollections = req.user.deckCollections.map((c) => c._id)
+    await DeckCollection.deleteMany({ _id: { $in: userCollections } })
+    res.sendStatus(204)
+  } catch (err) {
+    res.sendStatus(500)
   }
 })
 

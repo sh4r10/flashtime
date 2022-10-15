@@ -11,6 +11,7 @@
       <b-row>
         <RevisionDecksContainer />
       </b-row>
+
       <b-row>
         <TopCollections />
       </b-row>
