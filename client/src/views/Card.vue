@@ -36,7 +36,7 @@ export default {
     },
     async updateCard(id, front, back) {
       try {
-        await Api.put(`/cards/${id}`, { front, back })
+        await Api.patch(`/cards/${id}`, { front, back })
         this.$vToastify.success('Card updated')
         this.fetchCards()
       } catch (err) {

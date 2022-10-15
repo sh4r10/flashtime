@@ -40,7 +40,7 @@ router.get('/:id', verifyToken, async (req, res) => {
   }
 })
 
-router.put('/:id', verifyToken, async (req, res) => {
+router.patch('/:id', verifyToken, async (req, res) => {
   if (req.body.hasOwnProperty('deckID'))
     res.status(400).json({ message: 'ID cannot be change' })
   Card.findByIdAndUpdate(req.params.id, req.body)
