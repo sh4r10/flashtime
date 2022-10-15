@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-navbar toggleable="lg" variant="outlined">
+    <b-navbar toggleable="lg" variant="outlined" fixed>
       <b-navbar-brand @click="$router.push({ name: 'root' })">
         flashtime
       </b-navbar-brand>
@@ -72,24 +72,16 @@ export default {
 </script>
 
 <style scoped>
-nav {
-  background: none;
-  position: fixed;
-  top: 0;
-  padding: 1rem 2rem;
-  width: 100%;
-  z-index: 0;
-}
 .navbar {
   background: #fff;
   position: fixed;
   top: 0;
   padding: 1rem 2rem;
   width: 100%;
-  z-index: 0;
   font-family: 'Raleway', sans-serif;
   font-size: 1.1rem;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.05);
+  z-index: 1000;
 }
 
 div.navbar-brand {

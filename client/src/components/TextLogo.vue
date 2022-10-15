@@ -1,5 +1,5 @@
 <template>
-  <b-col>
+  <b-col class="logo-container">
     <p>flashtime</p>
   </b-col>
 </template>
@@ -14,7 +14,13 @@ export default {
 p {
   font-weight: 300;
   font-size: 2.5rem;
-  background: linear-gradient(to right, var(--secondary-light) 20%, var(--primary) 40%, var(--primary) 60%, var(--secondary-light) 80%);
+  background: linear-gradient(
+    to right,
+    var(--secondary-light) 20%,
+    var(--primary) 40%,
+    var(--primary) 60%,
+    var(--secondary-light) 80%
+  );
   background-clip: text;
   text-fill-color: transparent;
   -webkit-background-clip: text;
@@ -27,7 +33,5 @@ p {
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none; /* Standard syntax */
-
 }
-
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard-container">
     <Navbar />
-    <b-container>
+    <b-container fluid class="content-container">
       <b-row>
         <TextLogo />
       </b-row>
@@ -43,9 +43,14 @@ export default {
 
 <style scoped>
 .dashboard-container {
+  position: relative;
   display: flex;
   justify-content: center;
   flex-direction: column;
   min-height: 100vh;
+}
+
+.content-container{
+  z-index: 1;
 }
 </style>
