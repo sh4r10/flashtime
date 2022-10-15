@@ -90,7 +90,7 @@ export default {
     },
     updateCollectionName: async function (collectionId, newName) {
       try {
-        await Api.put(`/collections/${collectionId}`, { name: newName })
+        await Api.patch(`/collections/${collectionId}`, { name: newName })
         this.fetchCollections()
       } catch (err) {
         this.$vToastify.error('Something went wrong')

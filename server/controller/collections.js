@@ -93,7 +93,7 @@ router.put('/:id/decks/', verifyToken, async (req, res) => {
   }
 })
 
-router.put('/:id', verifyToken, async (req, res) => {
+router.patch('/:id', verifyToken, async (req, res) => {
   const collectionNameUpdate = req.body.name
   if (!req.user.deckCollections.some((c) => c._id == req.params.id))
     return res.sendStatus(403)
