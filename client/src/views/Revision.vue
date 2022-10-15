@@ -30,7 +30,7 @@ export default {
     return {
       currentCard: 0,
       cards: [],
-      deckName: 'Math',
+      deckName: '',
       progress: this.currentCard,
       value: '',
       max: ''
@@ -62,20 +62,22 @@ export default {
   },
   // eslint-disable-next-line vue/no-unused-components
   components: { Navbar, RevisionCard },
-  mounted: function () {
-    Api.get(`/decks/${this.$route.params.id}/cards/due`)
-      .then((res) => {
-        if (res.data.length === 0) {
-          this.$vToastify.success('You have no cards to revise.')
-          this.$router.push('/')
-        }
-        this.cards = res.data
-      })
-      .catch((err) => {
-        this.$vToastify.error('An error occurred.')
-        console.error(err)
+  mounted: async function () {
+    try {
+      const res = await Api.get(`/decks/${this.$route.params.id}/cards/due`)
+      if (res.data.length === 0) {
+        this.$vToastify.success('You have no cards to revise.')
         this.$router.push('/')
-      })
+      } else {
+        const deck = await Api.get(`/decks/${this.$route.params.id}`)
+        this.deckName = deck.data.name
+        this.cards = res.data
+      }
+    } catch (err) {
+      this.$vToastify.error('An error occurred.')
+      console.error(err)
+      this.$router.push('/')
+    }
   }
 }
 </script>

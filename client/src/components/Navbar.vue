@@ -2,7 +2,6 @@
   <div>
     <b-navbar toggleable="lg" variant="outlined">
       <b-navbar-brand @click="$router.push({ name: 'root' })">
-        <img src="../assets/images/logo.svg" />
         flashtime
       </b-navbar-brand>
 
@@ -98,10 +97,16 @@ div.navbar-brand {
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  background: linear-gradient(to right, var(--secondary-light) 20%, var(--primary) 40%, var(--primary) 60%, var(--secondary-light) 80%);
+  background-clip: text;
+  text-fill-color: transparent;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 div.navbar-brand img {
   margin-right: 0.5rem;
+  width: 40px;
 }
 
 .nav-item a.nav-link {
