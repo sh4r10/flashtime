@@ -103,12 +103,6 @@ div.navbar-brand {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-
-div.navbar-brand img {
-  margin-right: 0.5rem;
-  width: 40px;
-}
-
 .nav-item a.nav-link {
   color: var(--primary);
 }

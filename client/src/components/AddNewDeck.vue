@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-button v-b-modal.decks-to-add-modal>Add a new deck</b-button>
+    <b-button v-b-modal.decks-to-add-modal>Add Deck</b-button>
 
     <b-modal id="decks-to-add-modal" title="Add Decks" hide-footer>
       <div class="no-decks" v-if="decks.length === 0">
@@ -46,18 +46,23 @@ export default {
 </script>
 
 <style scoped>
-
-.no-decks{
+.no-decks {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin: 1rem auto;
 }
 
-.no-decks .btn{
+.btn {
   background: var(--secondary-light);
   color: white;
-  margin: 0;
+  font-size: 14px;
+  min-width: 120px;
+  border: none;
 }
 
+.btn:hover {
+  background: var(--secondary);
+  color: white;
+}
 </style>
