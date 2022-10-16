@@ -112,6 +112,7 @@ export default {
     try {
       const res = await Api.get(`/decks/${this.$route.params.id}`)
       this.deck = res.data
+      document.title += ` - ${this.deck.name}`
     } catch (err) {
       console.error(err)
     }

@@ -55,6 +55,7 @@ export default {
             }, 400)
           })
           this.currentCard++
+          document.title = `Revise - ${this.currentCard + 1} / ${this.cards.length}`
         } else {
           this.$vToastify.success('You are done with your revision.')
           this.$router.push('/')
@@ -77,6 +78,7 @@ export default {
         const deck = await Api.get(`/decks/${this.$route.params.id}`)
         this.deckName = deck.data.name
         this.cards = res.data
+        document.title = `Revise - ${this.currentCard + 1} / ${this.cards.length}`
       }
     } catch (err) {
       this.$vToastify.error('An error occurred.')

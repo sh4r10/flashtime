@@ -82,6 +82,7 @@ export default {
         `/collections/${this.$route.params.id}/decks`
       )
       this.decks = decksRes.data
+      document.title += ` - ${this.collection.name}`
     } catch (err) {
       console.error(err)
     }

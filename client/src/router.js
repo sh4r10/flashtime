@@ -15,7 +15,7 @@ import Search from './views/Search.vue'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
@@ -81,3 +81,11 @@ export default new Router({
     }
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  const uppercase = to.name.charAt(0).toUpperCase() + to.name.slice(1)
+  document.title = uppercase
+  next()
+})
+
+export default router
