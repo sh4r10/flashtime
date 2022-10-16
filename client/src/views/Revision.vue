@@ -48,12 +48,6 @@ export default {
         }
 
         if (this.currentCard + 1 < this.cards.length) {
-          await new Promise((resolve) => {
-            setTimeout(() => {
-              this.cardFlipped = false
-              resolve()
-            }, 400)
-          })
           this.currentCard++
           document.title = `Revise - ${this.currentCard + 1} / ${this.cards.length}`
         } else {
