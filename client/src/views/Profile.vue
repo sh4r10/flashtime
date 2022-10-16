@@ -1,95 +1,107 @@
 <template>
   <div>
-    <b-form @submit="onSubmit" v-if="show">
-      <b-form-group
-        id="input-group-1"
-        label="Email address:"
-        label-for="input-1"
-      >
-        <b-form-input
-          id="input-1"
-          v-model="form.email"
-          type="email"
-          placeholder="Enter email"
-          :disabled="!Boolean(ready)"
-          required
-        ></b-form-input>
-      </b-form-group>
+    <Navbar />
+    <div class="main-container">
+      <h2>Profile</h2>
+      <b-form @submit="onSubmit" class="main-form">
+        <b-form-group id="emailGroup" label="Email address:" label-for="email">
+          <b-form-input
+            id="email"
+            v-model="form.email"
+            type="email"
+            placeholder="Enter email"
+            :disabled="!Boolean(ready)"
+            required
+          ></b-form-input>
+        </b-form-group>
 
-      <b-form-group id="input-group-2" label="First Name:" label-for="input-2">
-        <b-form-input
-          id="input-2"
-          v-model="form.firstName"
-          placeholder="Enter First Name"
-          required
-        ></b-form-input>
-      </b-form-group>
-
-      <b-form-group id="input-group-3" label="Last Name:" label-for="input-3">
-        <b-form-input
-          id="input-3"
-          v-model="form.lastName"
-          placeholder="Enter Last Name"
-          required
-        ></b-form-input>
-      </b-form-group>
-
-      <div>
-        <b-button v-b-modal.modal-prevent-closing>Delete Account</b-button>
-
-        <b-modal
-          id="modal-prevent-closing"
-          ref="modal"
-          title="Delete your account"
-          @show="resetModal"
-          @hidden="resetModal"
-          @ok="handleOk"
-          ok-title="Delete"
-          ok-variant="danger"
+        <b-form-group
+          id="firstNameGroup"
+          label="First Name:"
+          label-for="firstName"
         >
-          <form ref="form" @submit.stop.prevent="handleSubmit">
-            <b-form-group
-              label="Please type your password"
-              label-for="password-input"
-              invalid-feedback="password is required"
-              :state="passwordState"
-            >
-              <b-form-input
-                id="name-input"
-                type="password"
-                v-model="password"
+          <b-form-input
+            id="firstName"
+            v-model="form.firstName"
+            placeholder="Enter First Name"
+            required
+          ></b-form-input>
+        </b-form-group>
+
+        <b-form-group id="lastNameGroup" label="Last Name:" label-for="input-3">
+          <b-form-input
+            id="input-3"
+            v-model="form.lastName"
+            placeholder="Enter Last Name"
+            required
+          ></b-form-input>
+        </b-form-group>
+        <div class="btn-container">
+          <b-button
+            id="secondaryBtn"
+            class="change-password"
+            @click="changePassword"
+            type="submit"
+            variant="outlined"
+            >Change password</b-button
+          >
+          <b-button type="submit" variant="outlined" id="primaryBtn">Update</b-button>
+        </div>
+      </b-form>
+      <div class="delete-data">
+        <h3>Delete Data</h3>
+        <div class="delete-action">
+          <p>Delete all decks from your account</p>
+          <b-button @click="deleteAllDecks">Delete Decks</b-button>
+        </div>
+        <div class="delete-action">
+          <p>Delete all collections from your account</p>
+          <b-button @click="deleteAllCollections"
+            >Delete Collections</b-button
+          >
+        </div>
+        <div>
+          <div class="delete-action">
+            <p>Delete your account. Proceed with caution.</p>
+            <b-button v-b-modal.modal-prevent-closing variant="outlined">Delete Account</b-button>
+          </div>
+
+          <b-modal
+            id="modal-prevent-closing"
+            ref="modal"
+            title="Delete your account"
+            @show="resetModal"
+            @hidden="resetModal"
+            @ok="handleOk"
+            ok-title="Delete"
+            ok-variant="danger"
+          >
+            <form ref="form" @submit.stop.prevent="handleSubmit">
+              <b-form-group
+                label="Please type your password"
+                label-for="password-input"
+                invalid-feedback="password is required"
                 :state="passwordState"
-                required
-              ></b-form-input>
-            </b-form-group>
-          </form>
-        </b-modal>
+              >
+                <b-form-input
+                  id="name-input"
+                  type="password"
+                  v-model="password"
+                  :state="passwordState"
+                  required
+                ></b-form-input>
+              </b-form-group>
+            </form>
+          </b-modal>
+        </div>
       </div>
-      <div class="mb-1">
-        <b-button @click="deleteAllDecks">Delete All Decks</b-button>
-      </div>
-      <div class="mb-1">
-        <b-button @click="deleteAllCollections"
-          >Delete All Collections</b-button
-        >
-      </div>
-
-      <b-button type="submit" variant="primary">Submit</b-button>
-      <b-button type="reset" variant="danger">Reset</b-button>
-    </b-form>
-
-    <b-button
-      class="change-password"
-      @click="changePassword"
-      type="submit"
-      variant="primary"
-      >Change password</b-button
-    >
+    </div>
   </div>
 </template>
 
 <script>
 import { Api } from '../Api'
+import Navbar from '../components/Navbar.vue'
 export default {
   name: 'profile',
   data() {
@@ -99,7 +111,6 @@ export default {
         firstName: '',
         lastName: ''
       },
-      show: true,
       ready: false,
       password: '',
       passwordState: null,
@@ -109,7 +120,6 @@ export default {
   },
   methods: {
     // Delete Account methods:
-
     deleteAccount: function () {},
     deleteAllDecks: async function () {
       this.$bvModal
@@ -196,13 +206,11 @@ export default {
       } catch (err) {
         this.$vToastify.error(err)
       }
-
       // Hide the modal manually
       this.$nextTick(() => {
         this.$bvModal.hide('modal-prevent-closing')
       })
     },
-
     // Update User information methods
     onSubmit: async function (event) {
       event.preventDefault()
@@ -230,6 +238,143 @@ export default {
     this.form.email = res.data.email
     this.decks = decksfromUser.data
     this.deckCollections = collectionsfromUser.data
-  }
+  },
+  components: { Navbar }
 }
 </script>
+
+<style scoped>
+.main-container {
+  max-width: 700px;
+  margin: inherit auto;
+  padding: 2rem;
+}
+
+.main-container h2{
+  text-align: left;
+  margin-bottom: 2rem;
+}
+
+.main-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-gap: 1rem 2rem;
+}
+
+.form-group {
+  margin: 0;
+}
+
+.form-group >>> label {
+  text-align: left;
+}
+
+#emailGroup {
+  grid-column: 1/-1;
+}
+
+#firstNameGroup {
+  grid-column: 1/3;
+}
+
+#lastNameGroup {
+  grid-column: 3/-1;
+}
+
+@media (max-width: 768px) {
+  .main-form {
+    grid-template-columns: 1fr;
+  }
+
+  #firstNameGroup {
+  grid-column: 1/-1;
+}
+
+#lastNameGroup {
+  grid-column: 1/-1;
+}
+
+}
+
+.btn-container{
+  grid-column: 1/-1;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+#primaryBtn{
+  background: var(--primary);
+  color: white;
+  font-size: 14px;
+}
+
+#primaryBtn:hover{
+  background: var(--primary-dark);
+}
+
+#secondaryBtn{
+  border: 1px solid var(--secondary);
+  color: var(--secondary);
+  font-size: 14px;
+}
+
+#secondaryBtn:hover{
+  background: var(--secondary);
+  color: white;
+}
+
+.delete-data{
+  margin-top: 5rem;
+  border: 1px solid var(--danger);
+  padding: 3rem;
+  border-radius: 8px;
+}
+
+.delete-data h3{
+  font-size: 1.5rem;
+  text-align: left;
+}
+
+.delete-action{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+  background: white;
+  padding: 1rem;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.05);
+  border-radius: 5px;
+}
+
+.delete-action p{
+  margin: 0;
+  font-size: 14px;
+}
+
+.delete-action:not(:last-child) button{
+  color: var(--danger);
+  background: none;
+  border: 1px solid var(--danger);
+  font-size: 14px;
+}
+
+.delete-action:not(:last-child) button:hover{
+  background: var(--danger);
+  color: white;
+}
+
+.delete-action:last-child button{
+  color: white;
+  background: var(--danger);
+  font-size: 14px;
+  border: none;
+}
+
+.delete-action:last-child button.btn:hover{
+  background: #dc3545 !important;
+}
+
+</style>

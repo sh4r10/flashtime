@@ -21,6 +21,7 @@
             v-model="name"
             :state="nameState"
             required
+            autofocus
           ></b-form-input>
         </b-form-group>
       </form>

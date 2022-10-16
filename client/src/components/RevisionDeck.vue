@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="{ name: 'revise', params: { id: deck._id } }" class="mt-3">
+  <router-link :to="{ name: 'revise', params: { id: deck._id } }" class="mt-3 revision-container">
     <p>
       {{ deck.name }}
       <CollectionBadge :deck="deck" />
@@ -21,7 +21,7 @@
 import CollectionBadge from './CollectionBadge.vue'
 export default {
   name: 'Deck',
-  props: ['deck', 'url'],
+  props: ['deck'],
   components: { CollectionBadge }
 }
 </script>

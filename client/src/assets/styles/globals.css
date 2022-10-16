@@ -30,8 +30,18 @@ body {
 .btn,
 .btn.btn-primary,
 .btn.btn-secondary,
+.btn.btn-outlined,
 button {
   box-shadow: none;
+}
+
+input.form-control,
+input.form-control:focus {
+  box-shadow: none;
+}
+
+input.form-control:focus {
+  border-color: var(--primary);
 }
 
 @media screen and (max-width: 768px) {

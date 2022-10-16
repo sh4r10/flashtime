@@ -42,6 +42,9 @@ export default {
     handleSearch: function (query) {
       this.$router.push({ name: 'search', query: { query: query } })
     }
+  },
+  mounted: function () {
+    document.title = 'Dashboard'
   }
 }
 </script>

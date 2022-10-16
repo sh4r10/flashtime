@@ -1,23 +1,19 @@
 /* eslint-disable vue/no-mutating-props */ /* eslint-disable
 vue/no-mutating-props */
 <template>
-  <div
-    class="card-container"
-    @click="cardFlipped = !cardFlipped"
-    v-bind:class="{ flipped: cardFlipped }"
-  >
-    <div class="card">
+  <div class="card-container" v-bind:class="{ flipped: cardFlipped }">
+    <div class="card" @click="cardFlipped = !cardFlipped">
       <div
-        :data-contentlength="Math.floor(card.front.length / 7)"
+        :data-contentlength="card ? Math.floor(card.front.length / 7) : 0"
         class="card-face card-front"
       >
-        <p>{{ card.front || '' }}</p>
+        <p>{{ card ? card.front : '' }}</p>
       </div>
       <div
-        :data-contentlength="Math.floor(card.back.length / 7)"
+        :data-contentlength="card ? Math.floor(card.back.length / 7) : 0"
         class="card-face card-back"
       >
-        {{ card.back || '' }}
+        {{ card ? card.back : '' }}
       </div>
     </div>
     <div
@@ -46,7 +42,13 @@ export default {
   },
   methods: {
     async handleClick(e) {
-      this.$emit('nextCard', this.card._id, e.target.value)
+      this.cardFlipped = false
+      await new Promise((resolve) =>
+        setTimeout(() => {
+          this.$emit('nextCard', this.card._id, e.target.value)
+          resolve()
+        }, 200)
+      )
     }
   }
 }
@@ -117,7 +119,7 @@ export default {
   transform: rotateY(180deg);
 }
 
-.card-front{
+.card-front {
   background-color: #fff;
 }
 

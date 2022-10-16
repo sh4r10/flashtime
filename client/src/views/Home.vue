@@ -12,9 +12,6 @@
           ><b-button variant="secondary">Log in</b-button></router-link
         >
       </div>
-      <!-- <div class="image-container">
-        <img src="../assets/images/home-bg.svg" />
-      </div> -->
       <div class="custom-shape-divider-bottom-1665711853">
         <svg
           data-name="Layer 1"
@@ -36,7 +33,10 @@
 import Navbar from '../components/Navbar.vue'
 export default {
   name: 'Home',
-  components: { Navbar }
+  components: { Navbar },
+  mounted: function () {
+    document.title = 'Flashtime - Home'
+  }
 }
 </script>
 

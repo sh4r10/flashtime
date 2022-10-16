@@ -9,10 +9,11 @@
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav v-if="loggedIn">
-          <b-nav-item @click="$router.push('/collections')"
+          <b-nav-item @click="$router.push({name:'revision'})">Revise</b-nav-item>
+          <b-nav-item @click="$router.push({name: 'collections'})"
             >Collections</b-nav-item
           >
-          <b-nav-item @click="$router.push('/decks')">Decks</b-nav-item>
+          <b-nav-item @click="$router.push({name: 'decks'})">Decks</b-nav-item>
         </b-navbar-nav>
 
         <!-- Right aligned nav items -->
@@ -51,11 +52,13 @@ export default {
   },
   mounted: function () {
     this.loggedIn = !!localStorage.getItem('accessToken')
-    Api.get('/users/')
-      .then((res) => {
-        this.currentUser = res.data.firstName + ' ' + res.data.lastName
-      })
-      .catch((err) => console.error(err))
+    if (this.loggedIn) {
+      Api.get('/users/')
+        .then((res) => {
+          this.currentUser = res.data.firstName + ' ' + res.data.lastName
+        })
+        .catch((err) => console.error(err))
+    }
   },
   methods: {
     signOut: async function () {
@@ -89,7 +92,13 @@ div.navbar-brand {
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  background: linear-gradient(to right, var(--secondary-light) 20%, var(--primary) 40%, var(--primary) 60%, var(--secondary-light) 80%);
+  background: linear-gradient(
+    to right,
+    var(--secondary-light) 20%,
+    var(--primary) 40%,
+    var(--primary) 60%,
+    var(--secondary-light) 80%
+  );
   background-clip: text;
   text-fill-color: transparent;
   -webkit-background-clip: text;

@@ -49,10 +49,10 @@ export default {
 
         if (this.currentCard + 1 < this.cards.length) {
           this.currentCard++
-          this.cardFlipped = false
+          document.title = `Revise - ${this.currentCard + 1} / ${this.cards.length}`
         } else {
           this.$vToastify.success('You are done with your revision.')
-          this.$router.push('/')
+          this.$router.back()
         }
       } catch (err) {
         console.error(err)
@@ -67,11 +67,12 @@ export default {
       const res = await Api.get(`/decks/${this.$route.params.id}/cards/due`)
       if (res.data.length === 0) {
         this.$vToastify.success('You have no cards to revise.')
-        this.$router.push('/')
+        this.$router.back()
       } else {
         const deck = await Api.get(`/decks/${this.$route.params.id}`)
         this.deckName = deck.data.name
         this.cards = res.data
+        document.title = `Revise - ${this.currentCard + 1} / ${this.cards.length}`
       }
     } catch (err) {
       this.$vToastify.error('An error occurred.')
@@ -105,4 +106,5 @@ export default {
 .progress-card {
   text-align: right;
 }
+
 </style>
