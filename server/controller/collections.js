@@ -63,6 +63,24 @@ router.get('/:id/decks', verifyToken, async (req, res) => {
   }
 })
 
+router.get('/:collectionId/decks/:deckId', verifyToken, async (req, res) => {
+  try {
+    const collectionId = req.params.collectionId
+    const deckId = req.params.deckId
+    const collection = await DeckCollection.findById(collectionId)
+    if (
+      req.user.deckCollection.some((c) => c.id == collectionId) &&
+      req.user.deck.some((c) => c._id == deckId) &&
+      collection.deck.some((d) => d._id == deckId)
+    ) {
+      collection.deck = await DeckCollection.findById(deckId).populate('deck')
+      res.json(collection.deck)
+    }
+  } catch (err) {
+    res.status(404).json({ error: err })
+  }
+})
+
 router.put('/:id/decks/', verifyToken, async (req, res) => {
   const deckId = req.body.deckId
   try {
