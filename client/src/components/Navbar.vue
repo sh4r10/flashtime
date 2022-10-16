@@ -51,11 +51,13 @@ export default {
   },
   mounted: function () {
     this.loggedIn = !!localStorage.getItem('accessToken')
-    Api.get('/users/')
-      .then((res) => {
-        this.currentUser = res.data.firstName + ' ' + res.data.lastName
-      })
-      .catch((err) => console.error(err))
+    if (this.loggedIn) {
+      Api.get('/users/')
+        .then((res) => {
+          this.currentUser = res.data.firstName + ' ' + res.data.lastName
+        })
+        .catch((err) => console.error(err))
+    }
   },
   methods: {
     signOut: async function () {
@@ -89,7 +91,13 @@ div.navbar-brand {
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  background: linear-gradient(to right, var(--secondary-light) 20%, var(--primary) 40%, var(--primary) 60%, var(--secondary-light) 80%);
+  background: linear-gradient(
+    to right,
+    var(--secondary-light) 20%,
+    var(--primary) 40%,
+    var(--primary) 60%,
+    var(--secondary-light) 80%
+  );
   background-clip: text;
   text-fill-color: transparent;
   -webkit-background-clip: text;

@@ -48,8 +48,13 @@ export default {
         }
 
         if (this.currentCard + 1 < this.cards.length) {
+          await new Promise((resolve) => {
+            setTimeout(() => {
+              this.cardFlipped = false
+              resolve()
+            }, 400)
+          })
           this.currentCard++
-          this.cardFlipped = false
         } else {
           this.$vToastify.success('You are done with your revision.')
           this.$router.push('/')

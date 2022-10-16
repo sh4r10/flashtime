@@ -8,16 +8,16 @@ vue/no-mutating-props */
   >
     <div class="card">
       <div
-        :data-contentlength="Math.floor(card.front.length / 7)"
+        :data-contentlength="card ? Math.floor(card.front.length / 7) : 0"
         class="card-face card-front"
       >
-        <p>{{ card.front || '' }}</p>
+        <p>{{ card ? card.front : ''}}</p>
       </div>
       <div
-        :data-contentlength="Math.floor(card.back.length / 7)"
+        :data-contentlength="card ? Math.floor(card.back.length / 7) : 0"
         class="card-face card-back"
       >
-        {{ card.back || '' }}
+        {{ card ? card.back : ''}}
       </div>
     </div>
     <div
