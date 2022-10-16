@@ -9,10 +9,11 @@
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav v-if="loggedIn">
-          <b-nav-item @click="$router.push('/collections')"
+          <b-nav-item @click="$router.push({name:'revision'})">Revise</b-nav-item>
+          <b-nav-item @click="$router.push({name: 'collections'})"
             >Collections</b-nav-item
           >
-          <b-nav-item @click="$router.push('/decks')">Decks</b-nav-item>
+          <b-nav-item @click="$router.push({name: 'decks'})">Decks</b-nav-item>
         </b-navbar-nav>
 
         <!-- Right aligned nav items -->

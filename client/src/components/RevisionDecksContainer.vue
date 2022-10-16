@@ -5,7 +5,7 @@
     <NoRevisions v-else-if="noRevisionDecks"/>
     <b-container fluid v-else>
       <b-row v-for="deck in topDecks" :key="deck._id">
-        <RevisionDeck :deck="deck" url="/" />
+        <RevisionDeck :deck="deck" />
       </b-row>
     </b-container>
   </b-col>

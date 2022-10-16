@@ -61,7 +61,7 @@ const router = new Router({
     },
     {
       path: '/revision',
-      name: 'revisionPage',
+      name: 'revision',
       component: RevisionPage
     },
     {
