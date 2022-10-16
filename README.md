@@ -78,4 +78,4 @@ The main purpose is to enhance the learning experience of the website's users by
 
 ## Teaser (MS3)
 
-![Teaser](./images/Myproject-1.png)
+![Teaser](./images/Myproject-1 (1).png)
