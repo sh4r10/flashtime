@@ -38,7 +38,6 @@ export default {
   grid-template-columns: 2fr 3fr auto;
   text-align: left;
   padding: 2rem;
-  margin-top: 1rem;
   border: none;
   background: #fff;
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);

@@ -101,13 +101,13 @@ button:hover {
 }
 
 @media screen and (max-width: 1200px) {
-  .collection-container {
+  .collections-container {
     grid-template-columns: repeat(2, minmax(200px, 1fr));
   }
 }
 
 @media screen and (max-width: 768px) {
-  .collection-container {
+  .collections-container {
     grid-template-columns: 1fr;
   }
 }

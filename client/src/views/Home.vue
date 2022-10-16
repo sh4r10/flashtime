@@ -41,8 +41,6 @@ export default {
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
-
 .main-home-container{
   padding: 0;
 }

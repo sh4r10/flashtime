@@ -1,20 +1,31 @@
 <template>
-  <div class="main-container">
-    <Navbar/>
+  <div>
+    <Navbar />
     <CardModal
       :card="currentCard"
       @updateCard="updateCard"
       @createCard="createCard"
     />
-    <h1>{{deck ? deck.name : ''}} <span v-if="!!deck"><CollectionBadge :deck="deck || undefined"/>
-    </span></h1>
-    <b-container fluid>
-      <div class="actions">
-      <b-button class="add-button" variant="outlined" @click="setCurrentCard(undefined)">Add Card</b-button>
-    </div>
-    <NoItems v-if="cards.length === 0" message="This deck does not have any cards, click Create to add a card" variant="secondary"/>
+    <b-container fluid class="main-container">
+      <h2>
+        {{ deck ? deck.name : '' }}
+        <span v-if="!!deck"
+          ><CollectionBadge :deck="deck || undefined" />
+        </span>
+      </h2>
+      <div class="headers">
+        <div>
+          <InlineSearch @search="(value) => (query = value)" variant="secondary"/>
+        </div>
+        <b-button @click="setCurrentCard(undefined)">Create</b-button>
+      </div>
+      <NoItems
+        v-if="cards.length === 0"
+        message="This deck does not have any cards, click Create to add a card"
+        variant="secondary"
+      />
       <Card
-        v-for="card in cards"
+        v-for="card in filteredCards"
         :key="card._id"
         :card="card"
         @deleteCard="deleteCard"
@@ -30,24 +41,31 @@ import CardModal from '../components/CardModal.vue'
 import CollectionBadge from '../components/CollectionBadge.vue'
 import Navbar from '../components/Navbar.vue'
 import NoItems from '../components/NoItems.vue'
+import InlineSearch from '../components/InlineSearch.vue'
 export default {
   name: 'DeckView',
   data() {
     return {
       cards: [],
       currentCard: undefined,
-      deck: undefined
+      deck: undefined,
+      query: ''
     }
   },
   methods: {
     fetchCards: function () {
       Api.get(`/decks/${this.$route.params.id}/cards`)
-        .then(res => { this.cards = res.data })
-        .catch(err => console.error(err))
+        .then((res) => {
+          this.cards = res.data
+        })
+        .catch((err) => console.error(err))
     },
     async createCard(front, back) {
       try {
-        await Api.post(`/decks/${this.$route.params.id}/cards/`, { front, back })
+        await Api.post(`/decks/${this.$route.params.id}/cards/`, {
+          front,
+          back
+        })
         this.fetchCards()
       } catch (err) {
         this.$vToastify.error('Something went wrong')
@@ -71,7 +89,24 @@ export default {
       this.$bvModal.show('card-modal')
     }
   },
-  components: { Card, CardModal, CollectionBadge, Navbar, NoItems },
+  computed: {
+    filteredCards: function () {
+      return this.cards.filter((card) => {
+        return (
+          card.front.toLowerCase().includes(this.query.toLowerCase()) ||
+          card.back.toLowerCase().includes(this.query.toLowerCase())
+        )
+      })
+    }
+  },
+  components: {
+    Card,
+    CardModal,
+    CollectionBadge,
+    Navbar,
+    NoItems,
+    InlineSearch
+  },
   mounted: async function () {
     this.fetchCards()
     try {
@@ -81,24 +116,9 @@ export default {
       console.error(err)
     }
   }
-
 }
 </script>
 <style scoped>
-.action {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-}
-.action .b-icon {
-  font-size: 1.25rem;
-  cursor: pointer;
-  box-sizing: content-box;
-  padding: 3px;
-}
-.actions .bi-pencil{
-  color: var(--primary);
-}
 .container-fluid {
   display: flex;
   flex-direction: column;
@@ -107,40 +127,53 @@ export default {
   max-width: 900px;
 }
 
-h1{
+h2 {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
-  margin-bottom: 2rem;
+  width: 100%;
 }
 
-h1 span{
-  font-size: 1rem;
+h2 >>> .badge {
+  margin: auto;
+  margin-left: 1rem;
+  font-size: 14px;
 }
 
-.actions{
+.actions {
   width: 100%;
   text-align: right;
 }
 
-button,
-button:focus,
-button:hover {
-  background: none;
-  border: 1px solid var(--secondary);
-  color: var(--secondary);
-  padding: 0.25rem 1.5rem;
-  outline: none;
-  transition: 0.2s;
-  border-radius: 5px;
-  text-transform: uppercase;
-  font-size: 14px;
+.headers {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 1.5rem auto;
 }
 
-button:hover {
-  background: var(--secondary);
-  color: #fff;
-  border: 1px solid var(--secondary);
+.headers > .align-right {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
+
+.btn {
+  background: var(--secondary-light);
+  color: white;
+  font-size: 14px;
+  min-width: 120px;
+  border: none;
+}
+
+.btn:hover {
+  background: var(--secondary);
+  color: white;
+}
+
+.main-container >>> .card:not(:last-child) {
+  margin-bottom: 1rem;
+}
+
 </style>

@@ -8,4 +8,5 @@ const deckCollectionSchema = new Schema(
   },
   { timestamps: true }
 )
+deckCollectionSchema.index({ '$**': 'text' })
 module.exports = mongoose.model('DeckCollection', deckCollectionSchema)

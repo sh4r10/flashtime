@@ -8,8 +8,11 @@ require('dotenv').config()
 
 const userRoutes = require('./controller/users')
 const authController = require('./controller/authentication')
-const deckRoutes = require('./controller/decks')
-const deckCollectionRoutes = require('./controller/collections')
+const { deckController, deckSearch } = require('./controller/decks')
+const {
+  collectionController,
+  collectionSearch,
+} = require('./controller/collections')
 const cardController = require('./controller/cards')
 
 // Variables
@@ -35,6 +38,7 @@ mongoose.connect(
 const app = express()
 const cookieParser = require('cookie-parser')
 const trim = require('./middlewares/trim')
+const verifyToken = require('./middlewares/verifyToken')
 // Parse requests of content-type 'application/json'
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
@@ -53,12 +57,23 @@ app.use(trim)
 // Import routes
 app.use('/api/users', userRoutes)
 app.use('/api/auth', authController)
-app.use('/api/decks', deckRoutes)
-app.use('/api/collections', deckCollectionRoutes)
+app.use('/api/decks', deckController)
+app.use('/api/collections', collectionController)
 app.use('/api/cards', cardController)
 
 app.get('/api', function (req, res) {
   res.json({ message: 'Welcome to your DIT342 backend ExpressJS project!' })
+})
+
+app.get('/api/search', verifyToken, async (req, res) => {
+  try {
+    const { query } = req.query
+    const decks = await deckSearch(req, query)
+    const collections = await collectionSearch(req, query)
+    res.json({ decks, collections })
+  } catch (err) {
+    res.sendStatus(500)
+  }
 })
 
 // Catch all non-error handler for api (i.e., 404 Not Found)

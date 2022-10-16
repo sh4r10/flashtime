@@ -6,7 +6,7 @@
         <TextLogo />
       </b-row>
       <b-row>
-        <Searchbar />
+        <Searchbar @search="handleSearch"/>
       </b-row>
       <b-row>
         <RevisionDecksContainer />
@@ -37,6 +37,11 @@ export default {
     TextLogo,
     TopCollections,
     RevisionDecksContainer
+  },
+  methods: {
+    handleSearch: function (query) {
+      this.$router.push({ name: 'search', query: { query: query } })
+    }
   }
 }
 </script>

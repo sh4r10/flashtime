@@ -1,10 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
-
-@font-face {
-  font-family: 'Adelia';
-  src: local('Adelia'), url(../fonts/adelia.ttf) format('truetype');
-  src: local('Adelia'), url(../fonts/adelia.otf) format('opentype');
-}
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap');
 
 * {
   margin: 0;
@@ -30,6 +25,13 @@ body {
 
 .main-container {
   margin: 8rem auto;
+}
+
+.btn,
+.btn.btn-primary,
+.btn.btn-secondary,
+button {
+  box-shadow: none;
 }
 
 @media screen and (max-width: 768px) {

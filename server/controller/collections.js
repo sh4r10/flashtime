@@ -3,7 +3,6 @@ const DeckCollection = require('../models/deckCollection.schema')
 const Deck = require('../models/deck.schema')
 const User = require('../models/user.schema')
 const verifyToken = require('../middlewares/verifyToken')
-const { collection } = require('../models/deck.schema')
 const validator = require('validator')
 
 router.get('/', verifyToken, async (req, res) => {
@@ -31,7 +30,7 @@ router.post('/', verifyToken, async (req, res) => {
   if (!validator.isLength(deckCollectionName, { max: 20 }))
     return res
       .status(400)
-      .json({ error: 'Collection name can not be more than 20 characters' })
+      .json({ error: 'Collection name can not be more than 20 character' })
   const newdeckCollection = new DeckCollection({
     name: deckCollectionName,
   })
@@ -109,6 +108,16 @@ router.patch('/:id', verifyToken, async (req, res) => {
   }
 })
 
+router.delete('/', verifyToken, async (req, res) => {
+  try {
+    const userCollections = req.user.deckCollections.map((c) => c._id)
+    await DeckCollection.deleteMany({ _id: { $in: userCollections } })
+    res.sendStatus(204)
+  } catch (err) {
+    res.sendStatus(500)
+  }
+})
+
 router.delete('/:id', verifyToken, async (req, res) => {
   const collectionID = req.params.id
   if (!req.user.deckCollections.some((c) => c._id == collectionID))
@@ -147,4 +156,15 @@ router.delete('/:collectionId/decks/:deckId', verifyToken, async (req, res) => {
   }
 })
 
-module.exports = router
+const search = async (req, query) => {
+  const collections = await DeckCollection.find({
+    _id: { $in: req.user.deckCollections },
+    $text: { $search: query },
+  }).limit(5)
+  return collections
+}
+
+module.exports = {
+  collectionController: router,
+  collectionSearch: search,
+}

@@ -2,11 +2,30 @@
   <div class="main-container">
     <Navbar />
     <div class="content-container">
+      <h2>Your Decks</h2>
       <div class="headers">
-        <h1>Your Decks</h1>
-        <b-button @click="setCurrentDeck(undefined)">Add new deck</b-button>
+        <div>
+          <InlineSearch @search="(value) => (query = value)" />
+        </div>
+        <div class="align-right">
+          <b-form-select
+            v-model="selected"
+            @change="sort"
+            :options="options"
+            class="mr-3"
+            value-field="item"
+            text-field="name"
+            disabled-field="notEnabled"
+          ></b-form-select>
+          <b-button @click="setCurrentDeck(undefined)" variant="outlined"
+            >New Deck</b-button
+          >
+        </div>
       </div>
-      <NoItems v-if="decks.length === 0" message="You do not have any decks. Click on New Deck to get started."/>
+      <NoItems
+        v-if="decks.length === 0"
+        message="You do not have any decks. Click on New Deck to get started."
+      />
       <div class="decks-container" v-else>
         <DeckCard
           v-for="deck in filteredDeck"
@@ -29,28 +48,40 @@ import DeckModal from '../components/DeckModal.vue'
 import Navbar from '../components/Navbar.vue'
 import DeckCard from '../components/DeckCard.vue'
 import NoItems from '../components/NoItems.vue'
+import InlineSearch from '../components/InlineSearch.vue'
 
 export default {
+  name: 'Decks',
   data() {
     return {
       decks: [],
-      search: '',
-      currentDeck: undefined
+      query: '',
+      currentDeck: undefined,
+      selected: 'Newest to Oldest',
+      options: [
+        { item: 'Alphabetically', name: 'Alphabetically' },
+        { item: 'Newest to Oldest', name: 'Newest to Oldest' },
+        { item: 'Oldest to Newest', name: 'Oldest to Newest' },
+        { item: 'Number of Cards', name: 'Number of Cards' }
+      ]
     }
   },
   components: {
     DeckModal,
     Navbar,
     DeckCard,
-    NoItems
+    NoItems,
+    InlineSearch
   },
   methods: {
-    fetchDecks: function () {
-      Api.get('/decks')
-        .then((res) => {
-          this.decks = res.data
-        })
-        .catch((err) => console.error(err))
+    fetchDecks: async function () {
+      try {
+        const res = await Api.get('/decks')
+        this.decks = res.data
+        this.sort()
+      } catch (err) {
+        console.error(err)
+      }
     },
     async createDeck(name) {
       try {
@@ -77,23 +108,80 @@ export default {
         this.$vToastify.error('Something went wrong')
       }
     },
+    // deletAllDecks: async function () {
+    //   try {
+    //     await Api.delete('/decks')
+    //     this.decks = ''
+    //   } catch (err) {
+    //     this.$vToastify.error('Something went wrong')
+    //   }
+    // },
     setCurrentDeck: function (id) {
       this.currentDeck = this.decks.find((deck) => deck._id === id)
       this.$bvModal.show('deck-modal')
     },
-    handleInputChange: function (input) {
-      this.query = input
+    sort: function () {
+      switch (this.selected) {
+        case 'Newest to Oldest':
+          this.sortByNewest()
+          break
+        case 'Alphabetically':
+          this.sortAlphabetically()
+          break
+        case 'Oldest to Newest':
+          this.sortByOldest()
+          break
+        case 'Number of Cards':
+          this.sortByNumberOfCards()
+          break
+        default:
+          this.sortAlphabetically()
+      }
+    },
+    sortAlphabetically: function () {
+      this.decks.sort((a, b) => {
+        if (a.name.toLowerCase() < b.name.toLowerCase()) {
+          return -1
+        }
+        if (a.name.toLowerCase() > b.name.toLowerCase()) {
+          return 1
+        }
+        return 0
+      })
+    },
+    sortByNewest: function () {
+      this.decks.sort((a, b) => {
+        if (a.createdAt > b.createdAt) {
+          return -1
+        }
+        if (a.createdAt < b.createdAt) {
+          return 1
+        }
+        return 0
+      })
+    },
+    sortByOldest: function () {
+      this.decks.sort((a, b) => {
+        if (a.createdAt < b.createdAt) {
+          return -1
+        }
+        if (a.createdAt > b.createdAt) {
+          return 1
+        }
+        return 0
+      })
+    },
+    sortByNumberOfCards: function () {
+      this.decks.sort((a, b) => a.cards.length < b.cards.length)
     }
   },
   mounted: function () {
-    Api.get('/decks')
-      .then((res) => (this.decks = res.data))
-      .catch((err) => console.error(err))
+    this.fetchDecks()
   },
   computed: {
     filteredDeck() {
       return this.decks.filter((deck) =>
-        deck.name.toLowerCase().includes(this.search)
+        deck.name.toLowerCase().includes(this.query.toLowerCase())
       )
     },
     deckActions() {
@@ -135,7 +223,7 @@ export default {
 <style scoped>
 .content-container {
   max-width: 900px;
-  margin: auto;
+  margin: 0 auto;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -143,8 +231,17 @@ export default {
   padding: 2rem;
 }
 
+h2 {
+  text-align: left;
+  width: 100%;
+}
+
 .decks-container {
   width: 100%;
+}
+
+.decks-container >>> .deck-container:not(:last-child) {
+  margin-bottom: 1rem;
 }
 
 .headers {
@@ -152,9 +249,46 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin: 1.5rem auto;
 }
 
-.headers h1 {
-  width: auto;
+.headers > .align-right {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.headers .custom-select,
+.headers .custom-select:focus {
+  box-shadow: none;
+  border: 0.5px solid rgba(212, 79, 95, 0.2);
+  padding: 0.5rem auto;
+}
+.btn {
+  background: var(--primary);
+  color: white;
+  font-size: 14px;
+  min-width: 120px;
+}
+
+.btn:hover {
+  background: var(--primary-dark);
+  color: white;
+}
+
+@media screen and (max-width: 768px) {
+  .headers {
+    flex-direction: column;
+  }
+
+  .headers > .align-right {
+    margin-top: 1rem;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .headers > div:first-child {
+    width: 100%;
+  }
 }
 </style>

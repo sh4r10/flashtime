@@ -1,9 +1,12 @@
 const router = require('express').Router()
 const Deck = require('../models/deck.schema')
+const DeckCollection = require('../models/deckCollection.schema')
 const User = require('../models/user.schema')
 const Card = require('../models/card.schema')
 const verifyToken = require('../middlewares/verifyToken')
 const validator = require('validator')
+const { route } = require('express/lib/application')
+const { deleteMany } = require('../models/deck.schema')
 
 router.get('/', verifyToken, async (req, res) => {
   try {
@@ -156,4 +159,34 @@ router.delete('/:id', verifyToken, (req, res) => {
     })
 })
 
-module.exports = router
+router.delete('/', verifyToken, async (req, res) => {
+  try {
+    const userCollections = req.user.deckCollections.map((c) => c._id)
+    await Deck.deleteMany({ _id: { $in: req.user.decks } })
+    await DeckCollection.updateMany(
+      {
+        _id: { $in: userCollections },
+      },
+      { deck: [] }
+    )
+    await User.findByIdAndUpdate(req.user._id, { decks: [] })
+    res.sendStatus(204)
+  } catch (err) {
+    res.sendStatus(500)
+  }
+})
+
+const search = async (req, query) => {
+  const decks = await Deck.find({
+    _id: { $in: req.user.decks },
+    $text: { $search: query },
+  })
+    .populate('cards')
+    .limit(5)
+  return decks
+}
+
+module.exports = {
+  deckController: router,
+  deckSearch: search,
+}

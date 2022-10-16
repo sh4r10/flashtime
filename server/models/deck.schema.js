@@ -10,4 +10,5 @@ const deckSchema = new Schema(
   { timestamps: true }
 )
 
+deckSchema.index({ '$**': 'text' })
 module.exports = mongoose.model('Deck', deckSchema)
