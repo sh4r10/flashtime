@@ -3,7 +3,6 @@ const DeckCollection = require('../models/deckCollection.schema')
 const Deck = require('../models/deck.schema')
 const User = require('../models/user.schema')
 const verifyToken = require('../middlewares/verifyToken')
-const { collection } = require('../models/deck.schema')
 const validator = require('validator')
 
 router.get('/', verifyToken, async (req, res) => {
@@ -157,4 +156,15 @@ router.delete('/:collectionId/decks/:deckId', verifyToken, async (req, res) => {
   }
 })
 
-module.exports = router
+const search = async (req, query) => {
+  const collections = await DeckCollection.find({
+    _id: { $in: req.user.deckCollections },
+    $text: { $search: query },
+  }).limit(5)
+  return collections
+}
+
+module.exports = {
+  collectionController: router,
+  collectionSearch: search,
+}

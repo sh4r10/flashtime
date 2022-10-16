@@ -40,7 +40,6 @@ div.deck-container {
   padding: 1rem 2rem;
   background: #fff;
   margin: 0;
-  margin-top: 1rem;
   border-radius: 5px;
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.05);
   text-decoration: none;

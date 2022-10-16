@@ -240,6 +240,10 @@ h2 {
   width: 100%;
 }
 
+.decks-container >>> .deck-container:not(:last-child) {
+  margin-bottom: 1rem;
+}
+
 .headers {
   width: 100%;
   display: flex;

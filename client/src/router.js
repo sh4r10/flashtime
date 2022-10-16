@@ -11,6 +11,7 @@ import DeckPage from './views/DeckPage.vue'
 import RevisionPage from './views/RevisionPage.vue'
 import Profile from './views/Profile.vue'
 import PasswordUpdate from './views/PasswordUpdate.vue'
+import Search from './views/Search.vue'
 
 Vue.use(Router)
 
@@ -72,6 +73,11 @@ export default new Router({
       path: '/profile/password',
       name: 'passwordUpdate',
       component: PasswordUpdate
+    },
+    {
+      path: '/search',
+      name: 'search',
+      component: Search
     }
   ]
 })
