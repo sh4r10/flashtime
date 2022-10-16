@@ -1,11 +1,28 @@
 <template>
-  <b-col cols="12" md="8" class="mx-auto mb-3 container">
-    <input type="text" placeholder="Search for deck and decks collections..." />
+  <b-col cols="12" md="8" class="mx-auto mb-3 container" id="searchContainer">
+    <b-form @submit="handleSubmit">
+      <input type="text" v-model="query" placeholder="Search for decks and collections..."/>
+    </b-form>
   </b-col>
 </template>
 <script>
 export default {
-  name: 'Searchbar'
+  name: 'Searchbar',
+  props: ['initial'],
+  data() {
+    return {
+      query: ''
+    }
+  },
+  methods: {
+    handleSubmit: function (e) {
+      e.preventDefault()
+      this.$emit('search', this.query)
+    }
+  },
+  mounted: function () {
+    this.query = this.initial
+  }
 }
 </script>
 <style scoped>

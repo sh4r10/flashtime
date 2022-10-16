@@ -176,4 +176,17 @@ router.delete('/', verifyToken, async (req, res) => {
   }
 })
 
-module.exports = router
+const search = async (req, query) => {
+  const decks = await Deck.find({
+    _id: { $in: req.user.decks },
+    $text: { $search: query },
+  })
+    .populate('cards')
+    .limit(5)
+  return decks
+}
+
+module.exports = {
+  deckController: router,
+  deckSearch: search,
+}

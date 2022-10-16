@@ -1,12 +1,12 @@
 <template>
-  <div class="main-container">
+  <div>
     <Navbar />
     <CardModal
       :card="currentCard"
       @updateCard="updateCard"
       @createCard="createCard"
     />
-    <b-container fluid>
+    <b-container fluid class="main-container">
       <h2>
         {{ deck ? deck.name : '' }}
         <span v-if="!!deck"
@@ -131,7 +131,6 @@ h2 {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  margin-bottom: 2rem;
   width: 100%;
 }
 
@@ -171,6 +170,10 @@ h2 >>> .badge {
 .btn:hover {
   background: var(--secondary);
   color: white;
+}
+
+.main-container >>> .card:not(:last-child) {
+  margin-bottom: 1rem;
 }
 
 </style>

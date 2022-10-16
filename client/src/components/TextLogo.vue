@@ -1,6 +1,6 @@
 <template>
   <b-col class="logo-container">
-    <p>flashtime</p>
+    <p id="logoText">flashtime</p>
   </b-col>
 </template>
 
