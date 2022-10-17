@@ -7,6 +7,7 @@ const verifyToken = require('../middlewares/verifyToken')
 const validator = require('validator')
 const { route } = require('express/lib/application')
 const { deleteMany } = require('../models/deck.schema')
+const hateoasLinker = require('express-hateoas-links')
 
 router.get('/', verifyToken, async (req, res) => {
   try {
@@ -25,6 +26,8 @@ router.get('/', verifyToken, async (req, res) => {
     res.sendStatus(500)
   }
 })
+
+router.get('/', verifyToken, (req, res) => {})
 
 router.get('/:id', verifyToken, async (req, res) => {
   const deckID = req.params.id
