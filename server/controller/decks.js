@@ -76,7 +76,7 @@ router.get('/:id/cards/due', verifyToken, async (req, res) => {
   }
 })
 
-router.post('/', verifyToken, async (req, res) => {
+router.post('/', verifyToken, (req, res) => {
   const deckName = req.body.name
   if (!validator.isLength(deckName, { max: 20 }))
     return res
@@ -116,7 +116,7 @@ router.post('/:id/cards', verifyToken, async (req, res) => {
       deck.cards.push(newCard._id)
       await deck.save()
       await newCard.save()
-      res.json(newCard)
+      res.status(201).json(newCard)
     } else {
       res.status(403).json('ID is not valid')
     }
@@ -125,7 +125,7 @@ router.post('/:id/cards', verifyToken, async (req, res) => {
   }
 })
 
-router.put('/:id', verifyToken, async (req, res) => {
+router.put('/:id', verifyToken, (req, res) => {
   const deckID = req.params.id
   const updateDeckName = req.body.name
 
