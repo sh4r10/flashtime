@@ -77,7 +77,6 @@ router.put('/:collectionId/decks/:deckId', verifyToken, async (req, res) => {
     const collection = await DeckCollection.findById(collectionId)
     const deck = await Deck.findById(deckId)
     // deck already exists in the collection
-    console.log(deck)
     if (collection.deck.some((d) => d._id == deckId)) {
       return res.sendStatus(400)
     }
