@@ -12,7 +12,7 @@ Vue.use(BootstrapVue)
 Vue.use(BootstrapVueIcons)
 Vue.use(VueToastify, {
   errorDuration: 6000,
-  iconEnabled: false,
+  iconEnabled: true,
   canPause: false,
   theme: 'light'
 })
