@@ -29,9 +29,7 @@ export default {
   methods: {
     addDeck: async function (deckId) {
       try {
-        await Api.put(`/collections/${this.$route.params.id}/decks`, {
-          deckId
-        })
+        await Api.put(`/collections/${this.$route.params.id}/decks/${deckId}`)
       } catch (err) {
         this.$vToastify.error('Something went wrong')
       }
