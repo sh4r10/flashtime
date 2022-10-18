@@ -83,7 +83,8 @@ export default {
         this.$vToastify.success('Password updated successfully')
         this.$router.push('/profile')
       } catch (err) {
-        this.$vToastify.error('Something went wrong')
+        const error = err.response.data.error
+        this.$vToastify.error(error)
       }
     }
   },
@@ -101,7 +102,7 @@ h1 {
   margin-bottom: 2rem;
 }
 
-.btn-container{
+.btn-container {
   margin-top: 1rem;
   width: 100%;
   display: flex;
@@ -109,20 +110,19 @@ h1 {
   gap: 1rem;
 }
 
-.btn-container button{
+.btn-container button {
   min-width: 120px;
   font-size: 14px;
 }
 
-#backBtn{
+#backBtn {
   border: 1px solid var(--secondary-light);
   color: var(--secondary-light);
   background: none;
 }
 
-#backBtn:hover{
+#backBtn:hover {
   background: var(--secondary-light) !important;
   color: var(--white) !important;
 }
-
 </style>
