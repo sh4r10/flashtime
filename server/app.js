@@ -61,7 +61,7 @@ app.use('/api/v1/decks', deckController)
 app.use('/api/v1/collections', collectionController)
 app.use('/api/v1/cards', cardController)
 
-app.get('/api/v1', function (req, res) {
+app.get('/api/', function (req, res) {
   res.json({ message: 'Welcome to your DIT342 backend ExpressJS project!' })
 })
 
