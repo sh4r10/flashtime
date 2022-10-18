@@ -22,13 +22,6 @@ router.get('/', verifyToken, (req, res) => {
   })
 })
 
-router.get('/password', verifyToken, (req, res) => {
-  const { password } = req.user
-  res.json({
-    password: password,
-  })
-})
-
 router.post('/', async (req, res) => {
   try {
     const {
@@ -68,7 +61,6 @@ router.put('/', verifyToken, async (req, res) => {
   const firstNameUpdate = req.body.firstName
   const lastNameUpdate = req.body.lastName
   const emailUpdate = req.body.email
-  const passwordUpdate = req.body.password
   try {
     const userInfo = await User.findByIdAndUpdate(
       userId,
@@ -84,20 +76,6 @@ router.put('/', verifyToken, async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err })
   }
-  // User.findById(userId)
-  //   .then((userInfo) => {
-  //     userInfo.firstName = firstNameUpdate
-  //     userInfo.lastName = lastNameUpdate
-  //     userInfo.email = emailUpdate
-  //     userInfo.decks.push()
-  //     return userInfo.save()
-  //   })
-  //   .then((result) => {
-  //     res.json(result)
-  //   })
-  //   .catch((err) => {
-  //     res.json({ message: err })
-  //   })
 })
 
 router.patch('/password', verifyToken, async (req, res) => {

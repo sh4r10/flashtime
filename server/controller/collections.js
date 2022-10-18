@@ -25,6 +25,37 @@ router.get('/:id', verifyToken, (req, res) => {
     })
 })
 
+router.get('/:id/decks', verifyToken, async (req, res) => {
+  if (!req.user.deckCollections.some((c) => c._id == req.params.id))
+    return res.sendStatus(403)
+  try {
+    const collectionId = req.params.id
+    const collection = await DeckCollection.findById(collectionId).populate(
+      'deck'
+    )
+    res.json(collection.deck)
+  } catch (err) {
+    res.sendStatus(500)
+  }
+})
+
+router.get('/:id/decks/:deckId/', verifyToken, async (req, res) => {
+  if (!req.user.deckCollections.some((c) => c._id == req.params.id))
+    return res.sendStatus(403)
+
+  try {
+    const collectionId = req.params.id
+    const deckId = req.params.deckId
+    const collection = await DeckCollection.findById(collectionId).populate(
+      'deck'
+    )
+    const c = collection.deck.filter((d) => d._id == deckId)
+    res.status(200).json(c)
+  } catch (err) {
+    res.status(500).json({ error: err })
+  }
+})
+
 router.post('/', verifyToken, async (req, res) => {
   const deckCollectionName = req.body.name
   if (!validator.isLength(deckCollectionName, { max: 20 }))
@@ -139,39 +170,6 @@ router.delete('/:collectionId/decks/:deckId', verifyToken, async (req, res) => {
     }
   } catch (err) {
     res.status(500).json({ error: err })
-  }
-})
-
-router.get('/:id/decks/:deckId/', verifyToken, async (req, res) => {
-  if (!req.user.deckCollections.some((c) => c._id == req.params.id))
-    return res.sendStatus(403)
-
-  try {
-    const collectionId = req.params.id
-    const deckId = req.params.deckId
-    const collection = await DeckCollection.findById(collectionId).populate(
-      'deck'
-    )
-
-    //const deck = await Deck.findById(deckId)
-    const c = collection.deck.filter((d) => d._id == deckId)
-    res.status(200).json(c)
-  } catch (err) {
-    res.status(500).json({ error: err })
-  }
-})
-
-router.get('/:id/decks', verifyToken, async (req, res) => {
-  if (!req.user.deckCollections.some((c) => c._id == req.params.id))
-    return res.sendStatus(403)
-  try {
-    const collectionId = req.params.id
-    const collection = await DeckCollection.findById(collectionId).populate(
-      'deck'
-    )
-    res.json(collection.deck)
-  } catch (err) {
-    res.sendStatus(500)
   }
 })
 
