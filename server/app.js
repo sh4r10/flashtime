@@ -55,17 +55,17 @@ app.use(cors({ credentials: true, origin: 'http://localhost:8080' }))
 app.use(trim)
 
 // Import routes
-app.use('/api/users', userRoutes)
-app.use('/api/auth', authController)
-app.use('/api/decks', deckController)
-app.use('/api/collections', collectionController)
-app.use('/api/cards', cardController)
+app.use('/api/v1/users', userRoutes)
+app.use('/api/v1/auth', authController)
+app.use('/api/v1/decks', deckController)
+app.use('/api/v1/collections', collectionController)
+app.use('/api/v1/cards', cardController)
 
-app.get('/api', function (req, res) {
+app.get('/api/', function (req, res) {
   res.json({ message: 'Welcome to your DIT342 backend ExpressJS project!' })
 })
 
-app.get('/api/search', verifyToken, async (req, res) => {
+app.get('/api/v1/search', verifyToken, async (req, res) => {
   try {
     const { query } = req.query
     const decks = await deckSearch(req, query)
