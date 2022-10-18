@@ -9,7 +9,9 @@ router.get('/', verifyToken, (req, res) => {
   Card.find({ user: req.user._id })
     .then((cards) => {
       if (cards.length === 0) res.json('You do not have any card yet')
-      res.json(cards)
+      res.json(
+        cards.map((card) => ({ ...card._doc, links: linksGenerator(card._id) }))
+      )
     })
     .catch((err) => {
       res.sendStatus(404)
@@ -18,11 +20,13 @@ router.get('/', verifyToken, (req, res) => {
 
 router.get('/due', verifyToken, async (req, res) => {
   try {
-    const card = await Card.find({
+    const cards = await Card.find({
       user: req.user._id,
       nextRevision: { $lte: Date.now() },
     })
-    res.json(card)
+    res.json(
+      cards.map((card) => ({ ...card._doc, links: linksGenerator(card._id) }))
+    )
   } catch (err) {
     res.sendStatus(500)
   }
@@ -34,7 +38,7 @@ router.get('/:id', verifyToken, async (req, res) => {
       _id: req.params.id,
       user: req.user._id,
     }).populate('deck')
-    res.json(card)
+    res.json({ ...card._doc, links: linksGenerator(card._id) })
   } catch (err) {
     res.status(400).json({ message: 'Wrong ID' })
   }
@@ -91,5 +95,21 @@ router.patch('/:id/revise', verifyToken, async (req, res) => {
     res.sendStatus(500)
   }
 })
+
+const linksGenerator = (cardId) => {
+  const links = [
+    {
+      rel: 'self',
+      href: `/api/cards/${cardId}`,
+      type: 'DELETE',
+    },
+    {
+      rel: 'self',
+      href: `/api/cards/${cardId}`,
+      type: 'PATCH',
+    },
+  ]
+  return links
+}
 
 module.exports = router
