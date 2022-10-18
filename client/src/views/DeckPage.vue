@@ -85,8 +85,8 @@ export default {
     },
     async createDeck(name) {
       try {
-        await Api.post('/decks', { name })
-        this.fetchDecks()
+        const res = await Api.post('/decks', { name })
+        this.$router.push({ name: 'deck', params: { id: res.data._id } })
       } catch (err) {
         const error = err.response.data.error
         this.$vToastify.error(error)
@@ -108,14 +108,7 @@ export default {
         this.$vToastify.error('Something went wrong')
       }
     },
-    // deletAllDecks: async function () {
-    //   try {
-    //     await Api.delete('/decks')
-    //     this.decks = ''
-    //   } catch (err) {
-    //     this.$vToastify.error('Something went wrong')
-    //   }
-    // },
+
     setCurrentDeck: function (id) {
       this.currentDeck = this.decks.find((deck) => deck._id === id)
       this.$bvModal.show('deck-modal')
