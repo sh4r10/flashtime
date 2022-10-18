@@ -104,7 +104,6 @@ router.patch('/password', verifyToken, async (req, res) => {
 
 router.delete('/', verifyToken, async (req, res) => {
   const userId = req.user._id
-  const password = req.body.password
   const userCollections = req.user.deckCollections.map((c) => c._id)
   const userDecks = req.user.decks.map((d) => d._id)
   try {
@@ -114,6 +113,11 @@ router.delete('/', verifyToken, async (req, res) => {
     )
     if (!isPasswordValid)
       return res.status(401).json({ error: 'Invalid credentials' })
+
+    if (!validator.isLength(req.body.password, { min: 8 }))
+      return res
+        .status(400)
+        .json({ error: 'Password must be atleast 8 characters' })
   } catch (cc) {
     res.sendStatus(400)
   }
