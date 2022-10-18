@@ -65,12 +65,17 @@ The main purpose is to enhance the learning experience of the website's users by
 
 ### Pages
 
-* Home: where users can read about the detailes about the website, can sign up and sign in.
-* Login: Where the user type their username and password to get accesise to their dashboard.
-* Signup: The user can enter their details and sign up for an account
-* Dashboard: This is the logged in area where the user can see/manage their collections, decks, flashcards, favourites etc.
-* Revision page: This is the page where the user performs their revisions based on the aforementioned algorithm.
-
+* **Home:** where users can read  about the website, can sign up and Login.
+* **Login:** Where the user type their username and password to get accesise to their dashboard.
+* **Signup:** The user can enter their details and sign up for an account.
+* **Dashboard:** This is the logged in area where the user can see/manage their cards(which needs to be revise), collections. There is a search bar where user can search for specific collection or decks.
+* **Revise page:** This is the page where the user performs their revisions based on the aforementioned algorithm.
+* **Revision page:** Where user can see all of their decks that include cards that needs to be revised.
+* **Collection page:** This is the page where user can see all the collections. User can sort the collection alphabetically, newest to oldest and oldest to newest, as well as user can serach for specific collection. In addition user can delete, edit and create the collection.
+* **Deck page:** This is the page where user can see all the decks. User can sort decks alphabetically, newest to oldest, oldest to newest and by number of cards, as well as user can serach for specific deck. In addition user can delete, edit, revise and create the deck.
+* **Card page:** This is the page where user can see all the cards. User can serach for specific card. In addition user can delete, edit, and create the card.
+* **Profile page:** This is the page where user can change their firstname and lastname. In addition user can delete all their decks, collections as well as their account.  
+* **Change password:** Where users are able to change their password.
 
 ### Entity-Relationship (ER) Diagram
 
