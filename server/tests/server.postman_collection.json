@@ -6,7 +6,7 @@
 	},
 	"item": [
 		{
-			"name": "GET /api",
+			"name": "GET /api/v1",
 			"event": [
 				{
 					"listen": "prerequest",
@@ -29,12 +29,12 @@
 					}
 				],
 				"url": {
-					"raw": "{{host}}/api",
+					"raw": "{{host}}/api/v1",
 					"host": [
 						"{{host}}"
 					],
 					"path": [
-						"api"
+						"api/v1"
 					]
 				}
 			},
