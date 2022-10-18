@@ -17,7 +17,7 @@ router.get('/', verifyToken, async (req, res) => {
       const cardsDue = deck.cards.filter(
         (card) => card.nextRevision < new Date()
       ).length
-      const res = { ...deck._doc, cardsDue }
+      const res = { ...deck._doc, cardsDue, links: linksGenerator(deck._id) }
       return res
     })
     res.json(decks)
@@ -36,7 +36,11 @@ router.get('/:id', verifyToken, async (req, res) => {
     const cardsDue = deck.cards.filter(
       (card) => card.nextRevision < new Date()
     ).length
-    const finalDeck = { ...deck._doc, cardsDue }
+    const finalDeck = {
+      ...deck._doc,
+      cardsDue,
+      links: linksGenerator(deck._id),
+    }
     res.json(finalDeck)
   } catch (err) {
     res.status(500).json({ error: err })
@@ -175,6 +179,32 @@ router.delete('/', verifyToken, async (req, res) => {
     res.sendStatus(500)
   }
 })
+
+const linksGenerator = (deckId) => {
+  const links = [
+    {
+      rel: 'self',
+      href: `/api/decks/${deckId}`,
+      type: 'DELETE',
+    },
+    {
+      rel: 'self',
+      href: `/api/decks/${deckId}`,
+      type: 'PUT',
+    },
+    {
+      rel: 'cards',
+      href: `/api/decks/${deckId}/cards`,
+      type: 'GET',
+    },
+    {
+      rel: 'cards',
+      href: `/api/decks/${deckId}/cards/due`,
+      type: 'GET',
+    },
+  ]
+  return links
+}
 
 const search = async (req, query) => {
   const decks = await Deck.find({

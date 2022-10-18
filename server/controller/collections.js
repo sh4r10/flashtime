@@ -4,9 +4,15 @@ const Deck = require('../models/deck.schema')
 const User = require('../models/user.schema')
 const verifyToken = require('../middlewares/verifyToken')
 const validator = require('validator')
+const { collection } = require('../models/deckCollection.schema')
 
 router.get('/', verifyToken, async (req, res) => {
-  res.json(req.user.deckCollections)
+  res.json(
+    req.user.deckCollections.map((collection) => ({
+      ...collection._doc,
+      links: linksGenerator(collection._id),
+    }))
+  )
 })
 
 router.get('/:id', verifyToken, (req, res) => {
@@ -14,7 +20,7 @@ router.get('/:id', verifyToken, (req, res) => {
   DeckCollection.findById(collectionId)
     .then((collection) => {
       if (req.user.deckCollections.some((c) => c._id == collectionId)) {
-        res.json(collection)
+        res.json({ ...collection._doc, links: linksGenerator(collection._id) })
       } else {
         res.sendStatus(403)
       }
@@ -218,6 +224,22 @@ router.delete('/:collectionId/decks/:deckId', verifyToken, async (req, res) => {
     res.status(500).json({ error: err })
   }
 })
+
+const linksGenerator = (collectionId) => {
+  const links = [
+    {
+      rel: 'self',
+      href: `/api/collections/${collectionId}`,
+      type: 'DELETE',
+    },
+    {
+      rel: 'decks',
+      href: `/api/collections/${collectionId}/decks`,
+      type: 'GET',
+    },
+  ]
+  return links
+}
 
 const search = async (req, query) => {
   const collections = await DeckCollection.find({
