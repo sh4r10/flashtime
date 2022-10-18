@@ -19,7 +19,5 @@
   "lint-staged": {
     "*.{js,css,md}": "prettier --write"
   },
-  "dependencies": {
-    "validator": "^13.7.0"
-  }
+  "dependencies": {}
 }
