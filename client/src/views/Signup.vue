@@ -1,5 +1,5 @@
 <template>
-  <b-container fluid>
+  <div>
     <Navbar />
     <b-container class="main-container">
       <h1>Create an Account</h1>
@@ -67,7 +67,7 @@
         </div>
       </b-form>
     </b-container>
-  </b-container>
+  </div>
 </template>
 
 <script>

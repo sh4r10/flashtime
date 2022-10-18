@@ -16,18 +16,16 @@ vue/no-mutating-props */
         {{ card ? card.back : '' }}
       </div>
     </div>
-    <div
-      v-if="cardFlipped"
-      class="btn-group"
-      role="group"
-      aria-label="First group"
-    >
-      <button @click="handleClick" value="0" class="btn">0</button>
-      <button @click="handleClick" value="1" class="btn">1</button>
-      <button @click="handleClick" value="2" class="btn">2</button>
-      <button @click="handleClick" value="3" class="btn">3</button>
-      <button @click="handleClick" value="4" class="btn">4</button>
-      <button @click="handleClick" value="5" class="btn">5</button>
+    <div v-if="cardFlipped" class="flippedGroup">
+      <p>Rate your level of ease with the question</p>
+      <div class="btn-group" role="group" aria-label="First group">
+        <button @click="handleClick" value="0" class="btn">0</button>
+        <button @click="handleClick" value="1" class="btn">1</button>
+        <button @click="handleClick" value="2" class="btn">2</button>
+        <button @click="handleClick" value="3" class="btn">3</button>
+        <button @click="handleClick" value="4" class="btn">4</button>
+        <button @click="handleClick" value="5" class="btn">5</button>
+      </div>
     </div>
   </div>
 </template>
@@ -69,6 +67,7 @@ export default {
   transition: transform 0.8s;
   transform-style: preserve-3d;
   border: none;
+  cursor: pointer;
 }
 
 .card-container.flipped .card {
@@ -124,7 +123,6 @@ export default {
 }
 
 .btn-group {
-  margin-top: 1.5rem;
   width: 100%;
 }
 
@@ -150,5 +148,15 @@ export default {
 
 .btn[value='5'] {
   background: #81c784;
+}
+
+.flippedGroup {
+  margin-top: 1.5rem;
+}
+.flippedGroup p {
+  margin: 0;
+  margin-bottom: 0.5rem;
+  color: var(--teritiary);
+  font-style: italic;
 }
 </style>
