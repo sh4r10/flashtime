@@ -82,11 +82,18 @@ router.patch('/password', verifyToken, async (req, res) => {
   const userId = req.user._id
   const currentPassword = req.body.currentPassword
 
+  if (!validator.isLength(req.body.newPassword, { min: 8 }))
+    return res
+      .status(400)
+      .json({ error: 'Password must be at least 8 characters' })
+
   const isPasswordValid = await bcrypt.compare(
     currentPassword,
     req.user.password
   )
-  if (!isPasswordValid) res.json('You typed the wrong password')
+
+  if (!isPasswordValid)
+    return res.status(403).json({ error: 'Invalid credentials' })
   const passwordUpdate = await bcrypt.hash(req.body.newPassword, SALT_ROUNDS)
 
   User.findById(userId)
@@ -98,7 +105,7 @@ router.patch('/password', verifyToken, async (req, res) => {
       res.json(result)
     })
     .catch((err) => {
-      res.json({ message: err })
+      res.json({ error: 'Something went wrong' })
     })
 })
 
@@ -113,11 +120,6 @@ router.delete('/', verifyToken, async (req, res) => {
     )
     if (!isPasswordValid)
       return res.status(401).json({ error: 'Invalid credentials' })
-
-    if (!validator.isLength(req.body.password, { min: 8 }))
-      return res
-        .status(400)
-        .json({ error: 'Password must be atleast 8 characters' })
   } catch (cc) {
     res.sendStatus(400)
   }
