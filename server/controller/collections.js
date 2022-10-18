@@ -79,33 +79,51 @@ router.post('/', verifyToken, async (req, res) => {
     .catch((err) => res.status(404).json('error, ID not found'))
 })
 
-router.put('/:id/decks/', verifyToken, async (req, res) => {
-  const deckId = req.body.deckId
+router.get('/:id/decks', verifyToken, async (req, res) => {
+  if (!req.user.deckCollections.some((c) => c._id == req.params.id))
+    return res.sendStatus(403)
   try {
-    const collection = await DeckCollection.findById(req.params.id)
-    const deck = await Deck.findById(deckId)
-    if (
-      req.user.decks.some((d) => d._id == deckId) &&
-      deck.deckCollection !== collection._id &&
-      !collection.deck.some((d) => d._id == deckId)
-    ) {
-      if (deck.deckCollection) {
-        const oldCollection = await DeckCollection.findById(deck.deckCollection)
-        oldCollection.deck = oldCollection.deck.filter(
-          (d) => d._id.toString() != deckId
-        )
-        oldCollection.save()
-      }
-      collection.deck.push(deckId)
-      deck.deckCollection = collection._id
-      await deck.save()
-      await collection.save()
-      res.json(collection)
-    } else {
-      res.status(400).json('error, deck already in collection')
-    }
+    const collectionId = req.params.id
+    const collection = await DeckCollection.findById(collectionId).populate(
+      'deck'
+    )
+    res.json(collection.deck)
   } catch (err) {
-    res.status(500).json({ message: err })
+    res.sendStatus(500)
+  }
+})
+
+router.put('/:collectionId/decks/:deckId', verifyToken, async (req, res) => {
+  const collectionId = req.params.collectionId
+  const deckId = req.params.deckId
+
+  if (
+    !req.user.deckCollections.some((c) => c._id == collectionId) ||
+    !req.user.decks.some((d) => d._id == deckId)
+  ) {
+    return res.sendStatus(403)
+  }
+
+  try {
+    const collection = await DeckCollection.findById(collectionId)
+    const deck = await Deck.findById(deckId)
+    // deck already exists in the collection
+    if (collection.deck.some((d) => d._id == deckId)) {
+      return res.sendStatus(400)
+    }
+    //deck already belongs to another collection
+    if (deck.deckCollection) {
+      const otherCollection = await DeckCollection.findById(deck.deckCollection)
+      otherCollection.deck = otherCollection.deck.filter((d) => d._id != deckId)
+      await otherCollection.save()
+    }
+    collection.deck.push(deck)
+    deck.deckCollection = collection._id
+    await deck.save()
+    await collection.save()
+    res.json(collection)
+  } catch (err) {
+    res.sendStatus(500)
   }
 })
 
@@ -144,6 +162,34 @@ router.delete('/:id', verifyToken, async (req, res) => {
     res.sendStatus(204)
   } catch (err) {
     res.status(500).json({ error: err })
+  }
+})
+
+router.get('/:id/decks', verifyToken, async (req, res) => {
+  if (!req.user.deckCollections.some((c) => c._id == req.params.id))
+    return res.sendStatus(403)
+  try {
+    const collectionId = req.params.id
+    const collection = await DeckCollection.findById(collectionId).populate(
+      'deck'
+    )
+    res.json(collection.deck)
+  } catch (err) {
+    res.sendStatus(500)
+  }
+})
+
+router.get('/:collectionId/decks/:deckId', verifyToken, async (req, res) => {
+  try {
+    const collectionId = req.params.collectionId
+    const deckId = req.params.deckId
+    const collection = await DeckCollection.findById(collectionId).populate(
+      'deck'
+    )
+    const deck = collection.deck.filter((d) => d._id == deckId)
+    res.status(200).json(deck)
+  } catch (err) {
+    res.status(404).json('what the fuck')
   }
 })
 
