@@ -1,7 +1,5 @@
 # Flashtime - The Modern Flashcard Application
 
-Latest version: https://git.ita.chalmers.se/courses/dit341/group-00-web (public Github [mirror](https://github.com/dit341/group-00-web))
-
 ## Project Structure
 
 | File                                                 | Purpose                           | What you do?                              |
